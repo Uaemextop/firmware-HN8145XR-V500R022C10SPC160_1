@@ -1,0 +1,10 @@
+certs/
+logs/
+chrome_profile/
+__pycache__/
+*.pyc
+*.pyo
+.eggs/
+*.egg-info/
+dist/
+build/
