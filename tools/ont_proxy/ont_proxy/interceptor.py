@@ -128,14 +128,14 @@ class ONTInterceptor:
             return
 
         try:
-            encoding = flow.response.headers.get("content-type", "")
+            content_type = flow.response.headers.get("content-type", "")
             charset = "utf-8"
-            if "charset=" in encoding:
-                charset = encoding.split("charset=")[-1].strip().split(";")[0]
+            if "charset=" in content_type:
+                charset = content_type.split("charset=")[-1].strip().split(";")[0]
 
             body = flow.response.content.decode(charset, errors="replace")
         except Exception:
-            body = flow.response.content.decode("utf-8", errors="replace")
+            return
 
         original = body
         body = _patch_user_type(body)

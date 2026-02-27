@@ -13,6 +13,15 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from ont_proxy.config import CERTS_DIR, ONT_HOST
 
 
+def _build_san_entries(host: str) -> list:
+    entries = [x509.DNSName(host)]
+    try:
+        entries.append(x509.IPAddress(ipaddress.IPv4Address(host)))
+    except ValueError:
+        pass
+    return entries
+
+
 def generate_ca(
     cert_path: Path | None = None,
     key_path: Path | None = None,
@@ -41,10 +50,7 @@ def generate_ca(
         .not_valid_after(now + datetime.timedelta(days=days))
         .add_extension(x509.BasicConstraints(ca=True, path_length=None), critical=True)
         .add_extension(
-            x509.SubjectAlternativeName([
-                x509.DNSName(ONT_HOST),
-                x509.IPAddress(ipaddress.IPv4Address(ONT_HOST)),
-            ]),
+            x509.SubjectAlternativeName(_build_san_entries(ONT_HOST)),
             critical=False,
         )
         .sign(key, hashes.SHA256())
@@ -66,13 +72,16 @@ def install_cert_windows(cert_path: Path | None = None) -> bool:
     if not cert_path.exists():
         return False
 
-    ps_script = (
-        f'Import-Certificate -FilePath "{cert_path}" '
-        f"-CertStoreLocation Cert:\\LocalMachine\\Root"
-    )
+    script_path = generate_install_script(cert_path)
     try:
         subprocess.run(
-            ["powershell", "-Command", f"Start-Process powershell -Verb RunAs -ArgumentList '-Command {ps_script}'"],
+            [
+                "powershell", "-Command",
+                "Start-Process", "powershell",
+                "-Verb", "RunAs",
+                "-ArgumentList",
+                f"'-ExecutionPolicy Bypass -File \"{script_path}\"'",
+            ],
             check=True,
         )
         return True

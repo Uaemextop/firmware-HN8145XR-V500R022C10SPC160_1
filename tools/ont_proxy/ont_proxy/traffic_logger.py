@@ -16,6 +16,13 @@ class TrafficLogger:
         self._log_file = self._log_dir / "traffic.jsonl"
         self._fh = open(self._log_file, "a", encoding="utf-8")
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+        return False
+
     def log_flow(self, flow: http.HTTPFlow):
         host = flow.request.pretty_host
         if host != ONT_HOST:

@@ -80,7 +80,7 @@ def launch_chrome(chrome_path: str | None = None) -> subprocess.Popen | None:
         f"--user-data-dir={CHROME_PROFILE_DIR}",
         f"--proxy-pac-url=file://{pac_file}",
         "--ignore-certificate-errors",
-        "--disable-web-security",
+
         "--no-first-run",
         "--no-default-browser-check",
         f"http://{ONT_HOST}/",
