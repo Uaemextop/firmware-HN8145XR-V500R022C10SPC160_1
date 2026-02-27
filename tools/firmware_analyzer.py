@@ -12,6 +12,16 @@ try:
 except ImportError:
     HAS_CAPSTONE = False
 
+DEFAULT_TEXT_OFFSET = 0x1000
+DEFAULT_TEXT_SIZE = 4096
+
+SECURITY_KEYWORDS = [
+    "debug", "telnet", "ssh", "password", "key", "encrypt", "decrypt",
+    "aes", "rsa", "hmac", "pbkdf", "kmc", "cfgfile", "security",
+    "admin", "root", "shell", "login", "auth", "token", "certificate",
+    "http", "port", "listen", "socket", "bind", "uhttpd",
+]
+
 
 def find_firmware_root():
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -84,7 +94,8 @@ def find_ports_and_services(root):
             try:
                 with open(cfg_file, "r", errors="ignore") as f:
                     for line in f:
-                        if "PORT" in line.upper() or "port" in line.lower():
+                        line_upper = line.upper()
+                        if "PORT" in line_upper:
                             parts = line.strip().split('"')
                             name_val = {}
                             for i in range(0, len(parts) - 1, 2):
@@ -325,8 +336,8 @@ def analyze_binary_with_capstone(filepath, max_instructions=200):
         try:
             with open(filepath, "rb") as f:
                 data = f.read()
-            text_offset = 0x1000 if len(data) > 0x1000 else 0
-            text_size = min(len(data) - text_offset, 4096)
+            text_offset = DEFAULT_TEXT_OFFSET if len(data) > DEFAULT_TEXT_OFFSET else 0
+            text_size = min(len(data) - text_offset, DEFAULT_TEXT_SIZE)
             text_addr = 0x1000
         except (IOError, OSError):
             return {"error": "cannot read file"}
@@ -370,15 +381,9 @@ def analyze_binary_with_capstone(filepath, max_instructions=200):
 
     interesting_strings = []
     all_strings = extract_strings_from_binary(filepath)
-    keywords = [
-        "debug", "telnet", "ssh", "password", "key", "encrypt", "decrypt",
-        "aes", "rsa", "hmac", "pbkdf", "kmc", "cfgfile", "security",
-        "admin", "root", "shell", "login", "auth", "token", "certificate",
-        "http", "port", "listen", "socket", "bind", "uhttpd",
-    ]
     for s in all_strings:
         sl = s.lower()
-        if any(k in sl for k in keywords):
+        if any(k in sl for k in SECURITY_KEYWORDS):
             if len(s) < 200:
                 interesting_strings.append(s)
 
@@ -545,9 +550,29 @@ def build_isps_frame_map():
     }
 
 
+def detect_firmware_version(root):
+    boardinfo = os.path.join(root, "configs", "hw_boardinfo")
+    if not os.path.isfile(boardinfo):
+        boardinfo = os.path.join(root, "etc", "wap", "hw_boardinfo")
+    version = "HN8145XR V500R022C10SPC160"
+    if os.path.isfile(boardinfo):
+        try:
+            with open(boardinfo, "r", errors="ignore") as f:
+                for line in f:
+                    if "obj.id" in line and "0x0000000c" in line:
+                        parts = line.split('"')
+                        for p in parts:
+                            if "V500" in p or "V300" in p:
+                                version = p.strip()
+                                break
+        except (IOError, OSError):
+            pass
+    return version
+
+
 def run_full_analysis(root):
     output = {
-        "firmware": "HN8145XR V500R022C10SPC160",
+        "firmware": detect_firmware_version(root),
         "architecture": "ARM Cortex-A9 (32-bit, little-endian, musl libc)",
     }
 
