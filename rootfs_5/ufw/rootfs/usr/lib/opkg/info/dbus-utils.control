@@ -1,0 +1,10 @@
+Package: dbus-utils
+Version: 1.12.20-1
+Depends: libc, dbus
+Source: feeds/packages/utils/dbus
+SourceName: dbus-utils
+License: AFL-2.1
+Section: utils
+Architecture: arm_huawei_V32081_F
+Installed-Size: 13570
+Description:  Simple interprocess messaging system (utilities)

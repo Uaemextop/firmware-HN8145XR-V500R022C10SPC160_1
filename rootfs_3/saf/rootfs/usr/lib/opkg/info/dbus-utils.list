@@ -1,0 +1,3 @@
+/usr/bin/dbus-send
+/usr/bin/dbus-update-activation-environment
+/usr/bin/dbus-monitor

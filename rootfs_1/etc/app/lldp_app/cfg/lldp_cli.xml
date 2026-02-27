@@ -1,0 +1,8 @@
+<CliRoot>
+<DisplayLldpRemote CmdStr="display lldp remote" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.DisplayLldpRemote" OpType="5" Help="display lldp remote port [int]" OutPut="" CmdGroup="">
+<para ParaName="port" AttName="port" ParaAtt="0"/>
+</DisplayLldpRemote>
+<DisplayLldpLocal CmdStr="display lldp local" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.DisplayLldpLocal" OpType="5" Help="display lldp local port [int]" OutPut="" CmdGroup="">
+<para ParaName="port" AttName="port" ParaAtt="0"/>
+</DisplayLldpLocal>
+</CliRoot>

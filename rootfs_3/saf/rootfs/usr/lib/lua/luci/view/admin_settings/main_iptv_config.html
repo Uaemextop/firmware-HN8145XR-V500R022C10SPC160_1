@@ -1,0 +1,225 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<title>中国电信智能网关</title>
+		<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+		<link href='<%=resource%>/css/main_style.css?version=<%=version%>' rel='stylesheet' type='text/css'/>
+		<script language="javascript" src="<%=resource%>/xhr.js?version=<%=version%>"></script>
+		<script language="javascript" src="<%=resource%>/js/util.js?version=<%=version%>"></script>
+		<script language="javascript" src="<%=resource%>/js/jquery.js?version=<%=version%>"></script>		
+		<script language="javascript" src="<%=resource%>/js/main.js?version=<%=version%>"></script>
+	</head>
+		<script language="javascript">
+			var inputVal;
+			var activeTimeout = setTimeout("Timeout()", 300000);    
+			  
+			function Timeout() {
+				(new XHR()).post('<%=luci.dispatcher.build_url('admin/logout')%>',
+					{ token: '<%=token%>' }, 
+					function(x){
+					parent.location = "/cgi-bin/luci";
+					});	
+			}
+		
+			function initVal()
+			{
+					if (inputVal.enable != ($("#iptv_switch_value").val()))
+					{
+						if (inputVal.enable)
+						{
+							$("#iptv_switch").removeClass("switch_content_off");
+							$("#iptv_switch").addClass("switch_content_on");
+							$("#iptv_switch").children("span").html("&nbsp;ON");
+							$(".iptv_settings").css("display", "");
+						}
+						else
+						{
+							$("#iptv_switch").removeClass("switch_content_on");
+							$("#iptv_switch").addClass("switch_content_off");
+							$("#iptv_switch").children("span").html("OFF&nbsp;");
+							$(".iptv_settings").css("display", "none");
+						}
+						
+						$("#iptv_switch_value").val(inputVal.enable);
+					}
+					
+					if (inputVal.vlanOnOff != ($("#vlan_switch_value").val()))
+					{
+						if (inputVal.vlanOnOff)
+						{
+							$("#vlan_switch").removeClass("switch_content_off");
+							$("#vlan_switch").addClass("switch_content_on");
+							$("#vlan_switch").children("span").html("&nbsp;ON");
+							document.getElementById("vlan_id").disabled="";					
+						}
+						else
+						{
+							$("#vlan_switch").removeClass("switch_content_on");
+							$("#vlan_switch").addClass("switch_content_off");
+							$("#vlan_switch").children("span").html("OFF&nbsp;");
+							document.getElementById("vlan_id").disabled=true;						
+						}
+					}
+					
+					if (inputVal.vlanid != 0)	
+						$("#vlan_id").val(inputVal.vlanid);	
+					$("#lan1").prop("checked",inputVal.bindlanport.indexOf("1") != -1);
+					$("#lan2").prop("checked",inputVal.bindlanport.indexOf("2") != -1);
+					$("#lan3").prop("checked",inputVal.bindlanport.indexOf("3") != -1);
+					$("#lan4").prop("checked",inputVal.bindlanport.indexOf("4") != -1);
+					
+					//$("#ap1").prop("checked",inputVal.bindwlan2port != 0);
+					//$("#ap2").prop("checked",inputVal.bindwlan5port != 0);	  
+			}
+			
+			function frmLoad()
+			{
+				(new XHR()).get('<%=luci.dispatcher.build_url('admin/settings/iptvInfo')%>',null,
+					function(x, json){
+							inputVal = json;
+							initVal();
+							$(".main_content").show();	
+							$(".main_save").show();   							
+					});					  
+			}	
+			
+			function doChangeIptv()
+			{
+				cleanPopWindowContentFromIframe();
+				
+				//填充内容
+				$("#pop_window_title", window.parent.document).html("修改确认");
+				$("#pop_window_icon", window.parent.document).html('<div class="pop_window_icon_alert"></div>');
+				$("#pop_window_message", window.parent.document).html("是否确认修改IPTV设置？");
+				
+				//更改确认操作函数
+				var eid = parent.document.getElementById("confirm");
+				if ( isIE7 )
+				{
+					eid.onclick = function() { realChangeIptv() };
+				}
+				else
+				{
+					eid.setAttribute("onclick","document.getElementById('setting_iframe').contentWindow.realChangeIptv()");
+				}
+				showOrHidePopWindowFromIframe("show");
+			}	
+			
+			function realChangeIptv()
+			{
+				var vlanid = 0;
+				var bindlanport = "";
+				var bindwlan2port = 0;
+				var bindwlan5port = 0;
+				showOrHidePopWindowFromIframe("hide");
+				$(".main_content").css("display", "none");
+				$(".main_save").css("display", "none");
+
+				if ($("#iptv_switch_value").val() == 1) {
+					if ($("#vlan_switch_value").val() == 1)
+						vlanid = $("#vlan_id").val();
+						
+					if ($("#lan1").checked)
+						bindlanport = "1";
+						
+					if ($("#lan2").checked && bindlanport != "")
+						bindlanport += ",2";
+						
+					if ($("#lan3").checked && bindlanport != "")
+						bindlanport += ",3";
+						
+					if ($("#lan3").checked && bindlanport != "")
+						bindlanport += ",4";
+						
+					if ($("#ap1").checked)
+						bindwlan2port = $("#ap1").val();
+						
+					if ($("#ap2").checked)
+						bindwlan5port = $("#ap2").val();																													
+				}
+				
+				if (bindlanport == "")
+					bindlanport = "none";
+				
+				clearTimeout(activeTimeout);
+				activeTimeout = setTimeout("Timeout()", 300000);				
+				(new XHR()).post('<%=luci.dispatcher.build_url('admin/settings/iptvSettings')%>',	  
+					{ token: '<%=token%>', enable : $("#iptv_switch_value").val(),  
+					  vlanOnOff : $("#vlan_switch_value").val(), vlanid : vlanid, bindlanport : bindlanport, bindwlan2port : bindwlan2port, bindwlan5port : bindwlan5port},		
+					function(x)
+					{	
+						if (x.responseText.substr(2, 7) == "DOCTYPE")
+	      					parent.location = "/cgi-bin/luci";
+	      				else
+	      				{
+							frmLoad();
+	      				}
+					});					
+			}
+
+			
+
+
+		function checkIptvSettings()
+		{
+			var vlanid = $("#vlan_id").val();
+
+			$(".save_error").text("");
+			if (($("#iptv_switch_value").val() == 1) && ($("#vlan_switch_value").val() == 1))
+			{
+				if (isNaN(vlanid) || (vlanid < 1) || (vlanid > 4095))
+				{
+					$(".save_error").text("VLAN ID设置范围为1-4095，请修改");
+					return false;
+				}
+			}
+
+			return true;
+		}		
+	</script>
+	<body onLoad='frmLoad()' onkeydown='parent.kFlg;parent.keycheck(event)' class='main_config_body'>	
+		<div class="main_header">
+			<p class="main_header_title">IPTV配置显示</p>
+			<p class="main_header_hint">本页面提供IPTV当前配置显示。</p>
+		</div>
+		<div class="main_content" style="margin-top: 10px;display:none">	
+			<div class="main_item" style="height: 40px">
+				<div class="main_item_name">IPTV服务</div>
+				<div class="main_item_content">
+					<div class="switch_content switch_content_on" id="iptv_switch" style="margin-top: 15px;">
+						<input type="hidden" id="iptv_switch_value" name="iptvOnOff" value="1" />
+						<span>&nbsp;ON</span>
+					</div>
+				</div>
+			</div>	
+			<div class="main_item iptv_settings" style="height: 40px">
+				<div class="main_item_name">开启VLAN</div>
+				<div class="main_item_content">
+					<div class="switch_content switch_content_on" id="vlan_switch" style="margin-top: 15px;">
+						<input type="hidden" id="vlan_switch_value" name="vlanOnOff" value="1" />
+						<span>&nbsp;ON</span>
+					</div>
+				</div>
+			</div>			
+			<div class="main_item iptv_settings" style="height: 40px">
+				<div class="main_item_name">VLAN ID</div>
+				<div class="main_item_content">
+					<input type="text" value="" id="vlan_id" name="vlan_id" class="input_text" autocomplete="off" placeholder="取值范围(1-4095)"/>
+				</div>
+			</div>
+      <div class="main_item iptv_settings" style="height: 40px">
+				<div class="main_item_name">绑定LAN口</div>
+        <div class="main_item_content">
+					<input type="checkbox" style="display: inline-block;" id="lan1" disabled>LAN1
+    			<input type="checkbox" style="display: inline-block;margin-left: 20px;" id="lan2" disabled>LAN2
+    			<input type="checkbox" style="display: inline-block;margin-left: 20px;" id="lan3" disabled>LAN3
+    			<input type="checkbox" style="display: inline-block;margin-left: 20px;" id="lan4" disabled>LAN4
+				</div>
+			</div>			
+		</div>
+	</body>
+</html>
+
+

@@ -1,0 +1,10 @@
+Package: cloudclient
+Version: CC2.2_CT_RTOS510V2_V1.0.02
+Depends: libc, libuci, libopenssl, libubox, libcapi3, glib2, libcurl, json-glib
+Source: /home/dell/ctc-smart-git/cloudclient
+Section: base
+Essential: yes
+Maintainer: Upointech
+Architecture: rtos510v2
+Installed-Size: 114457
+Description:  cloud client for smart gateway device

@@ -1,0 +1,11 @@
+Package: libuci-lua
+Version: 2019-09-01-415f9e48-4
+Depends: libc, libuci20130104, liblua5.1.5
+Source: package/system/uci
+SourceName: libuci-lua
+License: LGPL-2.1
+Section: libs
+Maintainer: Felix Fietkau <nbd@nbd.name>
+Architecture: arm_huawei_V32081_F
+Installed-Size: 6413
+Description:  Lua plugin for UCI

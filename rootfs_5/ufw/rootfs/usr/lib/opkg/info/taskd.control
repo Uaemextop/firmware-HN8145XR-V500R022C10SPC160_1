@@ -1,0 +1,11 @@
+Package: taskd
+Version: V02.01.0200
+Depends: libc, libubus20191227, libubox20191228, libblobmsg-json, libuci20130104, libpthread, libhguapi, glib2, libopenssl1.1
+Source: /data/buildbot/buildbot/wk_huawei_arm_huawei_V32081_F/builder_huawei_arm_huawei_V32081_F/build/module_hgu_fttr/ufw/taskd
+SourceName: taskd
+Section: ufw
+Essential: yes
+Maintainer: yysd
+Architecture: arm_huawei_V32081_F
+Installed-Size: 29433
+Description:  taskd is a task schedule server for china unicom smart gateway.

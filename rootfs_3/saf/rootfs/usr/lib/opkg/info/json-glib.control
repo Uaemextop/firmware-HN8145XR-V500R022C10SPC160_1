@@ -1,0 +1,8 @@
+Package: json-glib
+Version: 1
+Depends: libc, glib2
+Source: package/libs/json-glib
+Section: libs
+Architecture: rtos510v2
+Installed-Size: 53543
+Description:  The json-glib library of C routines

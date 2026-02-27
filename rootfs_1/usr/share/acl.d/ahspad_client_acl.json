@@ -1,0 +1,73 @@
+{
+    "description": "ont cli test role",
+    "user": "srv_clid",
+    "group": "config",
+    "subscribe":[
+        "ahsapd.sta",
+        "ahsapd.wifi",
+        "ahsapd.roaming",
+        "ahsapd.control",
+        "ahsapd.mesh",
+        "ahsapd.detection",
+        "ahsapd.wifi.csi"
+    ],
+    "access": {
+        "ahsapd.basic": {
+            "methods": ["getBasicInfo"]
+        },
+        "ahsapd.hardware": {
+            "methods": ["getHardware"]
+        },
+        "ahsapd.port": {
+            "methods": ["getPortInfo"]
+        },
+        "ahsapd.uplink": {
+            "methods": ["getUplinkInfo", "setPppoe", "wlanConnect","setWorkingMode","setUplinkRateConfig"]
+        },
+        "ahsapd.sta": {
+            "methods": ["getStaInfo", "getStaNum", "setStaRateConfig"]
+        },
+        "ahsapd.wifi": {
+            "methods": ["getWifiInfo", "setWifiParameter", "setWifiSwitch", "setRadioConfig", "setWps", "5GPreferred"]
+        },
+        "ahsapd.wifi.stats": {
+            "methods": ["getWifiStatsInfo"]
+        },
+        "ahsapd.neighbor": {
+            "methods": ["getWlanNeighborInfo"]
+        },
+        "ahsapd.roaming": {
+            "methods": ["getRoamingConfig", "setRoamingConfig", "staDisconnect", "staRssi", "staStopDetect", "setBandSteeringConfig", "getBandSteeringConfig"]
+        },
+        "ahsapd.timedtask": {
+            "methods": ["getTimedTask", "addTimedTask", "deleteTimedTask"]
+        },
+        "ahsapd.macfilter": {
+            "methods": ["getMacFilter", "setMacFilter"]
+        },
+        "ahsapd.control": {
+            "methods": ["reboot", "reset", "ledControl", "firmwareUpgrade", "setLockNet", "pmfCtrl", "ipv6Control", "getControlStatus", "hwnatClean", "kernelCount", "devLogStats"]
+        },
+        "ahsapd.config": {
+            "methods": ["addItem", "getItem", "deleteItem", "getCfgPath"]
+        },
+        "ahsapd.mesh": {
+            "methods": ["setMeshRole", "setMeshRoamingEnable", "getMeshInfo", "getMeshTopology"]
+        },
+        "ahsapd.limit": {
+            "methods": ["setDeviceLimit", "getDeviceLimit"]
+        },
+        "ahsapd.detection": {
+            "methods": ["httpSpeedTest"]
+        },
+        "ahsapd.wifi.csi": {
+            "methods": ["setCSIEnable", "getCSIEnable", "addCSIMac", "delCSIMac", "getCSIMac", "setCSIConfig", "getCSIConfig", "setCSIDriver", "getCSIDriver", "getCSIVersion", "setCSISpeed", "getCSISpeed", "setCSIScore", "setCSIDevice", "setCSIDevice"]
+        },
+        "ahsapd.qos": {
+            "methods": ["setQosConfig", "getQosConfig"]
+        },
+        "ahsapd.vlan": {
+            "methods": ["setIptvVlan", "getIptvVlan"]
+        }
+    }
+}

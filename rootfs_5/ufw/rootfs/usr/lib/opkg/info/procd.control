@@ -1,0 +1,12 @@
+Package: procd
+Version: 1
+Depends: libc, ubusd, ubus, libjson-script, ubox, libubox20191228, libubus20191227, libblobmsg-json, libjson-c5
+Source: package/system/procd
+SourceName: procd
+License: GPL-2.0
+Section: base
+Require-User: :dialout=20 :audio=29
+Maintainer: John Crispin <john@phrozen.org>
+Architecture: arm_huawei_V32081_F
+Installed-Size: 44531
+Description:  OpenWrt system process manager

@@ -1,0 +1,32 @@
+#!/bin/sh
+
+linemax=17
+for i in $(seq 1 $linemax)
+do
+    registerinfo=$(cwmp getvalue InternetGatewayDevice.Services.VoiceService.1.VoiceProfile.1.Line.${i}.Enable)
+    registerenable=${registerinfo##*Enable=}
+    if [ "$registerenable" == "Disabled" ] ||[ "$registerenable" == "Enabled" ]; then
+       break
+fi
+done
+
+registeroutput="User_Configure_Not_Correct"
+if [ $i -le 17 ] ; then
+    registerError=$(cwmp getvalue InternetGatewayDevice.Services.VoiceService.1.VoiceProfile.1.Line.$i.X_HW_LastRegisterError)
+    registeroutput=${registerError##*X_HW_LastRegisterError=}
+
+    if [ "$registeroutput" == "-" ] ; then
+        registeroutput="Up"
+    elif [ "$registeroutput" == "ERROR_REGISTRATION_AUTH_FAIL" ]; then
+        registeroutput="AuthFailed"
+    elif [ "$registeroutput" == "ERROR_REGISTRATION_TIME_OUT" ] ||
+         [ "$registeroutput" == "ERROR_ERROR_RESPONSE_RETURNED_BY_CORENET" ] ||
+         [ "$registeroutput" == "ERROR_USER_CONFLICT" ] ||
+         [ "$registeroutput" == "ERROR_DOMAIN_CHECKFAIL" ] ||
+         [ "$registeroutput" == "ERROR_UNKNOWN" ]; then
+        registeroutput="Error"
+    else
+        registeroutput="User_Configure_Not_Correct"
+    fi
+fi
+echo "$registeroutput"

@@ -1,0 +1,908 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<title>中国电信智能网关</title>
+		<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+		<link href='<%=resource%>/css/main_style.css?version=<%=version%>' rel='stylesheet' type='text/css'/>
+		<link href='<%=resource%>/css/wifi.css?version=<%=version%>' rel="stylesheet" type='text/css'/>
+		<script language="javascript" src="<%=resource%>/xhr.js?version=<%=version%>"></script>
+		<script language="javascript" src="<%=resource%>/js/util.js?version=<%=version%>"></script>
+		<script language="javascript" src="<%=resource%>/js/jquery.js?version=<%=version%>"></script>		
+		<script language="javascript" src="<%=resource%>/js/main.js?version=<%=version%>"></script>
+	</head>
+	<script language="javascript">
+		var inputVal;
+		var devMac = "";
+		var oldConfigSync = 0;
+		var oldOnoffSync = 0;
+		var cfgflg = 0;	
+		var onoffflg = 0;
+		var modeflg = 0;
+		var activeTimeout = setTimeout("Timeout()", 300000);    
+		  
+		function Timeout() {
+			(new XHR()).post('<%=luci.dispatcher.build_url('admin/logout')%>',
+				{ token: '<%=token%>' }, 
+				function(x){
+				parent.location = "/cgi-bin/luci";
+				});	
+		}
+	
+		function initVal()
+		{
+			if (inputVal.appStatus == 2)
+			{
+				$(".main_item").css("display", "none");
+				$(".save_error").text("组网插件未安装，不能设置一键配置和一键开关功能");
+				$("#error_hint").show();
+			}
+			else if (inputVal.appStatus == 1)
+			{
+				$(".app_item").css("display", "none");
+				$("#error_hint").hide();
+				
+				if (inputVal.configEnbl == 1)
+				{
+					$("#config_switch").removeClass("switch_content_off");
+					$("#config_switch").addClass("switch_content_on");
+					$("#config_switch").children("span").html("&nbsp;ON");
+					$("#wifi_2G_SSID").attr("disabled", true);
+					$("#wifi_2G_password").attr("disabled", true);
+					$("#wifi_5G_SSID").attr("disabled", true);
+					$("#wifi_5G_password").attr("disabled", true);						
+				}
+				else
+				{
+					$("#config_switch").removeClass("switch_content_on");
+					$("#config_switch").addClass("switch_content_off");
+					$("#config_switch").children("span").html("OFF&nbsp;");	
+					$("#wifi_2G_SSID").attr("disabled", false);
+					$("#wifi_2G_password").attr("disabled", false);
+					$("#wifi_5G_SSID").attr("disabled", false);
+					$("#wifi_5G_password").attr("disabled", false);	
+				}
+
+				if (inputVal.onoff == 1)
+				{
+					$("#onoff_switch").removeClass("switch_content_off");
+					$("#onoff_switch").addClass("switch_content_on");
+					$("#onoff_switch").children("span").html("&nbsp;ON");
+				}
+				else
+				{
+					$("#onoff_switch").removeClass("switch_content_on");
+					$("#onoff_switch").addClass("switch_content_off");
+					$("#onoff_switch").children("span").html("OFF&nbsp;");
+				}
+
+				if (((inputVal.configEnbl == 1) && (inputVal.onoff == 1)) || (inputVal.devcnt == 0))
+					$(".main_save").css("display", "none");
+				else
+					$(".main_save").css("display", "");
+
+				if (inputVal.devcnt > 0)
+				{
+					var htmlObj = "";
+					var dev1;
+					var tmpVendor;
+					$(".wifi_devs").children().remove();
+
+					if (devMac != "")
+					{
+						for (var i = 0; i < inputVal.devcnt; i++){
+							eval("dev = inputVal.ap" + (i + 1));
+							if (dev.mac.toUpperCase() == devMac.toUpperCase())
+							{
+								dev1 = dev;
+								break;
+							}
+						}						
+					}
+
+					if ((devMac == "") || (typeof(dev1) == "undefined"))
+						eval("dev1 = inputVal.ap1");
+
+					htmlObj += "<div class=\"wifi_item_name\"><label for=\"wifi_dev_list\">设备列表</label></div>";
+					htmlObj += "<div class=\"wifi_item_content\">";
+					htmlObj += "	<div tabindex=\"2\" hidefocus=\"true\"  class=\"dropdown-select dropdown-select-wifi\" id=\"wifi_dev\">";
+					if (dev1.vendor.indexOf(" ") != -1)
+						tmpVendor = dev1.vendor.split(" ")[0];
+					else
+						tmpVendor = dev1.vendor;
+					htmlObj += 		"<label class=\"select-value\">" + tmpVendor + " (" + dev1.mac.toUpperCase() + ")</label>";
+					htmlObj += 		"<input type=\"hidden\" id=\"wifi_dev_list_value\" name=\"wifi_dev_list\" value=\"" + dev1.mac.toUpperCase() + "\" />";
+					htmlObj += 		"<div class=\"select-arrow\"></div>";
+					htmlObj += 		"<ul class=\"dropdown-menu-select\" id=\"wifi_dev_list\">";
+
+					for (var i = 0; i < inputVal.devcnt; i++){
+						eval("dev = inputVal.ap" + (i + 1));
+						htmlObj += "<li livalue=\"" + dev.mac.toUpperCase() + "\">" + dev.vendor + " (" + dev.mac.toUpperCase() + ")</li>";
+					}				
+						
+					htmlObj += 		"</ul>";
+					htmlObj += 	"</div>";
+					htmlObj += "</div>";
+
+					$(".wifi_devs").append(htmlObj);
+					customSelectInit();
+
+
+				
+					$("#dev_name").text(dev1.vendor);
+					$("#dev_mac").text(dev1.mac.toUpperCase());
+
+
+
+					$(".no_wifi_devs").css("display", "none");
+					$(".dev_info").css("display", "");
+
+					if (dev1.flg == 1)
+					{
+						if (dev1.enbl2g == 1)
+						{
+							$("#wifi_2G_switch").removeClass("switch_content_off");
+							$("#wifi_2G_switch").addClass("switch_content_on");
+							$("#wifi_2G_switch").children("span").html("&nbsp;ON");
+							$("#wifi_2G_switch_value").val(1);
+						}
+						else
+						{
+							$("#wifi_2G_switch").removeClass("switch_content_on");
+							$("#wifi_2G_switch").addClass("switch_content_off");
+							$("#wifi_2G_switch").children("span").html("OFF&nbsp;");
+							$("#wifi_2G_switch_value").val(0);
+						}					
+						$("#wifi_2G_SSID").val(dev1.ssid2g);
+						$("#wifi_2G_password").val(dev1.pwd2g);					
+						$(".config_5g").css("display", "none");
+					}
+					else if (dev1.flg == 2)
+					{
+						if (dev1.enbl5g == 1)
+						{
+							$("#wifi_5G_switch").removeClass("switch_content_off");
+							$("#wifi_5G_switch").addClass("switch_content_on");
+							$("#wifi_5G_switch").children("span").html("&nbsp;ON");
+							$("#wifi_5G_switch_value").val(1);
+						}
+						else
+						{
+							$("#wifi_5G_switch").removeClass("switch_content_on");
+							$("#wifi_5G_switch").addClass("switch_content_off");
+							$("#wifi_5G_switch").children("span").html("OFF&nbsp;");
+							$("#wifi_5G_switch_value").val(0);
+						}
+					
+						$("#wifi_5G_SSID").val(dev1.ssid5g);
+						$("#wifi_5G_password").val(dev1.pwd5g);					
+						$(".config_2g").css("display", "none");
+					}
+					else if (dev1.flg == 3)
+					{
+						if (dev1.enbl2g == 1)
+						{
+							$("#wifi_2G_switch").removeClass("switch_content_off");
+							$("#wifi_2G_switch").addClass("switch_content_on");
+							$("#wifi_2G_switch").children("span").html("&nbsp;ON");
+							$("#wifi_2G_switch_value").val(1);
+						}
+						else
+						{
+							$("#wifi_2G_switch").removeClass("switch_content_on");
+							$("#wifi_2G_switch").addClass("switch_content_off");
+							$("#wifi_2G_switch").children("span").html("OFF&nbsp;");
+							$("#wifi_2G_switch_value").val(0);
+						}
+
+						if (dev1.enbl5g == 1)
+						{
+							$("#wifi_5G_switch").removeClass("switch_content_off");
+							$("#wifi_5G_switch").addClass("switch_content_on");
+							$("#wifi_5G_switch").children("span").html("&nbsp;ON");
+							$("#wifi_5G_switch_value").val(1);
+						}
+						else
+						{
+							$("#wifi_5G_switch").removeClass("switch_content_on");
+							$("#wifi_5G_switch").addClass("switch_content_off");
+							$("#wifi_5G_switch").children("span").html("OFF&nbsp;");
+							$("#wifi_5G_switch_value").val(0);
+						}						
+					
+						$("#wifi_2G_SSID").val(dev1.ssid2g);
+						$("#wifi_2G_password").val(dev1.pwd2g);	
+						$("#wifi_5G_SSID").val(dev1.ssid5g);
+						$("#wifi_5G_password").val(dev1.pwd5g);							
+					}
+
+					modeflg = dev1.flg;
+
+					$(".dropdown-menu-select li").click(function(){
+						for (var i = 0; i < inputVal.devcnt; i++){
+							$("#error_hint").hide();
+							eval("dev = inputVal.ap" + (i + 1));
+							if ($(this).parent().siblings("label").first().text() == (dev.vendor + " (" + dev.mac.toUpperCase() + ")"))
+							{
+								if (dev.vendor.indexOf(" ") != -1)
+									tmpVendor = dev.vendor.split(" ")[0];
+								else
+									tmpVendor = dev.vendor;							
+								$(".select-value").text(tmpVendor + " (" + dev.mac.toUpperCase() + ")");
+								$("#wifi_dev_list_value").val(dev.mac.toUpperCase());
+								$("#dev_name").text(dev.vendor);
+								$("#dev_mac").text(dev.mac.toUpperCase());
+
+								devMac = dev.mac.toUpperCase();							
+
+								if (dev.flg == 1)
+								{
+									if (dev.enbl2g == 1)
+									{
+										$("#wifi_2G_switch").removeClass("switch_content_off");
+										$("#wifi_2G_switch").addClass("switch_content_on");
+										$("#wifi_2G_switch").children("span").html("&nbsp;ON");
+										$("#wifi_2G_switch_value").val(1);
+									}
+									else
+									{
+										$("#wifi_2G_switch").removeClass("switch_content_on");
+										$("#wifi_2G_switch").addClass("switch_content_off");
+										$("#wifi_2G_switch").children("span").html("OFF&nbsp;");
+										$("#wifi_2G_switch_value").val(0);
+									}
+						
+									$("#wifi_2G_SSID").val(dev.ssid2g);
+									$("#wifi_2G_password").val(dev.pwd2g);								
+									$(".config_5g").css("display", "none");
+									$(".config_2g").css("display", "");
+								}
+								else if (dev.flg == 2)
+								{
+									if (dev.enbl5g == 1)
+									{
+										$("#wifi_5G_switch").removeClass("switch_content_off");
+										$("#wifi_5G_switch").addClass("switch_content_on");
+										$("#wifi_5G_switch").children("span").html("&nbsp;ON");
+										$("#wifi_5G_switch_value").val(1);
+									}
+									else
+									{
+										$("#wifi_5G_switch").removeClass("switch_content_on");
+										$("#wifi_5G_switch").addClass("switch_content_off");
+										$("#wifi_5G_switch").children("span").html("OFF&nbsp;");
+										$("#wifi_5G_switch_value").val(0);
+									}
+									
+									$("#wifi_5G_SSID").val(dev.ssid5g);
+									$("#wifi_5G_password").val(dev.pwd5g);									
+									$(".config_2g").css("display", "none");
+									$(".config_5g").css("display", "");
+								}
+								else if (dev.flg == 0)
+								{
+									$(".config_5g").css("display", "none");
+									$(".config_2g").css("display", "none");	
+								}
+								else
+								{
+									if (dev.enbl2g == 1)
+									{
+										$("#wifi_2G_switch").removeClass("switch_content_off");
+										$("#wifi_2G_switch").addClass("switch_content_on");
+										$("#wifi_2G_switch").children("span").html("&nbsp;ON");
+										$("#wifi_2G_switch_value").val(1);
+									}
+									else
+									{
+										$("#wifi_2G_switch").removeClass("switch_content_on");
+										$("#wifi_2G_switch").addClass("switch_content_off");
+										$("#wifi_2G_switch").children("span").html("OFF&nbsp;");
+										$("#wifi_2G_switch_value").val(0);
+									}
+
+									if (dev.enbl5g == 1)
+									{
+										$("#wifi_5G_switch").removeClass("switch_content_off");
+										$("#wifi_5G_switch").addClass("switch_content_on");
+										$("#wifi_5G_switch").children("span").html("&nbsp;ON");
+										$("#wifi_5G_switch_value").val(1);
+									}
+									else
+									{
+										$("#wifi_5G_switch").removeClass("switch_content_on");
+										$("#wifi_5G_switch").addClass("switch_content_off");
+										$("#wifi_5G_switch").children("span").html("OFF&nbsp;");
+										$("#wifi_5G_switch_value").val(0);
+									}									
+									
+									$("#wifi_2G_SSID").val(dev.ssid2g);
+									$("#wifi_2G_password").val(dev.pwd2g);	
+									$("#wifi_5G_SSID").val(dev.ssid5g);
+									$("#wifi_5G_password").val(dev.pwd5g);										
+									$(".config_2g").css("display", "");
+									$(".config_5g").css("display", "");
+								}
+								
+								modeflg = dev.flg;
+								break;
+							}
+						}
+					});					
+					
+				}
+				else
+				{
+					$(".dev_info").css("display", "none");
+					$(".no_wifi_devs").css("display", "");
+				}
+
+				if (cfgflg == 1)
+				{
+					if (oldConfigSync != inputVal.configEnbl)
+					{
+						$("#error_hint").show();
+						$(".save_error").text("组网一键配置设置成功");
+						setTimeout("hideHint()", 2000);
+					}
+					else
+					{
+						$("#error_hint").show();
+						$(".save_error").text("组网一键配置设置失败");						
+					}
+					cfgflg = 0;
+				}
+
+				if (onoffflg == 1)
+				{
+					if (oldOnoffSync != inputVal.onoff)
+					{
+						$("#error_hint").show();
+						$(".save_error").text("组网一键开关设置成功");
+						setTimeout("hideHint()", 2000);
+					}
+					else
+					{
+						$("#error_hint").show();
+						$(".save_error").text("组网一键开关设置失败");						
+					}
+					onoffflg = 0;
+				}					
+
+				$("#config_switch_value").val(inputVal.configEnbl);
+				$("#onoff_switch_value").val(inputVal.onoff);
+
+				$(".config_item").css("display", "");
+				$(".onoff_item").css("display", "");
+			}
+			else
+			{
+				$("#app_switch").removeClass("switch_content_on");
+				$("#app_switch").addClass("switch_content_off");
+				$("#app_switch").children("span").html("OFF&nbsp;");
+				$(".wifi_item").css("display", "none");
+				$(".app_item").css("display", "");
+				$(".save_error").text("组网插件未运行，请先启动");
+				$("#error_hint").show();				
+				$("#app_switch_value").val(0);
+			}
+		}
+
+		function hideHint()
+		{
+			$("#error_hint").hide();
+		}			
+			
+		function frmLoad()
+		{
+			(new XHR()).get('<%=luci.dispatcher.build_url('admin/wifi/interConndStatus')%>',null,
+				function(x, json){
+						inputVal = json;
+						console.log(inputVal);
+						initVal();
+						$(".main_content").show();	 							
+				});					  
+		}
+
+		function doStartApp()
+		{
+			cleanPopWindowContentFromIframe();
+			
+			//填充内容
+			$("#pop_window_title", window.parent.document).html("修改确认");
+			$("#pop_window_icon", window.parent.document).html('<div class="pop_window_icon_alert"></div>');
+			$("#pop_window_message", window.parent.document).html("是否确认启动组网插件？");
+			
+			//更改确认操作函数
+			var eid = parent.document.getElementById("confirm");
+			if ( isIE7 )
+			{
+				eid.onclick = function() { realStartApp() };
+			}
+			else
+			{
+				eid.setAttribute("onclick","document.getElementById('wifi_iframe').contentWindow.realStartApp()");
+			}
+			showOrHidePopWindowFromIframe("show");			
+		}
+		
+		
+		function doSyncConfig()
+		{
+			cleanPopWindowContentFromIframe();
+			
+			//填充内容
+			$("#pop_window_title", window.parent.document).html("修改确认");
+			$("#pop_window_icon", window.parent.document).html('<div class="pop_window_icon_alert"></div>');
+			if ($("#config_switch_value").val() == 1)
+				$("#pop_window_message", window.parent.document).html("是否确认开启组网一键配置功能？扩展WiFi设备的WiFi名称/密码将与天翼网关同步。");
+			else
+				$("#pop_window_message", window.parent.document).html("是否确认关闭组网一键配置功能？");
+			
+			//更改确认操作函数
+			var eid = parent.document.getElementById("confirm");
+			if ( isIE7 )
+			{
+				eid.onclick = function() { realSyncConfig() };
+			}
+			else
+			{
+				eid.setAttribute("onclick","document.getElementById('wifi_iframe').contentWindow.realSyncConfig()");
+			}
+			showOrHidePopWindowFromIframe("show");
+		}
+
+		function doSyncOnoff()
+		{
+			cleanPopWindowContentFromIframe();
+			
+			//填充内容
+			$("#pop_window_title", window.parent.document).html("修改确认");
+			$("#pop_window_icon", window.parent.document).html('<div class="pop_window_icon_alert"></div>');
+			if ($("#onoff_switch_value").val() == 1)
+				$("#pop_window_message", window.parent.document).html("是否确认开启组网一键开关功能？扩展WiFi设备的WiFi开关将与天翼网关同步。");
+			else
+				$("#pop_window_message", window.parent.document).html("是否确认关闭组网一键开关功能？");
+			
+			//更改确认操作函数
+			var eid = parent.document.getElementById("confirm");
+			if ( isIE7 )
+			{
+				eid.onclick = function() { realSyncOnoff() };
+			}
+			else
+			{
+				eid.setAttribute("onclick","document.getElementById('wifi_iframe').contentWindow.realSyncOnoff()");
+			}
+			showOrHidePopWindowFromIframe("show");				
+		}
+
+		function realStartApp()
+		{
+			$(".wifi_item").css("display", "none");
+			showOrHidePopWindowFromIframe("hide");
+
+			clearTimeout(activeTimeout);
+			activeTimeout = setTimeout("Timeout()", 300000);				
+			(new XHR()).post('<%=luci.dispatcher.build_url('admin/wifi/startInterConnd')%>',	  
+				{ token: '<%=token%>' },		
+				function(x)
+				{	
+					if (x.responseText.substr(2, 7) == "DOCTYPE")
+      					parent.location = "/cgi-bin/luci";
+      				else
+      				{					
+						var retVal = eval("("+x.responseText+")");	
+						if (retVal.message == 0)
+						{
+							frmLoad();
+						}
+						else
+						{
+							$("#error_hint").show();
+							$(".save_error").text("启动组网插件失败");
+							$("#app_switch").removeClass("switch_content_on");
+							$("#app_switch").addClass("switch_content_off");
+							$("#app_switch").children("span").html("OFF&nbsp;");
+							$("#app_switch_value").val(0);					
+						}
+      				}
+				});					
+		}			
+		
+		function realSyncConfig()
+		{
+			$(".wifi_item").css("display", "none");
+			$(".main_save").css("display", "none");
+			showOrHidePopWindowFromIframe("hide");
+
+			clearTimeout(activeTimeout);
+			activeTimeout = setTimeout("Timeout()", 300000);				
+			(new XHR()).post('<%=luci.dispatcher.build_url('admin/wifi/syncConfig')%>',	  
+				{ token: '<%=token%>', syncConfig : $("#config_switch_value").val() },		
+				function(x)
+				{	
+					if (x.responseText.substr(2, 7) == "DOCTYPE")
+      					parent.location = "/cgi-bin/luci";
+      				else
+      				{					
+						oldConfigSync = inputVal.syncConfig;
+						cfgflg = 1;
+						frmLoad();
+      				}
+				});					
+		}
+
+		function realSyncOnoff()
+		{
+			$(".wifi_item").css("display", "none");
+			$(".main_save").css("display", "none");
+			showOrHidePopWindowFromIframe("hide");
+
+			clearTimeout(activeTimeout);
+			activeTimeout = setTimeout("Timeout()", 300000);				
+			(new XHR()).post('<%=luci.dispatcher.build_url('admin/wifi/syncOnoff')%>',	  
+				{ token: '<%=token%>', syncOnoff : $("#onoff_switch_value").val() },		
+				function(x)
+				{	
+					if (x.responseText.substr(2, 7) == "DOCTYPE")
+      					parent.location = "/cgi-bin/luci";
+      				else
+      				{					
+						oldOnoffSync = inputVal.syncOnoff;
+						onoffflg = 1;
+						frmLoad();
+      				}
+				});				
+		}
+
+		function checkWifiSettings()
+		{
+			$("#error_hint").hide();
+
+			if (inputVal.configEnbl == 0)
+			{
+				if ((modeflg == 1) || (modeflg == 3))
+				{
+					if (($("#wifi_2G_SSID").val().length == 0) || ($("#wifi_2G_SSID").val().length > 32))
+					{
+						$(".save_error").text("2.4G WiFi名称长度须在1到32个字符之间");
+						$("#error_hint").show();
+						return false;
+					}				
+					
+					for(var i = 0; i < $("#wifi_2G_SSID").val().length; i++)
+					{
+						ch = $("#wifi_2G_SSID").val().charAt(i);
+						if (!((ch == '.') ||  (ch == '-') || ((ch >= 0) && (ch <= 9)) || ((ch >= 'a') && (ch <= 'z')) || (ch == '_') || ((ch >= 'A')&&(ch <= 'Z')) || (ch=='@')) ) /* 0-9,a-z,A-Z,-,_,@ */
+						{
+							$(".save_error").text("2.4G WiFi名称格式错误，请输入0-9, a-z, A-Z, '-', '_'或'@'");
+							$("#error_hint").show();
+							return false;
+						}
+					}					
+					
+					var len = $("#wifi_2G_password").val().length;
+					if ((len < 8) || (len > 32) || !isValidWPAKey($("#wifi_2G_password").val()))
+					{
+						$(".save_error").text("WiFi密码长度应在8到32个字符之间且只能为数字或者a~zA~Z之间字符");
+						$("#error_hint").show();
+						return false;
+					}
+				}
+
+				if ((modeflg == 2) || (modeflg == 3))
+				{				
+					if (($("#wifi_5G_SSID").val().length == 0) || ($("#wifi_5G_SSID").val().length > 32))
+					{
+						$(".save_error").text("5G WiFi名称长度须在1到32个字符之间");
+						$("#error_hint").show();
+						return false;
+					}					
+					
+					for(var i = 0; i < $("#wifi_5G_SSID").val().length; i++)
+					{
+						ch = $("#wifi_5G_SSID").val().charAt(i);
+						if (!((ch == '.') ||  (ch == '-') || ((ch >= 0) && (ch <= 9)) || ((ch >= 'a') && (ch <= 'z')) || (ch == '_') || ((ch >= 'A')&&(ch <= 'Z')) || (ch=='@')) ) /* 0-9,a-z,A-Z,-,_,@ */
+						{
+							$(".save_error").text("5G WiFi名称格式错误，请输入0-9, a-z, A-Z, '-', '_'或'@'");
+							$("#error_hint").show();
+							return false;
+						}
+					}				
+					
+					var len = $("#wifi_5G_password").val().length;
+					if ((len < 8) || (len > 32) || !isValidWPAKey($("#wifi_5G_password").val()))
+					{
+						$(".save_error").text("WiFi密码长度应在8到32个字符之间且只能为数字或者a~zA~Z之间字符");
+						$("#error_hint").show();
+						return false;
+					}			
+				}				
+			}
+
+			return true;
+		}			
+		
+		function doChangeWiFi()
+		{
+			cleanPopWindowContentFromIframe();
+			
+			//填充内容
+			$("#pop_window_title", window.parent.document).html("修改确认");
+			$("#pop_window_icon", window.parent.document).html('<div class="pop_window_icon_alert"></div>');
+			$("#pop_window_message", window.parent.document).html("是否确认修改扩展WiFi AP（" + $("#dev_mac").text() + "）配置？");
+			
+			//更改确认操作函数
+			var eid = parent.document.getElementById("confirm");
+			if ( isIE7 )
+			{
+				eid.onclick = function() { realChangeWiFi() };
+			}
+			else
+			{
+				eid.setAttribute("onclick","document.getElementById('wifi_iframe').contentWindow.realChangeWiFi()");
+			}
+			showOrHidePopWindowFromIframe("show");					
+		}
+
+		function realChangeWiFi()
+		{
+			showOrHidePopWindowFromIframe("hide");
+			$(".wifi_item").css("display", "none");
+			$(".main_save").css("display", "none");
+
+			clearTimeout(activeTimeout);
+			activeTimeout = setTimeout("Timeout()", 300000);				
+			(new XHR()).post('<%=luci.dispatcher.build_url('admin/wifi/configAP')%>',	  
+				{ token: '<%=token%>', mac : $("#dev_mac").text(), modeflg : modeflg, enbl2g : $("#wifi_2G_switch_value").val(), enbl5g : $("#wifi_5G_switch_value").val(), 
+				  ssid2g : $("#wifi_2G_SSID").val(), pwd2g : $("#wifi_2G_password").val(), ssid5g : $("#wifi_5G_SSID").val(), pwd5g : $("#wifi_5G_password").val()},		
+				function(x)
+				{	
+					if (x.responseText.substr(2, 7) == "DOCTYPE")
+      					parent.location = "/cgi-bin/luci";
+      				else
+      				{
+						frmLoad();
+      				}
+				});			
+		}
+			
+		$(document).ready(function() {
+			customPasswordInit();
+			
+			$("#app_switch").bind("click", function(){
+				$("#error_hint").hide();
+				if($(this).hasClass("switch_content_on"))
+				{
+					$(this).removeClass("switch_content_on");
+					$(this).addClass("switch_content_off");
+					$(this).children("span").html("OFF&nbsp;");
+				}
+				else
+				{
+					$(this).addClass("switch_content_on");
+					$(this).removeClass("switch_content_off");
+					$(this).children("span").html("&nbsp;ON");
+					doStartApp();
+				}
+
+			});	
+
+			$("#config_switch").bind("click", function(){
+				$("#error_hint").hide();
+				if($(this).hasClass("switch_content_on"))
+				{
+					$("#config_switch_value").val(0);	
+					//$(".wifi_dev").css("display", "none");
+				}
+				else
+				{
+					$("#config_switch_value").val(1);
+				}
+
+				doSyncConfig();
+
+			});	
+
+			$("#onoff_switch").bind("click", function(){
+				$("#error_hint").hide();
+				if($(this).hasClass("switch_content_on"))
+				{			
+					$("#onoff_switch_value").val(0);	
+					//$(".wifi_dev").css("display", "none");
+				}
+				else
+				{			
+					$("#onoff_switch_value").val(1);
+				}
+
+				doSyncOnoff();
+
+			});	
+
+			$("#wifi_2G_switch").bind("click", function(){
+				if (inputVal.onoff == 1)
+					return;
+				
+				if($(this).hasClass("switch_content_on"))
+				{
+					$(this).removeClass("switch_content_on");
+					$(this).addClass("switch_content_off");
+					$(this).children("span").html("OFF&nbsp;")					
+					$("#wifi_2G_switch_value").val(0);	
+					//$(".wifi_dev").css("display", "none");
+				}
+				else
+				{
+					$(this).addClass("switch_content_on");
+					$(this).removeClass("switch_content_off");
+					$(this).children("span").html("&nbsp;ON");					
+					$("#wifi_2G_switch_value").val(1);
+				}
+			});	
+
+			$("#wifi_5G_switch").bind("click", function(){
+				if (inputVal.onoff == 1)
+					return;
+				
+				if($(this).hasClass("switch_content_on"))
+				{
+					$(this).removeClass("switch_content_on");
+					$(this).addClass("switch_content_off");
+					$(this).children("span").html("OFF&nbsp;")					
+					$("#wifi_5G_switch_value").val(0);	
+					//$(".wifi_dev").css("display", "none");
+				}
+				else
+				{
+					$(this).addClass("switch_content_on");
+					$(this).removeClass("switch_content_off");
+					$(this).children("span").html("&nbsp;ON");					
+					$("#wifi_5G_switch_value").val(1);
+				}
+			});					
+
+			$(".input_button").click(function(){
+				if (!checkWifiSettings())
+					return;
+
+				  doChangeWiFi();
+				});				
+		
+		}); 
+	</script>
+	<body onLoad='frmLoad()' onkeydown='parent.kFlg;parent.keycheck(event)' class='main_config_body' style="padding-top: 0px; padding-bottom: 0px;">	
+			<div class="wifi_item app_item" style="display:none">
+				<div class="wifi_item_name">组网插件</div>
+				<div class="wifi_item_content">
+					<div class="switch_content wifi_switch switch_content_on" id="app_switch">
+						<input type="hidden" id="app_switch_value" name="appEnbl" value="1" />
+						<span>&nbsp;ON</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="wifi_item config_item" style="display:none">
+				<div class="wifi_item_name"><label for="config_switch">一键配置</label></div>
+				<div class="wifi_item_content">
+					<div class="switch_content wifi_switch switch_content_on" id="config_switch">
+						<input type="hidden" id="config_switch_value" name="config_switch" value="1" />
+						<span>&nbsp;ON</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="wifi_item onoff_item" style="display:none">
+				<div class="wifi_item_name"><label for="onoff_switch">一键开关</label></div>
+				<div class="wifi_item_content">
+					<div class="switch_content wifi_switch switch_content_on" id="onoff_switch">
+						<input type="hidden" id="onoff_switch_value" name="onoff_switch" value="1" />
+						<span>&nbsp;ON</span>
+					</div>
+				</div>
+			</div>	
+
+			<div class="wifi_item no_wifi_devs" style="display:none">
+				<div class="wifi_item_name">设备列表</div>
+				<div class="wifi_item_content" style="color:#898989; line-height: 30px;">当前设备列表为空
+				</div>
+			</div>				
+
+			<div class="wifi_item wifi_dev dev_info wifi_devs" style="display:none">
+			</div>
+
+			<div class="wifi_item wifi_dev dev_info" style="display:none">
+				<div class="wifi_item_name">设备厂家</div>
+				<div class="wifi_item_content" style="line-height:30px;"><span class="theme_color"  id="dev_name"></span>
+				</div>
+			</div>
+
+			<div class="wifi_item wifi_dev dev_info" style="display:none">
+				<div class="wifi_item_name">设备MAC</div>
+				<div class="wifi_item_content" style="line-height:30px;"><span class="theme_color" id="dev_mac"></span>
+				</div>
+			</div>
+
+			<div class="wifi_item wifi_dev onoff_setting dev_info" style="display:none">
+				<div class="wifi_item_name"><label for="wifi_2G_switch">2.4G WiFi</label></div>
+				<div class="wifi_item_content">
+					<div class="switch_content wifi_switch switch_content_on" id="wifi_2G_switch">
+						<input type="hidden" id="wifi_2G_switch_value" name="wifi_2G_switch" value="1" />
+						<span>&nbsp;ON</span>
+					</div>
+				</div>
+			</div>			
+
+			<div class="wifi_item wifi_dev config_setting config_2g dev_info"  style="display:none">
+				<div class="wifi_item_name"><label for="wifi_2G_SSID">2.4G WiFi名称</label></div>
+				<div class="wifi_item_content wifi_config">
+					<input type="text" class="input_text input_text_wifi" id="wifi_2G_SSID" placeholder="SSID">
+				</div>			
+			</div>	
+
+			<div class="wifi_item wifi_dev config_setting config_2g dev_info" style="display:none">
+				<div class="wifi_item_name"><label for="wifi_2G_password">2.4G WiFi密码</label></div>
+				<div class="wifi_item_content">
+					<div class="password_content password_content_wifi">
+						<input type="password" id="wifi_2G_password" name="wifi_2G_password" placeholder="PASSWORD" maxlength="32" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" AutoCompleteType="Disabled" onkeypress ="detectCapsLock(event, 1, 'wifi')">
+						<div class="password_switch password_switch_unfocus"></div>
+					</div>
+					<div class="wifi_error_hint"></div>
+				</div>
+				<div id='promptText1' class="wifi_item_name" style=" width:220px;display:none;">大写锁定键已开启，请注意大小写</div>
+			</div>
+
+			<div class="wifi_item wifi_dev onoff_setting dev_info" style="display:none">
+				<div class="wifi_item_name"><label for="wifi_5G_switch">5G WiFi</label></div>
+				<div class="wifi_item_content">
+					<div class="switch_content wifi_switch switch_content_on" id="wifi_5G_switch">
+						<input type="hidden" id="wifi_5G_switch_value" name="wifi_5G_switch" value="1" />
+						<span>&nbsp;ON</span>
+					</div>
+				</div>
+			</div>			
+
+			<div class="wifi_item wifi_dev config_setting config_5g dev_info"  style="display:none">
+				<div class="wifi_item_name"><label for="wifi_5G_SSID">5G WiFi名称</label></div>
+				<div class="wifi_item_content">
+					<input type="text" class="input_text input_text_wifi" id="wifi_5G_SSID" placeholder="SSID">
+				</div>			
+			</div>	
+
+			<div class="wifi_item wifi_dev config_setting config_5g dev_info" style="display:none">
+				<div class="wifi_item_name"><label for="wifi_5G_password">5G WiFi密码</label></div>
+				<div class="wifi_item_content">
+					<div class="password_content password_content_wifi">
+						<input type="password" id="wifi_5G_password" name="wifi_5G_password" placeholder="PASSWORD" maxlength="32" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" AutoCompleteType="Disabled" onkeypress ="detectCapsLock(event, 2, 'wifi')">
+						<div class="password_switch password_switch_unfocus"></div>
+					</div>
+					<div class="wifi_error_hint"></div>
+				</div>
+				<div id='promptText1' class="wifi_item_name" style=" width:220px;display:none;">大写锁定键已开启，请注意大小写</div>
+			</div>	
+
+			<div class="wifi_item wifi_dev dev_info" style="display:none;margin-bottom: 0;">
+				<div class="wifi_item_name">&nbsp;</div>
+				<div class="wifi_item_content" style="color:#898989;line-height:30px;">在“一键开关”开启的状态下，无法对单个扩展WiFi设备的开关状态进行配置
+				</div>
+			</div>
+
+			<div class="wifi_item wifi_dev dev_info" style="display:none;margin-bottom: 0;">
+				<div class="wifi_item_name">&nbsp;</div>
+				<div class="wifi_item_content" style="color:#898989">在“一键配置”开启的状态下，无法对单个扩展WiFi设备的WiFi名称和密码进行配置
+				</div>
+			</div>			
+
+			<div id="error_hint" style="margin-left: 130px;">
+				<div class="save_error" style="margin-top:8px;font-size:10px;font-style:italic;color:#999999">
+				</div>
+			</div>
+
+			<div class="main_save" style="display:none;margin-top: 5px;">
+				<button type="submit" id="saveBtn" class="input_button" style="height:35px;line-height:35px;">保存设置</button>
+			</div>		
+	</body>
+</html>
+

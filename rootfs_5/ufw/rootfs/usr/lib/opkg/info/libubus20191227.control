@@ -1,0 +1,12 @@
+Package: libubus20191227
+Version: 1
+Depends: libc, libubox20191228
+Provides: libubus
+Source: package/system/ubus
+SourceName: libubus
+License: LGPL-2.1
+Section: libs
+Maintainer: Felix Fietkau <nbd@nbd.name>
+Architecture: arm_huawei_V32081_F
+Installed-Size: 10264
+Description:  OpenWrt RPC client library

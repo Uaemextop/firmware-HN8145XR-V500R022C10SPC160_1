@@ -1,0 +1,5 @@
+/etc/init.d/cloudclt
+/etc/config/cloudclient
+/rom/dbus_map
+/sbin/cloudclient
+/sbin/cloudclocal

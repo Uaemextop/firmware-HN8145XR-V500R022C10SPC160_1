@@ -1,0 +1,11 @@
+Package: libhguapi
+Version: V02.01.0200
+Depends: libc, glib2, libuci20130104, libarchive, libcurl4
+Source: /data/buildbot/buildbot/wk_huawei_arm_huawei_V32081_F/builder_huawei_arm_huawei_V32081_F/build/module_hgu_fttr/ufw/libhguapi
+SourceName: libhguapi
+Section: libs
+Essential: yes
+Maintainer: yysd
+Architecture: arm_huawei_V32081_F
+Installed-Size: 192387
+Description:  The hgu dbus api library of C routines

@@ -1,0 +1,12 @@
+Package: libssp
+Version: -2
+Source: package/libs/toolchain
+SourceName: libssp
+License: GPL-3.0-with-GCC-exception
+Section: libs
+Status: unknown hold not-installed
+Essential: yes
+Maintainer: Felix Fietkau <nbd@nbd.name>
+Architecture: arm_huawei_V32081_F
+Installed-Size: 125
+Description:  GCC support library

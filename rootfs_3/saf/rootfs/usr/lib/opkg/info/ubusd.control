@@ -1,0 +1,10 @@
+Package: ubusd
+Version: 2018-07-26-40e0931e70bfe198690a7dac43b32fad06f46ef9
+Depends: libc, libubox, libblobmsg-json, libjson-c
+Source: package/system/ubus
+License: LGPL-2.1
+Section: base
+Maintainer: Felix Fietkau <nbd@openwrt.org>
+Architecture: rtos510v2
+Installed-Size: 11652
+Description:  OpenWrt RPC daemon

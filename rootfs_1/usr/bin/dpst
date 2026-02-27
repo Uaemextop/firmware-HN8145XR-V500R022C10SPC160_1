@@ -1,0 +1,54 @@
+#!/bin/sh
+#Data Path Session Table
+
+if [ 0 -eq $# ]; then
+    cat /proc/wap_proc/dp_session;
+    cat /proc/wap_proc/dp_l2encap;
+    return 0;
+elif [ 2 -eq $# ]; then  
+    if [ "clr" == $1 ]; then 
+            if [ "all" == $2 ]; then 
+                 echo clr_all > /proc/wap_proc/dp_session;
+                 return 0;
+            elif [ "rule" == $2 ]; then 
+                 echo clr_rule > /proc/wap_proc/dp_session;
+                 return 0;
+            elif [ "l2" == $2 ]; then 
+                 echo clr_l2 > /proc/wap_proc/dp_session;
+                 return 0;
+	        elif [ "hw" == $2 ]; then 
+                 echo clr_hw > /proc/wap_proc/dp_session;
+                 return 0;
+            else
+                 echo "dpst clr [all|rule|l2|hw]";
+                 return 1;
+            fi
+    elif [ "hw" == $1 ]; then
+            if [ "on" == $2 ]; then 
+                 echo hw_on > /proc/wap_proc/dp_session;
+                 return 0;
+            elif [ "off" == $2 ]; then 
+                 echo hw_off > /proc/wap_proc/dp_session;
+                 return 0;
+            else
+                 echo "dpst hw [on|off]";
+                 return 1;
+            fi
+    elif [ "np" == $1 ]; then
+            if [ "on" == $2 ]; then 
+                 echo np_on > /proc/wap_proc/np_ip;
+                 return 0;
+            elif [ "off" == $2 ]; then 
+                 echo np_off > /proc/wap_proc/np_ip;
+                 return 0;
+            else
+                 echo "dpst np [on|off]";
+                 return 1;
+            fi
+    fi
+else
+    echo "dpst clr [all|rule|l2|hw|ip|eth]";
+    echo "dpst {hw|np} [on|off]";
+    return 1;
+fi
+

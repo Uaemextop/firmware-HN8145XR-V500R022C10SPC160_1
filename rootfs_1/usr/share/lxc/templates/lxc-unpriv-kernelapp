@@ -1,0 +1,227 @@
+#!/bin/sh
+
+export PATH=$PATH:/usr/sbin:/usr/bin:/sbin:/bin
+
+install_busybox()
+{
+    rootfs=$1
+    name=$2
+    tree="\
+$rootfs/home \
+$rootfs/root \
+$rootfs/etc/init.d \
+$rootfs/etc/wap \
+$rootfs/bin \
+$rootfs/usr/bin \
+$rootfs/sbin \
+$rootfs/usr/sbin \
+$rootfs/proc \
+$rootfs/sys \
+$rootfs/mnt/jffs2/app \
+$rootfs/tmp/proto \
+$rootfs/var \
+$rootfs/dev/pts \
+$rootfs/dev/shm \
+$rootfs/lib \
+$rootfs/usr/lib"
+    default_file="\
+passwd \
+group \
+HOSTNAME \
+host.conf \
+hosts \
+resolv.conf \
+mtab \
+capinfos"
+
+    mkdir -p $tree || return 1
+    chmod 755 $tree || return 1
+
+    if [ -f /bin/osgi_proxy ]; then
+        mkdir $rootfs/var/felix-temp
+    fi
+
+    if [ -f /bin/osgi_proxy ] || [ "$(GetFeature HW_FT_OSGI_CPLUGIN)" == "1" ]; then
+        mkdir $rootfs/var/osgi
+    fi
+
+    for dd in $default_file; do
+        cp -rd "/etc/$dd" "$rootfs/etc/$dd"
+    done
+
+    cat <<EOF >> $rootfs/etc/init.d/rcS
+#!/bin/sh
+/bin/mount -a
+EOF
+
+    chmod 744 $rootfs/etc/init.d/rcS || return 1
+
+    cat <<EOF >> $rootfs/etc/fstab
+shm   /dev/shm   tmpfs   defaults     0      0
+EOF
+
+    chmod 644 $rootfs/etc/fstab || return 1
+
+    cat <<EOF >> $rootfs/etc/inittab
+::sysinit:/etc/init.d/rcS
+EOF
+
+    chmod 644 $rootfs/etc/inittab || return 1
+
+    chown -hR osgi_proxy:service $rootfs
+
+    return 0
+}
+
+configure_busybox()
+{
+    rootfs=$1
+
+    ln -s /bin/busybox.nosuid $rootfs/sbin/init
+    ln -s /bin/busybox.nosuid $rootfs/sbin/ifconfig
+
+    return 0
+}
+
+check_file_ignore()
+{
+    whitelist="proc_dbg wap_dst wap_ftrace vdata"
+
+    for item in $whitelist; do
+        if [ "$item" == "$1" ] ; then
+            return 1
+        fi
+    done
+
+    return 0
+}
+
+configure_wap_proc()
+{
+    local _config_path=$1
+
+    for file in $(ls /proc/wap_proc); do
+       if [ ! -f /proc/wap_proc/$file ]; then
+           continue
+       fi
+
+       check_file_ignore $file
+       if [ $? != 0 ]; then
+           continue
+       fi
+
+       echo "lxc.mount.entry = dev/null proc/wap_proc/$file none bind,relative 0 0" >> $_config_path
+   done
+}
+
+copy_configuration()
+{
+    path=$1
+    rootfs=$2
+    name=$3
+
+    cat <<EOF > $path/config
+lxc.rootfs.path = dir:$rootfs
+lxc.signal.halt = SIGUSR1
+lxc.uts.name = $name
+lxc.tty.max = 0
+lxc.pty.max = 0
+lxc.net.0.type = none
+lxc.cgroup.memory.oom_control = 1
+lxc.apparmor.profile = unconfined
+lxc.mount.entry = /bin bin none ro,bind 0 0
+lxc.mount.entry = /sbin/busybox.suid sbin/busybox.suid none ro,bind,optional,create=file 0 0
+lxc.mount.entry = /lib lib none ro,bind 0 0
+lxc.mount.entry = /usr usr none ro,bind,optional 0 0
+lxc.mount.entry = /etc/wap etc/wap none ro,bind 0 0
+lxc.mount.entry = /mnt/jffs2/app mnt/jffs2/app none rw,bind 0 0
+lxc.mount.entry = /var var none rw,rbind 0 0
+lxc.mount.entry = /var/Cplugin_upgrade tmpfs tmpfs nodev,noexec,nosuid,size=10m,optional,create=dir 0 0
+lxc.mount.entry = /tmp/proto tmp/proto none ro,bind,optional 0 0
+lxc.mount.auto = proc:mixed
+lxc.prlimit.nproc = 200
+lxc.mount.entry = /proc/wap_proc proc/wap_proc none ro,bind,create=dir 0 0
+lxc.mount.entry = /dev/null dev/null none bind,relative,create=file 0 0
+lxc.cap.keep = none
+lxc.idmap = u 0    3005 1
+lxc.idmap = u 3006 3006 2000
+lxc.idmap = g 0    2002 100
+lxc.idmap = g 1000 1000 1002
+lxc.cgroup.memory.limit_in_bytes = 40960K
+lxc.cgroup.memory.soft_limit_in_bytes = 40960K
+lxc.cgroup.cpu.cfs_quota_us = 30000
+EOF
+
+    if [ -f /bin/osgi_proxy ]; then
+        echo "lxc.mount.entry = /var/felix-temp var/felix-temp none rw,bind 0 0" >> $path/config
+    fi
+
+    if [ -f /bin/osgi_proxy ] || [ "$(GetFeature HW_FT_OSGI_CPLUGIN)" == "1" ]; then
+        echo "lxc.mount.entry = /var/osgi var/osgi none rw,bind 0 0" >> $path/config
+    fi
+
+    local osgi_gid=$(cat /etc/group|grep "osgi:x"|awk -F':' '{print $3}')
+    echo "lxc.hook.pre-start = echo \"$osgi_gid $osgi_gid\" > /proc/sys/net/ipv4/ping_group_range" >> $path/config
+
+    chmod 755 $path
+    configure_wap_proc $path/config
+}
+
+usage()
+{
+    cat <<EOF
+$1 -h|--help -p|--path=<path>
+EOF
+    return 0
+}
+
+options=$(getopt -o hp:n: -l help,rootfs:,path:,name:,mapped-uid:,mapped-gid: -- "$@")
+if [ $? -ne 0 ]; then
+    usage $(basename $0)
+    exit 1
+fi
+eval set -- "$options"
+
+while true
+do
+    case "$1" in
+        -h|--help)      usage $0 && exit 0;;
+        -p|--path)      path=$2; shift 2;;
+        --rootfs)       rootfs=$2; shift 2;;
+        -n|--name)      name=$2; shift 2;;
+        --mapped-uid)   LXC_MAPPED_UID=$2; shift 2;;
+        --mapped-gid)   LXC_MAPPED_GID=$2; shift 2;;
+        --)             shift 1; break ;;
+        *)              break ;;
+    esac
+done
+
+if [ "$(id -u)" != "0" ]; then
+    echo "This script should be run as 'root'"
+    exit 1
+fi
+
+if [ -z "$path" ]; then
+    echo "'path' parameter is required"
+    exit 1
+fi
+
+rootfs=$path/rootfs
+
+install_busybox $rootfs $name
+if [ $? -ne 0 ]; then
+    echo "failed to install busybox's rootfs"
+    exit 1
+fi
+
+configure_busybox $rootfs
+if [ $? -ne 0 ]; then
+    echo "failed to configure busybox template"
+    exit 1
+fi
+
+copy_configuration $path $rootfs $name
+if [ $? -ne 0 ]; then
+    echo "failed to write configuration file"
+    exit 1
+fi

@@ -1,0 +1,6 @@
+@WiFi patch info      
+PARA_VERSION=Hi1152V100;
+ADDR_FILE_FILES=1,0x40000,/var/FIRMWARE.bin;
+
+QUIT;
+@device_version=20171031102240

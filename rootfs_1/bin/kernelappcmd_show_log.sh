@@ -1,0 +1,19 @@
+#/bin/sh
+cat /var/kernelapp_log.0
+cat /var/kernelapp_log.1
+cat /var/kernelapp_log.2
+cat /var/kernelapp_log.3
+cat /var/kernelapp_log.4
+cat /var/kernelapp_boot.0
+cat /var/kernelapp_curl.log
+cat /var/kernelapp_post.0
+cat /var/kernelapp_event.log
+cat /var/kernelapp_capierrlog
+cat /var/kernelapp_lsw.0
+cat /var/kernelapp_lsw.1
+cat /var/kernelapp_plugmng.0
+cat /var/kernelapp_plugmng.1
+cat /var/kernelapp_wanip
+cat /var/kernelapp_gpb.0
+cat /var/kernelapp_gpb.1
+cat /var/kernelapp_cfg.log

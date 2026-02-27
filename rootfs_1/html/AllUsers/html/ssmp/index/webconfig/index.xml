@@ -1,0 +1,22 @@
+<InternetGatewayDevice> 
+<DeviceInfo setconfig = "0x00000003" getconfig = "0x00000003"> 
+<ModelName getconfig = "0x00000003"/>
+<SoftwareVersion getconfig = "0x00000003"/>
+<ModelName getconfig = "0x00000003"/>
+<X_HW_LanMac getconfig = "0x00000003"/>
+<X_HW_CpuUsed getconfig = "0x00000003"/>
+<X_HW_MemUsed getconfig = "0x00000003"/>
+</DeviceInfo>
+<X_HW_UserInfo setconfig = "0x00000003" getconfig = "0x00000003"> 
+<UserName getconfig = "0x00000003"/>
+</X_HW_UserInfo>
+<X_HW_UsbInterface getconfig = "0x00000003">
+<X_HW_UsbStorageDevice getconfig = "0x00000003">
+<DeviceList getconfig = "0x00000003"/>
+</X_HW_UsbStorageDevice>
+</X_HW_UsbInterface>
+<X_HW_USB_LABLE_INFO setconfig = "0x00000003" getconfig = "0x00000003">
+<Lable setconfig = "0x00000003" getconfig = "0x00000003"/>
+<Name setconfig = "0x00000003" getconfig = "0x00000003"/>
+</X_HW_USB_LABLE_INFO>
+</InternetGatewayDevice> 

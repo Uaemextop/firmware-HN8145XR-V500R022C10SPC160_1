@@ -1,0 +1,8 @@
+Package: luci-lib-nixio
+Version: R4751
+Depends: libc, liblua
+Source: feeds/luci/libs/luci-lib-nixio
+Section: luci
+Architecture: rtos510v2
+Installed-Size: 30269
+Description:  NIXIO POSIX library

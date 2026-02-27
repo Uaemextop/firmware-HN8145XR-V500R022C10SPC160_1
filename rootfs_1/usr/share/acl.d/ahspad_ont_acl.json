@@ -1,0 +1,81 @@
+{
+    "description": "ont role",
+    "user": "srv_dbus",
+    "group": "config",
+    "access": {
+        "ahsapd.basic": {
+            "methods": [ "getBasicInfo" ]
+        },
+        "ahsapd.qos": {
+            "methods": [ "setQosConfig", "getQosConfig" ]
+        },
+        "ahsapd.limit": {
+            "methods": [ "setDeviceLimit", "getDeviceLimit" ]
+        },
+        "ahsapd.macfilter": {
+            "methods": [ "getMacFilter", "setMacFilter" ]
+        },
+        "ahsapd.vlan": {
+            "methods": [ "setIptvVlan", "getIptvVlan" ]
+        },
+        "ahsapd.hardware": {
+            "methods": [ "getHardware" ]
+        },
+        "ahsapd.port": {
+            "methods": [ "getPortInfo" ]
+        },
+        "ahsapd.control": {
+            "methods": ["reboot", "ledControl", "reset", "firmwareUpgrade", "devLogStats", "setLockNet", "ipv6Control", "getControlStatus", "hwnatClean", "kernelCount", "setPmfCtrl"]
+        },
+        "ahsapd.uplink": {
+            "methods": ["getUplinkInfo", "setPppoe", "wlanConnect","setWorkingMode","setUplinkRateConfig"]
+        },
+        "ahsapd.detection": {
+            "methods": ["httpSpeedTest"]
+        },
+        "ahsapd.config": {
+            "methods": ["addItem", "getItem", "deleteItem", "getCfgPath"]
+        },
+        "ahsapd.sta": {
+            "methods": ["getStaInfo", "getStaNum", "setStaRateConfig"]
+        },
+        "ahsapd.wifi": {
+            "methods": ["getWifiInfo", "setWifiParameter", "setWifiSwitch", "setRadioConfig", "setWps", "5GPreferred"]
+        },
+        "ahsapd.wifi.stats": {
+            "methods": ["getWifiStatsInfo"]
+        },
+        "ahsapd.neighbor": {
+            "methods": ["getWlanNeighborInfo"]
+        },
+        "ahsapd.roaming": {
+            "methods": ["getRoamingConfig", "setRoamingConfig", "staDisconnect", "staRssi", "staStopDetect", "setBandSteeringConfig", "getBandSteeringConfig"]
+        },
+        "ahsapd.timedtask": {
+            "methods": ["getTimedTask", "addTimedTask", "deleteTimedTask"]
+        },
+        "ahsapd.mesh": {
+            "methods": ["setMeshRole", "setMeshRoamingEnable", "getMeshInfo", "getMeshTopology"]
+        }
+    },
+    "publish": [
+        "ahsapd.basic",
+        "ahsapd.qos",
+        "ahsapd.limit",
+        "ahsapd.macfilter",
+        "ahsapd.vlan",
+        "ahsapd.hardware",
+        "ahsapd.port",
+        "ahsapd.control",
+        "ahsapd.uplink",
+        "ahsapd.detection",
+        "ahsapd.config",
+        "ahsapd.sta",
+        "ahsapd.wifi",
+        "ahsapd.wifi.stats",
+        "ahsapd.neighbor",
+        "ahsapd.roaming",
+        "ahsapd.timedtask",
+        "ahsapd.mesh"
+    ]
+}

@@ -1,0 +1,8 @@
+Package: luci-mod-admin-full
+Version: R5005
+Depends: libc, luci-base
+Source: feeds/luci/modules/luci-mod-admin-full
+Section: luci
+Architecture: rtos510v2
+Installed-Size: 62697
+Description:  LuCI Administration - full-featured for full control

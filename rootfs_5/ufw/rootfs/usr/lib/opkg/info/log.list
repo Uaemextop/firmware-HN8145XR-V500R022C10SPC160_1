@@ -1,0 +1,3 @@
+/etc/config/log
+/sbin/log
+/etc/init.d/log

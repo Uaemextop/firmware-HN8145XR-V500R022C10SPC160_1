@@ -1,0 +1,467 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<title>中国电信智能网关</title>
+		<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+		<link href='<%=resource%>/css/main_style.css?version=<%=version%>' rel='stylesheet' type='text/css'/>
+		<script language="javascript" src="<%=resource%>/xhr.js?version=<%=version%>"></script>
+		<script language="javascript" src="<%=resource%>/js/util.js?version=<%=version%>"></script>
+		<script language="javascript" src="<%=resource%>/js/jquery.js?version=<%=version%>"></script>		
+		<script language="javascript" src="<%=resource%>/js/main.js?version=<%=version%>"></script>
+	</head>
+		<script language="javascript">
+			var inputVal;
+			var activeTimeout = setTimeout("Timeout()", 300000);    
+			  
+			function Timeout() {
+				(new XHR()).post('<%=luci.dispatcher.build_url('admin/logout')%>',
+					{ token: '<%=token%>' }, 
+					function(x){
+					parent.location = "/cgi-bin/luci";
+					});	
+			}
+		
+			function initVal()
+			{
+				var htmlObj = "";
+				var ddns1;
+				var tmpDomain;
+				$(".domain_lists").children().remove();				
+
+				htmlObj += "<div class=\"main_item_name\">域名</div>";
+				htmlObj += "<div class=\"main_item_content\">";
+				htmlObj += "	<div class=\"dropdown-select main_item_content_select\" hidefocus=\"true\">";				
+			
+				if (inputVal.count > 0)
+				{
+					for (var i = 0; i < inputVal.count; i++){
+						eval("ddns = inputVal.ddnsCfg" + (i + 1));
+						if (ddns.domain.length > 20)
+							tmpDomain = ddns.domain.substr(0,19) + "*";	
+						else
+							tmpDomain = ddns.domain;
+						if (i == 0)
+						{
+							ddns1 = ddns;						
+							htmlObj += 		"<label class=\"select-value\">" + tmpDomain + "</label>";
+							htmlObj += 		"<input type=\"hidden\" id=\"domain_value\" value=\"" + ddns.domain + "\" />";
+							htmlObj += 		"<div class=\"select-arrow\"></div>";
+							htmlObj += 		"<ul class=\"dropdown-menu-select\" id=\"domain_list\">";								
+						}
+						htmlObj += "<li livalue=\"" + ddns.domain + "\">" + tmpDomain + "</li>";
+					}
+
+					htmlObj += "<li livalue=\"custom\">自定义</li>";
+					htmlObj += 		"</ul>";
+					htmlObj += 	"</div>";
+					htmlObj += "</div>";
+
+					$(".domain_lists").append(htmlObj);
+					customSelectInit();					
+
+					$("#ddns_domain").val(ddns1.domain);
+					$("#ddns_hostname").val(ddns1.hostname);
+					$("#ddns_username").val(ddns1.username);
+					$("#ddns_passwd").val(ddns1.password);
+
+					if (ddns1.enable != ($("#ddns_switch_value").val()))
+					{
+						if (ddns1.enable)
+						{
+							$("#ddns_switch").removeClass("switch_content_off");
+							$("#ddns_switch").addClass("switch_content_on");
+							$("#ddns_switch").children("span").html("&nbsp;ON");
+						}
+						else
+						{
+							$("#ddns_switch").removeClass("switch_content_on");
+							$("#ddns_switch").addClass("switch_content_off");
+							$("#ddns_switch").children("span").html("OFF&nbsp;");
+						}
+					}
+					$("#ddns_switch_value").val(ddns1.enable);
+					document.getElementById("delBtn").disabled="";
+					$("#delBtn").css("background-color","#39ba93");					
+			    }
+			    else
+				{
+					htmlObj += 		"<label class=\"select-value\">自定义</label>";
+					htmlObj += 		"<input type=\"hidden\" id=\"domain_value\" value=\"custom\" />";
+					htmlObj += 		"<div class=\"select-arrow\"></div>";
+					htmlObj += 		"<ul class=\"dropdown-menu-select\" id=\"domain_list\">";					
+					htmlObj += "<li livalue=\"custom\">自定义</li>";
+					htmlObj += 		"</ul>";
+					htmlObj += 	"</div>";
+					htmlObj += "</div>";
+
+					$(".domain_lists").append(htmlObj);
+					$("#ddns_domain").val("");
+					$("#ddns_hostname").val("");
+					$("#ddns_username").val("");
+					$("#ddns_passwd").val("");
+					document.getElementById("delBtn").disabled=true;
+					$("#delBtn").css("background-color","gray");					
+			   	}
+
+				customSelectInit();
+				$(".dropdown-menu-select li").click(function(){
+					$(".save_error").text("");
+					if (inputVal.count == 0)
+					{
+						document.getElementById("ddns_domain").readOnly=false;
+						document.getElementById("delBtn").disabled=true;
+						$("#delBtn").css("background-color","gray");						
+					}
+					
+					for (var i = 0; i < inputVal.count; i++){
+						eval("ddns = inputVal.ddnsCfg" + (i + 1));
+						if ($(this).attr("livalue") == ddns.domain)
+						{
+							document.getElementById("ddns_domain").readOnly=true;
+							if (ddns.domain.length > 20)
+								tmpDomain = ddns.domain.substr(0,19) + "*";	
+							else
+								tmpDomain = ddns.domain;							
+							$(".select-value").text(tmpDomain);
+							$("#domain_value").val(ddns.domain);
+							$("#ddns_domain").val(ddns.domain);
+							$("#ddns_hostname").val(ddns.hostname);
+							$("#ddns_username").val(ddns.username);
+							$("#ddns_passwd").val(ddns.password);						
+
+							if (ddns.enable != ($("#ddns_switch_value").val()))
+							{
+								if (ddns.enable)
+								{
+									$("#ddns_switch").removeClass("switch_content_off");
+									$("#ddns_switch").addClass("switch_content_on");
+									$("#ddns_switch").children("span").html("&nbsp;ON");
+								}
+								else
+								{
+									$("#ddns_switch").removeClass("switch_content_on");
+									$("#ddns_switch").addClass("switch_content_off");
+									$("#ddns_switch").children("span").html("OFF&nbsp;");
+								}
+							}
+							$("#ddns_switch_value").val(ddns.enable);
+							document.getElementById("delBtn").disabled="";
+							$("#delBtn").css("background-color","#39ba93");
+							
+							break;
+						}
+						else
+						{
+							$("#domain_value").val("custom");
+							$("#ddns_domain").val("");
+							$("#ddns_hostname").val("");
+							$("#ddns_username").val("");
+							$("#ddns_passwd").val("");								
+							document.getElementById("ddns_domain").readOnly=false;
+							document.getElementById("delBtn").disabled=true;
+							$("#delBtn").css("background-color","gray");
+						}
+					}
+				});				
+			}
+			
+			function frmLoad()
+			{
+				(new XHR()).get('<%=luci.dispatcher.build_url('admin/settings/ddnsInfo')%>',null,
+					function(x, json){
+							inputVal = json;
+							initVal();
+							$(".main_content").show();	
+							$(".main_save").show();   							
+					});					  
+			}	
+			
+			function doChangeDDns()
+			{
+				cleanPopWindowContentFromIframe();
+				
+				//填充内容
+				$("#pop_window_title", window.parent.document).html("修改确认");
+				$("#pop_window_icon", window.parent.document).html('<div class="pop_window_icon_alert"></div>');
+				$("#pop_window_message", window.parent.document).html("是否确认修改DDNS设置？");
+				
+				//更改确认操作函数
+				var eid = parent.document.getElementById("confirm");
+				if ( isIE7 )
+				{
+					eid.onclick = function() { realChangeDDns() };
+				}
+				else
+				{
+					eid.setAttribute("onclick","document.getElementById('setting_iframe').contentWindow.realChangeDDns()");
+				}
+				showOrHidePopWindowFromIframe("show");
+			}	
+			
+			function realChangeDDns()
+			{
+				var add = 2;
+				showOrHidePopWindowFromIframe("hide");
+				$(".main_content").css("display", "none");
+				$(".main_save").css("display", "none");
+
+				if ($("#domain_value").val() == "custom")
+					add = 1;
+				
+				clearTimeout(activeTimeout);
+				activeTimeout = setTimeout("Timeout()", 300000);				
+				(new XHR()).post('<%=luci.dispatcher.build_url('admin/settings/ddnsSettings')%>',	  
+					{ token: '<%=token%>', domain : $("#ddns_domain").val(), enable : $("#ddns_switch_value").val(),  
+					  provider : $("#ddns_provider").val(), username : $("#ddns_username").val(), passwd : $("#ddns_passwd").val(), hostname : $("#ddns_hostname").val(), isAdd : add},		
+					function(x)
+					{	
+						if (x.responseText.substr(2, 7) == "DOCTYPE")
+	      					parent.location = "/cgi-bin/luci";
+	      				else
+	      				{
+							frmLoad();
+	      				}
+					});					
+			}
+
+			function doDeleteDDns()
+			{
+				var tmpDomain;
+				cleanPopWindowContentFromIframe();
+
+				if ($("#ddns_domain").val().length > 20)
+					tmpDomain = $("#ddns_domain").val().substr(0,19) + "*";	
+				else
+					tmpDomain = $("#ddns_domain").val();				
+				
+				//填充内容
+				$("#pop_window_title", window.parent.document).html("修改确认");
+				$("#pop_window_icon", window.parent.document).html('<div class="pop_window_icon_alert"></div>');
+				$("#pop_window_message", window.parent.document).html("是否确认删除域名为(" + tmpDomain + ")的DDNS服务？");
+				
+				//更改确认操作函数
+				var eid = parent.document.getElementById("confirm");
+				if ( isIE7 )
+				{
+					eid.onclick = function() { realDeleteDDns() };
+				}
+				else
+				{
+					eid.setAttribute("onclick","document.getElementById('setting_iframe').contentWindow.realDeleteDDns()");
+				}
+				showOrHidePopWindowFromIframe("show");			
+			}
+
+			function realDeleteDDns()
+			{
+				showOrHidePopWindowFromIframe("hide");
+				$(".main_content").css("display", "none");
+				$(".main_save").css("display", "none");
+
+				clearTimeout(activeTimeout);
+				activeTimeout = setTimeout("Timeout()", 300000);				
+				(new XHR()).post('<%=luci.dispatcher.build_url('admin/settings/ddnsSettings')%>',	  
+					{ token: '<%=token%>', domain : $("#ddns_domain").val(), enable : $("#ddns_switch_value").val(),  
+					  provider : $("#ddns_provider").val(), username : $("#ddns_username").val(), passwd : $("#ddns_passwd").val(), hostname : $("#ddns_hostname").val(), isAdd : 0},		
+					function(x)
+					{	
+						if (x.responseText.substr(2, 7) == "DOCTYPE")
+	      					parent.location = "/cgi-bin/luci";
+	      				else
+	      				{
+							frmLoad();
+	      				}
+					});				
+			}
+			
+		$(document).ready(function() {
+		    customPasswordInit();
+			
+			$("#ddns_switch").bind("click", function(){
+				if($(this).hasClass("switch_content_on"))
+				{
+					$(this).removeClass("switch_content_on");
+					$(this).addClass("switch_content_off");
+					$(this).children("span").html("OFF&nbsp;");
+					$("#" + $(this).attr("id") + "_value").val(0);
+				}
+				else
+				{
+					$(this).addClass("switch_content_on");
+					$(this).removeClass("switch_content_off");
+					$(this).children("span").html("&nbsp;ON");
+					$("#" + $(this).attr("id") + "_value").val(1);					
+				}
+			});
+
+			$("#lanBtn").click(function(){
+				if (!checkDDnsSettings())
+					return;
+				
+				  doChangeDDns();
+				});
+
+			$("#delBtn").click(function(){
+				  $(".save_error").text("");
+				  doDeleteDDns();
+				});					
+		}); 
+
+		function checkDDnsSettings()
+		{
+			var hostname = $("#ddns_hostname").val();
+			var username = $("#ddns_username").val();
+			var passwd = $("#ddns_passwd").val();
+
+			$(".save_error").text("");
+			if ($("#domain_value").val() == "custom")
+			{
+				if (($("#ddns_domain").val() == "") || (!isValidNameWSpace($("#ddns_domain").val())))
+				{
+					//$("#error_hint").css("display", "");
+					$(".save_error").text("域名不能为空且不能包含特殊字符，请修改");
+					return false;
+				}
+				
+				for (var i = 0; i < inputVal.count; i++){
+					eval("ddns = inputVal.ddnsCfg" + (i + 1));
+					if ($("#ddns_domain").val() == ddns.domain)
+					{
+						//$("#error_hint").css("display", "");
+						$(".save_error").text("域名已存在，请修改");
+						return false;					
+					}
+				}				
+			}
+				
+			if ($("#ddns_switch_value").val() == 1)
+			{
+				if ((hostname == "") || (hostname.indexOf(" ") != -1))
+				{
+					//$("#error_hint").css("display", "");
+					$(".save_error").text("主机名不能为空且不能包含空格，请修改");
+					return false;
+				}				
+
+				if (!isValidFileName(hostname))
+				{
+					//$("#error_hint").css("display", "");
+					$(".save_error").text("主机名含有特殊字符，请修改");
+					return false;
+				}
+
+				if ((username == "") || (username.indexOf(" ") != -1))
+				{
+					//$("#error_hint").css("display", "");
+					$(".save_error").text("用户名不能为空且不能包含空格，请修改");
+					return false;
+				}				
+
+				if (!isValidFileName(username))
+				{
+					//$("#error_hint").css("display", "");
+					$(".save_error").text("用户名含有特殊字符，请修改");
+					return false;
+				}
+
+				if ((passwd == "") || (passwd.indexOf(" ") != -1))
+				{
+					//$("#error_hint").css("display", "");
+					$(".save_error").text("密码不能为空且不能包含空格，请修改");
+					return false;
+				}		
+			}
+			else
+			{
+				if ((hostname != "") && ((hostname.indexOf(" ") != -1) || !isValidFileName(hostname)))
+				{
+					//$("#error_hint").css("display", "");
+					$(".save_error").text("主机名不能包含空格或者特殊字符，请修改");
+					return false;
+				}				
+
+				if ((username != "") && ((username.indexOf(" ") != -1) || !isValidFileName(username)))
+				{
+					//$("#error_hint").css("display", "");
+					$(".save_error").text("用户名不能包含空格或者特殊字符，请修改");
+					return false;
+				}				
+
+				if ((passwd != "") && (passwd.indexOf(" ") != -1))
+				{
+					//$("#error_hint").css("display", "");
+					$(".save_error").text("密码不能包含空格，请修改");
+					return false;
+				}			
+			}
+
+			return true;
+		}		
+	</script>
+	<body onLoad='frmLoad()' onkeydown='parent.kFlg;parent.keycheck(event)' class='main_config_body'>	
+		<div class="main_header">
+			<p class="main_header_title">DDNS设置</p>
+			<p class="main_header_hint">本页面提供DDNS参数设置</p>
+		</div>
+		<div class="main_content" style="margin-top: 10px;display:none">
+			<div class="main_item domain_lists" style="height: 35px">
+			</div>		
+			<div class="main_item" style="height: 40px">
+				<div class="main_item_name">DDNS服务</div>
+				<div class="main_item_content">
+					<div class="switch_content switch_content_on" id="ddns_switch" style="margin-top: 15px;">
+						<input type="hidden" id="ddns_switch_value" name="ddnsOnOff" value="1" />
+						<span>&nbsp;ON</span>
+					</div>
+				</div>
+			</div>		
+			<div class="main_item" style="height: 40px">
+				<div class="main_item_name">DDNS服务商</div>
+				<div class="main_item_content">
+					<input type="text" value="花生壳" id="ddns_provider" name="ddns_provider" class="input_text" autocomplete="off" readonly/>
+				</div>
+			</div>
+			<div class="main_item" style="height: 40px">
+				<div class="main_item_name">DDNS域名</div>
+				<div class="main_item_content">
+					<input type="text" value="" id="ddns_domain" name="ddns_domain" class="input_text" autocomplete="off"/>
+				</div>
+			</div>				
+			<div class="main_item" style="height: 40px">
+				<div class="main_item_name">用户名</div>
+				<div class="main_item_content">
+					<input type="text" value="" id="ddns_username" name="ddns_username" maxlength="31" class="input_text" autocomplete="off"/>
+				</div>
+			</div>			
+
+			<div class="main_item" style="height: 40px">
+				<div class="main_item_name">密码</div>
+				<div class="main_item_content">
+					<div class="password_content">
+						<input type="password" id="ddns_passwd" name="ddns_passwd" maxlength="31" onkeypress ="detectCapsLock(event, 1, 'user')"/>
+						<div class="password_switch password_switch_unfocus"></div>
+					</div>
+				</div>
+			</div>	
+
+			<div class="main_item" style="height: 40px">
+				<div class="main_item_name">主机名</div>
+				<div class="main_item_content">
+					<input type="text" value="" id="ddns_hostname" name="ddns_hostname" maxlength="63" class="input_text" autocomplete="off"/>
+				</div>
+			</div>			
+
+			<div id="error_hint" style="margin: 10px 0 0 130px;">
+				<div class="save_error" style="margin-top:8px;font-size:10px;font-style:italic;color:#999999">
+				</div>
+			</div>				
+		</div>
+		<div class="main_save" style="margin-top:10px; display:none">
+		    <button type="submit" id="delBtn" class="input_button" style="width:123px;background-color:gray" disabled>删除</button>
+			<button type="submit" id="lanBtn" class="input_button" style="width:123px">保存设置</button>
+		</div>
+	</body>
+</html>
+

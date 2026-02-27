@@ -1,0 +1,3 @@
+/etc/init.d/taskd
+/sbin/taskd
+/etc/config/taskd

@@ -1,0 +1,12 @@
+Package: shadow-groupadd
+Version: 4.8.1-1
+Depends: libc, shadow-common
+Source: feeds/packages/utils/shadow
+SourceName: shadow-groupadd
+License: BSD-3-Clause
+LicenseFiles: COPYING
+Section: utils
+Architecture: arm_huawei_V32081_F
+Installed-Size: 18546
+Description:  Full version of standard groupadd utility. Normally, you would not use this
+ package, since the functionality in BusyBox is more than sufficient.

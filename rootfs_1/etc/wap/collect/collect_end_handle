@@ -1,0 +1,3 @@
+SHELL:if [ -f /var/dealwithsensitive ]; then /bin/dealwithsensitive.sh; fi;
+SHELL:sed -i 's/hilink/smartlink/ig' /var/console.log
+SHELL:if [ -f /var/collect_ap_info_cli ]; then rm -fr /var/collect_ap_info_cli; fi;

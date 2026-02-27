@@ -1,0 +1,73 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2006-2011 OpenWrt.org
+
+START=10
+STOP=98
+
+uci_apply_defaults() {
+	. /lib/functions/system.sh
+
+	cd /etc/uci-defaults || return 0
+	files="$(ls)"
+	[ -z "$files" ] && return 0
+	mkdir -p /tmp/.uci
+	for file in $files; do
+		( . "./$(basename $file)" ) && rm -f "$file"
+	done
+	uci commit
+}
+
+boot() {
+	[ -f /proc/mounts ] || /sbin/mount_root
+	#[ -f /proc/jffs2_bbc ] && echo "S" > /proc/jffs2_bbc
+	#[ -f /proc/net/vlan/config ] && vconfig set_name_type DEV_PLUS_VID_NO_PAD
+	
+	devstyle=`gdbus call -y -d com.ctc.igd1 -o /com/ctc/igd1/Info/Device -m com.ctc.igd1.Properties.Get com.ctc.igd1.DeviceInfo DevStyle 2>/dev/null | cut -d"'" -f2`
+	echo x$devstyle > /tmp/boot.devstyle
+	if [ x$devstyle != x${devstyle/MixEnterprise2018/} ]; then
+		if [ -f /etc/rc.d/S50uhttpd ]; then
+			echo "is enterprise, disable uhttpd, do not start cloudclocal" >>/tmp/boot.devstyle
+			rm -f /etc/rc.d/S50uhttpd; /etc/init.d/uhttpd stop;
+			sed -i 's/start_cloudclocal()/cloudclocal_disable()/' /etc/init.d/cloudclt 
+			sed -i 's/start_cloudclocal/#start_cloudclocal/' /etc/init.d/cloudclt 
+		fi
+		if [ x$devstyle == x${devstyle/zw_auto/} ]; then	
+			echo "no zw_auto, disable inter_connd">>/tmp/boot.devstyle
+			cp /ipks/inter*.ipk /ipks/inter_connd.bk; rm /ipks/inter*.ipk -f
+		fi
+	else
+		if [ ! -f /etc/rc.d/S50uhttpd ]; then
+			echo "enable uhttpd, inter_connd, start cloudclocal" >>/tmp/boot.devstyle
+			ln -sf /etc/init.d/uhttpd /etc/rc.d/S50uhttpd; /etc/init.d/uhttpd start;
+			cp /ipks/inter_connd.bk /ipks/inter_connd.ipk; rm /ipks/inter_connd.bk -f
+			sed -i 's/cloudclocal_disable()/start_cloudclocal()/' /etc/init.d/cloudclt 
+			sed -i 's/#start_cloudclocal/start_cloudclocal/' /etc/init.d/cloudclt 
+		fi		
+	fi
+
+	
+	mkdir -p /var/run
+	mkdir -p /var/log
+	mkdir -p /var/lock
+	mkdir -p /var/state
+	mkdir -p /tmp/.uci
+	#chmod 0700 /tmp/.uci
+	mkdir -p /tmp/.jail
+	touch /var/log/wtmp
+	touch /var/log/lastlog
+	touch /tmp/resolv.conf.auto
+	#ln -sf /tmp/resolv.conf.auto /tmp/resolv.conf
+	#grep -q debugfs /proc/filesystems && /bin/mount -o noatime -t debugfs debugfs /sys/kernel/debug
+	[ "$FAILSAFE" = "true" ] && touch /tmp/.failsafe
+
+	[ -e /dev/log -a -h /dev/log ] || ln -sf /tmp/.uci/log /dev/log
+	
+	# temporary hack until configd exists
+	#/sbin/reload_config
+
+	# create /dev/root if it doesn't exist
+	[ -e /dev/root -o -h /dev/root ] || {
+		rootdev=$(awk 'BEGIN { RS=" "; FS="="; } $1 == "root" { print $2 }' < /proc/cmdline)
+		[ -n "$rootdev" ] && ln -s "$rootdev" /dev/root
+	}
+}

@@ -1,0 +1,3 @@
+/etc/init.d/hpsrv
+/sbin/hpsrv
+/etc/config/hpsrv

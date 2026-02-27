@@ -1,0 +1,15 @@
+<CliRoot>
+    <StartEmdiMulticast CmdStr="emdi multicast monitor start" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.StartEmdiMulticast" OpType="0" Help="emdi multicast monitor start [dip destination-ip | dport destination-port | sip source-ip | vlanid vlanid | interval interval | wp windowpackets | tp Thresholdpackets]" OutPut="" CmdGroup="0x00004010">       
+        <para ParaName="dip" AttName="DstIP" ParaAtt="0"/>
+        <para ParaName="dport" AttName="DstPort" ParaAtt="0"/>
+        <para ParaName="sip" AttName="SrcIP" ParaAtt="0"/>
+        <para ParaName="vlanid" AttName="VlanID" ParaAtt="0"/>
+        <para ParaName="interval" AttName="Interval" ParaAtt="0"/>
+        <para ParaName="wp" AttName="WindowPackets" ParaAtt="0"/>
+        <para ParaName="tp" AttName="ThresholdPackets" ParaAtt="0"/>
+    </StartEmdiMulticast>
+    <StopEmdiMulticast CmdStr="emdi multicast monitor stop" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.StopEmdiMulticast" OpType="0" Help="emdi multicast monitor stop" OutPut="" CmdGroup="0x00004010">
+    </StopEmdiMulticast>
+    <DisplayEmdiMulticast CmdStr="display emdi multicast result" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.DisplayEmdiMulticast" OpType="0" Help="display emdi multicast result" OutPut="" CmdGroup="0x00004010">
+    </DisplayEmdiMulticast>
+</CliRoot>

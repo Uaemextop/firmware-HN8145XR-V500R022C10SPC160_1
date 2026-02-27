@@ -1,0 +1,13 @@
+<InternetGatewayDevice>
+  <X_HW_WIFIInfo setconfig = "0x00000003">
+    <WifiTpcOptimize setconfig = "0x00000003">
+      <DwmEnable setconfig = "0x00000003" getconfig = "0x00000003"/>
+    </WifiTpcOptimize>
+    <X_HW_TpcPara setconfig = "0x00000003" getconfig = "0x00000003">
+      <TargetRssi2g setconfig = "0x00000003" getconfig = "0x00000003"/>
+      <TargetRssi5g setconfig = "0x00000003" getconfig = "0x00000003"/>
+      <PowerMaxReduce2g setconfig = "0x00000003" getconfig = "0x00000003"/>
+      <PowerMaxReduce5g setconfig = "0x00000003" getconfig = "0x00000003"/>
+    </X_HW_TpcPara>
+  </X_HW_WIFIInfo>
+</InternetGatewayDevice>

@@ -1,0 +1,21 @@
+config registrar 'global'
+        option enable "0"
+        option loglevel "1"
+        option default "1"
+
+config registrar 'wifi2g'
+				option enable "1"        
+        option backhaul "0"
+        option backhaulonly "0"        
+        option teardown "0"
+        
+config registrar 'wifi5g'
+				option enable "1"        
+        option backhaul "0"
+        option backhaulonly "0"        
+        option teardown "0"                
+
+config registrar 'wifibh'
+        option enable "3"        
+        option authmode "WPA2"      
+        option teardown "0"    

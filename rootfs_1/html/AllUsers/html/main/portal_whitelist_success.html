@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" href='../../../resource/common/<%HW_WEB_CleanCache_Resource(style.css);%>' type='text/css'>
+  <link rel="stylesheet" href='../../../Cuscss/<%HW_WEB_GetCusSource(frame.css);%>' type='text/css'>
+  <script language="JavaScript" src="../../../resource/<%HW_WEB_Resource(ssmpdes.js);%>"></script>
+  <script language="JavaScript" src="../../../resource/common/util.js"></script>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+  <title>Success</title>
+  <style type="text/css">
+    .li_comm {
+      height: 24px;
+    }
+
+    .li_msg {
+      height: auto;
+    }
+
+    .prompt_head {
+      border: #c5d8e6 1px solid;
+      padding: 10px;
+      font-family: "微软雅黑";
+      font-size: 14px;
+      height: 35px;
+    }
+
+    .prompt_body {
+      border: #c5d8e6 1px solid;
+      padding: 10px;
+      font-family: "微软雅黑";
+      font-size: 14px;
+      height: 35px;
+    }
+  </style>
+  <script language="JavaScript" type="text/javascript">
+    function bponPortalImportResult(domain, succNum, failNum) {
+      this.domain = domain;
+      this.succNum = succNum;
+      this.failNum = failNum;
+    }
+
+    var resultArray = <%HW_WEB_GetParaArryByDomain(InternetGatewayDevice.Services.X_HW_BponPortal.LoadUserImport.{i}, AddSuccNum|FailNum, bponPortalImportResult);%>;
+    var importResult = new Array();
+    var importResultNum = 0;
+
+    for (var i = 0; i < resultArray.length - 1; i++) {
+      importResult[importResultNum] = resultArray[i];
+      importResultNum++;
+    }
+
+    function htmlEncode(str) {
+      var ret = "";
+      if (str.length == 0) {
+        return "";
+      }
+      ret = str.replace(/&/g, "&amp;");
+      ret = ret.replace(/</g, "&lt;");
+      ret = ret.replace(/>/g, "&gt;");
+      ret = ret.replace(/ /g, "&nbsp;");
+      ret = ret.replace(/\'/g, "&#39;");
+      ret = ret.replace(/\"/g, "&quot;");
+      ret = ret.replace(/\n/g, "<br/>");
+      ret = ret.replace(/\(/g, "&#40;");
+      ret = ret.replace(/\)/g, "&#41;");
+      return ret;
+    }
+
+    function bponPortalImportFailKeyInfo(domain, keyInfo) {
+      this.domain = domain;
+      this.keyInfo = keyInfo;
+    }
+
+    var keyInfoArray = <%HW_WEB_GetParaArryByDomain(InternetGatewayDevice.Services.X_HW_BponPortal.FailUserName.{i}, UserName, bponPortalImportFailKeyInfo);%>;
+    var failKeyInfo = new Array();
+    var failKeyInfoNum = 0;
+
+    for (var i = 0; i < keyInfoArray.length - 1; i++) {
+      failKeyInfo[failKeyInfoNum] = keyInfoArray[i];
+      failKeyInfo[failKeyInfoNum].keyInfo = htmlEncode(keyInfoArray[i].keyInfo);
+      failKeyInfoNum++;
+    }
+  </script>
+</head>
+<body class="mainbody">
+  <div>
+    <table width="100%" height="10%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td class="prompt_head" style="text-align: center;">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <img src="../../../images/ok.gif" width="25" height="25" />
+              <span style="font-size: 20px;">&nbsp;<script>document.write(PrompterDes['s1324']);</script></span>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div>
+    <table style="table-layout:fixed;" width="100%" height="10%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td class="prompt_body">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <script language="JavaScript" type="text/javascript">
+                document.write('<li class="li_comm">' + PrompterDes['s1325'] + importResult[0].succNum + PrompterDes['s1327'] + '</li>');
+                document.write('<li class="li_comm">' + PrompterDes['s1326'] + importResult[0].failNum + PrompterDes['s1327'] + '</li>');
+                if (importResult[0].failNum > 0) {
+                  document.write('<li class="li_msg" style="word-wrap:break-word;">' + PrompterDes['s1328'] + '</br>');
+                  document.write(failKeyInfo[0].keyInfo);
+                  if (importResult[0].failNum > 1) {
+                    for (var index = 1; index < failKeyInfoNum; index++) {
+                      document.write(', ' + failKeyInfo[index].keyInfo);
+                    }
+                  }
+                  document.write('</li>');
+                }
+              </script>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

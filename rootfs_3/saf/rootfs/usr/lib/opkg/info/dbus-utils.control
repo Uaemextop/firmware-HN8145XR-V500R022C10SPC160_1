@@ -1,0 +1,9 @@
+Package: dbus-utils
+Version: 1.12.16-1
+Depends: libc, dbus
+Source: feeds/packages/utils/dbus
+License: AFL-2.1
+Section: utils
+Architecture: rtos510v2
+Installed-Size: 16335
+Description:  Simple interprocess messaging system (utilities)

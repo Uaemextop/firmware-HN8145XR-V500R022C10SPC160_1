@@ -1,0 +1,11 @@
+<CliRoot>
+    <SetPortalClient CmdStr="debugging portal" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.SetPortalClient" OpType="0" Help="debugging portal {mac macValue}" OutPut="" CmdGroup="">
+        <para ParaName="mac" AttName="mac" ParaAtt="0"/>
+    </SetPortalClient>
+    <UndoPortalClient CmdStr="undo debugging portal" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.UndoPortalClient" OpType="0" Help="undo debugging portal mac {macValue | all}" OutPut="" CmdGroup="">
+        <para ParaName="mac" AttName="mac" ParaAtt="0"/>
+    </UndoPortalClient>
+    <DisplayPortalClient CmdStr="display debugging portal" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.DisplayPortalClient" OpType="5" Help="display debugging portal" OutPut="" CmdGroup="">
+        <para ParaName="mac" AttName="mac" ParaAtt="0"/>
+    </DisplayPortalClient>
+</CliRoot>

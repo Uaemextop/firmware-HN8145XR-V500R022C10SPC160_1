@@ -1,0 +1,4 @@
+/usr/share/lxc/templates/lxc-busybox
+/usr/share/lxc/templates/lxc-download
+/usr/share/lxc/templates/lxc-local
+/usr/share/lxc/templates/lxc-oci

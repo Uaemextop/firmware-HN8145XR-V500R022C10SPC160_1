@@ -1,0 +1,10 @@
+Package: libcapi3
+Version: 0.0.1-9158003
+Depends: libc, glib2, uci
+Source: /home/dell/ctc-smart-git/capi4
+Section: base
+Essential: yes
+Maintainer: Upointech
+Architecture: rtos510v2
+Installed-Size: 162392
+Description:  dbus c-api for smart gateway device

@@ -1,0 +1,12 @@
+#! /bin/sh
+
+login_user=$(whoami)
+[[ $login_user != "root" ]] && echo "$0 must run root mode!!!!" && exit 0
+
+[[ $# -ne 3 ]] && echo "Using : $0 username uid gid!!!!" && exit 0
+
+user_name=$1
+find_user=`cat /etc/passwd | cut -f1 -d':' | grep $user_name`
+[[ "$user_name" == "$find_user" ]] && exit 0
+
+echo "$user_name:x:$2:$3:$user_name users::/bin/false" >> /etc/passwd

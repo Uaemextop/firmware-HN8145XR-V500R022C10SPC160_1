@@ -1,0 +1,11 @@
+Package: easymesh
+Version: R5040
+Depends: libc, libuci, libopenssl, libpthread, librt, libubox, libubus, libcapi3
+Source: package/upointech/easymesh
+Section: base
+Vendor: Upointech
+Essential: yes
+Maintainer: Upointech
+Architecture: rtos510v2
+Installed-Size: 154443
+Description:  easy mesh for smart gateway device

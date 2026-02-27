@@ -1,0 +1,326 @@
+# 系统支撑领域外部命令白名单
+WAP:display version
+WAP:display sn
+WAP:display inner version
+WAP:display deviceInfo
+WAP:display apmChipStatus
+WAP:display batteryStatus
+WAP:display boardItem
+WAP:display cwmp debug
+WAP:display machineItem
+WAP:display swm state
+WAP:display sysinfo
+WAP:display syslog
+WAP:display timer type 5
+WAP:display swm bootstate
+WAP:display bmsxml crc
+WAP:display tr069 info
+WAP:display debuglog info
+WAP:ctrgcmd show type 5
+WAP:ctrgcmd send bus com.ctc.appframework1 obj /com/ctc/appframework1 method com.ctc.appframework1.AppAgent.List
+WAP:display notify file
+WAP:check security config
+SHELL:zcat /var/init_debug.tgz
+SHELL:uptime
+SHELL:free
+SHELL:cat /proc/meminfo
+SHELL:wap.ssp.ps
+SHELL:ps
+SHELL:cat /proc/slabinfo
+SHELL:dlw
+SHELL:dlog
+SHELL:cat /proc/sysvipc/msg
+SHELL:cat /proc/wap_proc/wap_timer
+SHELL:ls -l /var/*
+SHELL:ls -l /var/*/*
+SHELL:ls -l /var/*/*/*
+SHELL:dmesg
+SHELL:cat /mnt/jffs2/modulesinfo
+SHELL:cat /mnt/jffs2/panicinfo
+SHELL:cat /proc/wap_proc/panicinfo
+SHELL:cat /mnt/jffs2/softlockinfo
+SHELL:cat /mnt/jffs2/trace_info.bin
+SHELL:cat /mnt/jffs2/wap_syslog.0
+SHELL:cat /mnt/jffs2/wap_syslog
+SHELL:zcat /var/last_lastword
+SHELL:cat /var/log/message.0
+SHELL:cat /var/log/message
+SHELL:cat /var/DBSaveLog
+SHELL:df
+SHELL:mount
+SHELL:getpmlog.sh
+SHELL:cat /var/settimefile
+SHELL:ls -l /dev/
+SHELL:cat /var/usbsdinfo
+SHELL:cat /proc/mtd
+SHELL:cat /proc/modules
+SHELL:cat /proc/wap_proc/feature
+SHELL:cat /proc/wap_proc/spec
+SHELL:cat /proc/wap_proc/pd_static_attr
+SHELL:cat /proc/wap_proc/pd_dynamic_attr
+SHELL:cat /proc/wap_proc/ap_log
+SHELL:cat /proc/wap_proc/alarm_log
+SHELL:cat /proc/wap_proc/alarm_net
+SHELL:cat /proc/wap_proc/alarm_wifi
+SHELL:cat /proc/wap_proc/alarm_comm
+SHELL:cat /mnt/jffs2/hw_hardinfo_feature
+SHELL:cat /mnt/jffs2/hw_hardinfo_spec
+SHELL:cat /mnt/jffs2/xbt/xbt_log
+SHELL:cat /var/xbt_event_log
+SHELL:cat /var/xbt_recycle_event_log
+SHELL:lsmod
+SHELL:cominfo -g
+SHELL:cat /mnt/jffs2/factory_file
+WAP:preplugin integrity check
+SHELL:cat /proc/dcm_proc/links_info
+SHELL:cat /mnt/jffs2/fd_monitor_debug.log
+SHELL:cat /etc/wap/wap_timestamp
+WAP:display flashlock status
+WAP:display cwmp status
+WAP:display productmac
+SHELL:cat /mnt/jffs2/cwmp_rebootsave
+SHELL:cat /proc/kbox/deviceinfo
+SHELL:cat /proc/kbox/mem
+SHELL:cat /proc/kbox/regions/oom_extend
+SHELL:dlw 0
+SHELL:dlw 2
+SHELL:Getlastinfo.sh
+SHELL:cat /var/decrypt_boardinfo
+SHELL:cat /var/decrypt_boardinfo.bak
+SHELL:getcustominfo.sh
+SHELL:cat /mnt/jffs2/keyreleasecount.txt
+SHELL:cat /mnt/jffs2/reboot.log
+SHELL:hexdump -C /var/selftestresult
+
+# 智能管理领域外部命令白名单
+WAP:appmcmd show type 1
+WAP:appmcmd show type 2
+WAP:appmcmd show type 3
+WAP:osgicmd show bundlestate
+WAP:plugcmd show state
+SHELL:cat /var/felix-temp/status.config
+SHELL:/bin/osgicmd_show_log_.sh
+SHELL:cat /var/smartapi_debug.log
+SHELL:smartcmdlogread.sh
+WAP:osgicmd show bundleresource
+WAP:jvmcmd stack trace
+SHELL: sleep 5
+SHELL:cat /opt/upt/apps/apps/opt/apps/ctsgw.log
+SHELL:cat /opt/upt/apps/apps/opt/apps/ctsgw.log.old
+SHELL:cat /proc/wap_proc/sapiget_log
+WAP:display capwap state
+WAP:display capwap statistic
+SHELL:cat /mnt/jffs2/app/cplugin/cpluginstate
+SHELL:ls -l /var/|grep ker
+SHELL:/bin/kernelappcmd_show_log.sh
+SHELL:cat /var/ufwmg.log
+WAP:ctrgcmd plugin method List
+WAP:ctrgcmd frmwork method GetAll
+WAP:ctrgcmd show type 1
+WAP:ctrgcmd show type 2
+WAP:ctrgcmd show type 3
+WAP:ctrgcmd show type 4
+WAP:ctrgcmd show type 5
+WAP:ctrgcmd show type 6
+
+# 语音领域外部命令白名单
+WAP:vspa display mg info
+WAP:vspa display mg if state
+WAP:vspa debug module 201 cmd 5 subcmd 1
+WAP:vspa debug module 200 cmd 1 subcmd 1
+WAP:vspa debug module 200 cmd 2 subcmd 0
+WAP:vspa debug module 200 cmd 5
+WAP:vspa debug module 201 cmd 4
+WAP:vspa debug module 203 cmd 1
+WAP:vspa debug module 206 cmd 2 subcmd 0
+WAP:vspa debug module 206 cmd 9 subcmd 0xff
+WAP:vspa debug module 208 cmd 2 subcmd 0xff
+WAP:vspa debug module 30 cmd 0x22 subcmd 0 para1 0 para2 0
+WAP:vspa debug module 200 cmd 1 subcmd 0
+WAP:vspa debug module 201 cmd 5 subcmd 0
+WAP:display last call log
+WAP:vspa display rtp statistics
+WAP:vspa display port status
+WAP:vspa display profilebody info
+WAP:vspa display dsp template info
+WAP:display voip ring info port 0xff
+WAP:display voip rightflag port 0xff
+WAP:get testself
+
+# 驱动线路领域外部命令白名单
+SHELL:cat /proc/wap_proc/pon_log
+SHELL:ampcmd show edgeontinfo
+SHELL:cat /proc/soc/cnt
+SHELL:cat /proc/soc/queue
+SHELL:cat /proc/soc/eth
+SHELL:cat /proc/soc/sfc
+SHELL:chipdebug print on
+WAP:display access mode
+SHELL:chipdebug ploam stat
+SHELL:ampcmdStatRx.sh
+SHELL:ampcmdStatTx.sh
+SHELL:ampcmdStatDrop.sh
+SHELL:ampcmd show flow all
+WAP:ampcmd show log
+WAP:get port config all
+WAP:get rogue status
+WAP:display epon ont info
+WAP:display onu info
+WAP:display flow id all
+WAP:omcicmd show flow type 0
+WAP:omcicmd error log
+WAP:oamcmd error log
+SHELL:omcicmd show olt type
+WAP:omcicmd mib show meid 11 instid 65535
+WAP:omcicmd mib show meid 171 instid 65535
+WAP:oamcmd show log
+SHELL:cat /proc/soc/cnt
+SHELL:cat /proc/soc/queue
+SHELL:cat /proc/soc/eth
+SHELL:cat /proc/soc/sfc
+SHELL:/bin/collect_pon_stat.sh
+WAP:display pon statistics
+WAP:display poncnt upstatistic
+WAP:display poncnt dnstatistic
+WAP:display portstatistics portnum 1
+WAP:display portstatistics portnum 2
+WAP:display portstatistics portnum 3
+WAP:display portstatistics portnum 4
+WAP:display portstatistics portnum 5
+WAP:display portstatistics portnum 6
+WAP:display portstatistics portnum 7
+WAP:display portstatistics portnum 8
+SHELL:/bin/omcicmd_show_log.sh
+SHELL:chipdebug datacard debug show
+SHELL:chipdebug phy display extphy info
+SHELL:sndhlp 180 0x20007003 3 0 0
+WAP:display optic
+SHELL:chipdebug ppm stat display
+SHELL:chipdebug ploam show log
+SHELL:chipdebug mpcp show log
+SHELL:chipdebug codec display global info 0
+SHELL:chipdebug codec display global info 1
+SHELL:chipdebug print off
+SHELL:cat /var/ppm_message
+SHELL:cat /mnt/jffs2/chip_threshold
+SHELL:cat /proc/wap_proc/flash_log
+SHELL:cat /proc/soc/device reg
+SHELL:cat /proc/soc/sys all
+WAP:display chipinfo
+WAP:display boot info
+
+# wifi线路领域外部命令白名单
+SHELL:WlanXlinkLog.sh
+WAP:display wifi information
+SHELL: sleep 0.5
+WAP:display wifi associate
+SHELL: sleep 0.5
+WAP:display wifi neighbor
+SHELL: sleep 2
+SHELL:head -n 10 /mnt/jffs2/fem_init_par.bin
+SHELL:cat /var/board_cfg.txt
+SHELL:cat /proc/bus/pci/devices
+WAP:get wlan enable laninst 1
+WAP:get wlan basic laninst 1 wlaninst 1
+WAP:get wlan basic laninst 1 wlaninst 5
+WAP:get wlan stats laninst 1 wlaninst 1
+WAP:get wlan stats laninst 1 wlaninst 5
+WAP:get wlan advance laninst 1 wlaninst 1
+WAP:get wlan advance laninst 1 wlaninst 5
+SHELL:WlanCmdLog.sh
+WAP:display wifi ap
+WAP:udm show log
+SHELL:cat /proc/wap_proc/keyinfoget_log
+SHELL:cat /proc/wifilog/debug/All
+SHELL:wifi_collect.sh
+WAP:wrrm debug cmd dump_log para1 0
+SHELL: sleep 0.5
+WAP:wrrm debug cmd dump_log para1 1
+SHELL: sleep 0.5
+WAP:wrrm debug cmd dump_log para1 2
+SHELL: sleep 1
+WAP:wrrm debug cmd dump_log para1 3
+SHELL: sleep 0.5
+WAP:wrrm debug cmd dump_log para1 4
+SHELL: sleep 0.5
+WAP:wrrm debug cmd dump_log para1 5
+SHELL: sleep 0.5
+WAP:wrrm debug cmd show_all_steer_history
+SHELL: sleep 0.5
+
+# 宽带领域外部白名单
+WAP:display ipconlanbind
+SHELL:LdspCmd.sh print on
+SHELL:Bbspcmd cmd_debug on
+SHELL:BbspcmdShowAllctp.sh
+SHELL:Bbspcmd user_ctp show_ctp all
+SHELL:BbspcmdShowAllctpTypeDetail.sh
+SHELL:cat /proc/wap_proc/mac_table
+SHELL:BbspcmdShowVbridgeInfo.sh
+SHELL:Bbspcmd vbridge uni-binding
+SHELL:Bbspcmd vbridge nni-binding
+SHELL:BbspcmdShowVbridgeUplinkBind.sh
+SHELL:Bbspcmd vbridge port-binding
+SHELL:Bbspcmd fw show com
+SHELL:Bbspcmd fw show spec
+SHELL:Bbspcmd acl show chain all
+SHELL:Bbspcmd gsf collect_info
+SHELL:vbrstat
+SHELL:Bbspcmd usr ptp show 1
+SHELL:Bbspcmd ker port_isolate show all
+WAP:bbspara display wan show layer all
+SHELL: sleep 0.1
+SHELL:Bbspcmd cmd_debug off
+SHELL:cat /var/dhcpd/dhcpd.conf
+SHELL:cat /var/dhcpd/option125Tr111.conf
+SHELL:cat /var/dhcpd/clientinfo.conf
+SHELL:cat /var/ipv6/dhcp6s/dhcp6s.conf
+SHELL:cat /var/ipv6/raserver/raserver.conf
+SHELL:LdspCmd.sh print off
+WAP:display bbsp stats wan id all
+SHELL: sleep 0.1
+WAP:display dhcpslv
+WAP:display dhcpsrv lanid 1
+WAP:display dhcphosts lanid 1 hostid all
+WAP:display waninfo all detail
+WAP:igmp get debug switch
+WAP:igmp get flow info
+WAP:igmp get global cfg
+WAP:igmp get iptv
+WAP:igmp get multilmac
+WAP:igmp get port multicast config
+WAP:igmp get statistics
+WAP:display ip neigh
+WAP:display bbsp log
+SHELL:Bbspcmd dnsmonitor show
+SHELL:display_dns.sh
+SHELL:display_iproute.sh
+SHELL:display_ip6route.sh
+SHELL:cat /mnt/jffs2/dns_collet_info
+SHELL:netstat -na
+SHELL: iptables -nvL -t nat
+SHELL: iptables -nvL -t filter
+SHELL: iptables -nvL -t mangle
+SHELL: ip6tables -nvL -t nat
+SHELL: ip6tables -nvL -t filter
+SHELL: ip6tables -nvL -t mangle
+SHELL: cat /proc/sys/net/netfilter/nf_conntrack_max
+SHELL: cat /proc/sys/net/netfilter/nf_conntrack_count
+SHELL: cat /proc/net/nf_conntrack
+SHELL: cat /proc/net/nf_conntrack_expect
+SHELL: cat /proc/net/nf_conntrack_expect_save
+SHELL: cat /mnt/jffs2/dhcp_data_a
+SHELL: cat /mnt/jffs2/dhcp_data_b
+SHELL: Bbspcmd firewall_count_show
+SHELL: cat /var/ip_conntrack_full_log
+SHELL: cat /var/ipv6/dhcp6c/wan1/dhcp6c_result
+SHELL:BbspcmdShowLanUserflow.sh
+SHELL:cat /proc/soc/pdu
+SHELL:cat /proc/soc/flow
+SHELL:cat /proc/soc/ifc
+SHELL:cat /proc/net/snmp6
+SHELL:cat /proc/net/snmp
+SHELL:cat /proc/net/if_inet6
+SHELL:cat /proc/net/stat/nf_conntrack
+SHELL:Bbspcmd multiServicePort show
+SHELL: cat var/multiServiceApOnlineEventLog

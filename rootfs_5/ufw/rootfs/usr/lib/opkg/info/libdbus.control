@@ -1,0 +1,10 @@
+Package: libdbus
+Version: 1.12.20-1
+Depends: libc, libpthread
+Source: feeds/packages/utils/dbus
+SourceName: libdbus
+License: AFL-2.1
+Section: utils
+Architecture: arm_huawei_V32081_F
+Installed-Size: 131025
+Description:  Simple interprocess messaging system (library)

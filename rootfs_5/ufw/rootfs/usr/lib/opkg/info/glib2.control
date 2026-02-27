@@ -1,0 +1,10 @@
+Package: glib2
+Version: 2.58.3-5
+Depends: libc, zlib, libpthread, libffi, libattr
+Source: feeds/packages/libs/glib2
+SourceName: glib2
+Section: libs
+Maintainer: Peter Wagner <tripolar@gmx.at>
+Architecture: arm_huawei_V32081_F
+Installed-Size: 937686
+Description:  The GLib library of C routines

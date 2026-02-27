@@ -1,0 +1,8 @@
+Package: luci-base
+Version: R5016
+Depends: libc, lua, libuci-lua, luci-lib-nixio, luci-lib-ip, libubus-lua
+Source: feeds/luci/modules/luci-base
+Section: luci
+Architecture: rtos510v2
+Installed-Size: 1430497
+Description:  LuCI core libraries

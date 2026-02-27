@@ -1,0 +1,1 @@
+Bbspcmd ctp show_typeid detail | sleep 0.1

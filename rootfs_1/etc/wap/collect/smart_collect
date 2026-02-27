@@ -1,0 +1,43 @@
+WAP:appmcmd show type 1
+WAP:appmcmd show type 2
+WAP:appmcmd show type 3
+WAP:osgicmd show bundlestate
+WAP:plugcmd show state
+SHELL:cat /var/kernelapp_boot.0
+SHELL:if [ ! -h /var/osgi/felixrecord0.log ]; then cat /var/osgi/felixrecord0.log ; fi;
+SHELL:if [ ! -h /var/osgi/OSGi1.log ]; then cat /var/osgi/OSGi1.log ; fi;
+SHELL:if [ ! -h /var/osgi/OSGi0.log ]; then cat /var/osgi/OSGi0.log ; fi;
+SHELL:if [ ! -h /mnt/jffs2/app/osgi/java_error.log ]; then cat /mnt/jffs2/app/osgi/java_error.log ; fi;
+SHELL:if [ ! -h /mnt/jffs2/app/osgi/java_error_bk.log ]; then cat /mnt/jffs2/app/osgi/java_error_bk.log ; fi;
+SHELL:if [ ! -h /var/osgi/java_log_0.log ]; then cat /var/osgi/java_log_0.log ; fi;
+SHELL:if [ ! -h /var/osgi/java_log_1.log ]; then cat /var/osgi/java_log_1.log ; fi;
+SHELL:if [ ! -h /var/felix-temp/status.config ]; then cat /var/felix-temp/status.config ; fi;
+SHELL:if [ ! -h /var/osgi/bundlestate ]; then cat /var/osgi/bundlestate ; fi;
+SHELL:if [ ! -h /var/smartapi_debug.log ]; then cat /var/smartapi_debug.log ; fi;
+SHELL:ufwmg -v
+SHELL:lxc-info -n ufw -P /opt/cu/framework
+SHELL:ls -la /opt/cu/
+SHELL:dbus-send --system --print-reply --dest=com.cuc.uappd1 /com/cuc/uappd1 com.cuc.uappd1.GetStatus
+SHELL:smartcmdlogread.sh
+WAP:osgicmd show bundleresource
+WAP:jvmcmd stack trace
+SHELL: sleep 5
+SHELL:cat /opt/upt/apps/apps/opt/apps/ctsgw.log
+SHELL:cat /opt/upt/apps/apps/opt/apps/ctsgw.log.old
+WAP:display ufwinfo log 1
+WAP:display ufwinfo log 2
+SHELL:cat /proc/wap_proc/sapiget_log
+WAP:display capwap state
+WAP:display capwap statistic
+WAP:display ftrace
+WAP:display current-configuration grep ProvisioningCode
+SHELL:cat /var/andlink/version
+SHELL:cat /var/andlink/ahsapi.log
+SHELL:cat /var/andlink/daemon.log
+SHELL:cat /var/andlink/dpi.log
+SHELL:cat /var/andlink/manage.log
+WAP:ctrgcmd show type 5
+WAP:ctrgcmd show type 6
+WAP:ctrgcmd plugin method List
+SHELL:cat /mnt/jffs2/app/cplugin/cplugin1/MyPlugin/BuildInfo
+SHELL:cat /mnt/jffs2/app/cplugin/cpluginstate

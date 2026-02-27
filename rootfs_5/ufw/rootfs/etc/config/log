@@ -1,0 +1,10 @@
+
+config local default
+	option log_level        'err'
+	option log_debug        'off'
+	option log_flush_line   '5'
+
+config platform temp
+	option log_level      'err'
+	option log_duration   '0'
+

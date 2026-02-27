@@ -1,0 +1,1 @@
+Bbspcmd ctp show_ctp all | sleep 1

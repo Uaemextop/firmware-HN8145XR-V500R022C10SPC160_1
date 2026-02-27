@@ -1,0 +1,6 @@
+/usr/share/lxc/config/common.conf
+/usr/share/lxc/config/nesting.conf
+/usr/share/lxc/config/common.conf.d/README
+/usr/share/lxc/config/userns.conf
+/usr/share/lxc/config/oci.common.conf
+/usr/share/lxc/config/common.seccomp

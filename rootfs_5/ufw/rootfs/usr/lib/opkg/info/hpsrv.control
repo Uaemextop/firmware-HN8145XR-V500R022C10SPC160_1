@@ -1,0 +1,11 @@
+Package: hpsrv
+Version: V02.01.0200
+Depends: libc, libubox20191228, liblxc, glib2, libuci20130104, libopenssl1.1, libhguapi
+Source: /data/buildbot/buildbot/wk_huawei_arm_huawei_V32081_F/builder_huawei_arm_huawei_V32081_F/build/module_hgu_fttr/ufw/hpsrv
+SourceName: hpsrv
+Section: ufw
+Essential: yes
+Maintainer: yysd
+Architecture: arm_huawei_V32081_F
+Installed-Size: 39005
+Description:  hpsrv is a plug-in manager server for china unicom smart gateway.

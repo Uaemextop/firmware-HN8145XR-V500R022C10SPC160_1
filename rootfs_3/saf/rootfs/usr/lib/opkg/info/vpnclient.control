@@ -1,0 +1,10 @@
+Package: vpnclient
+Version: R4711
+Depends: libc, ubox, libcapi3, xl2tpd, ppp, iproute2
+Source: /home/dell/ctc_gateway_framework/vpnclient
+Section: base
+Vendor: upointech
+Maintainer: Upointech
+Architecture: rtos510v2
+Installed-Size: 671
+Description:  VPN Application for smart gateway device

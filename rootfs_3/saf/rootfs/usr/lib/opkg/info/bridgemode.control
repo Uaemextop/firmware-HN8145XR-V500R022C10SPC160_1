@@ -1,0 +1,11 @@
+Package: bridgemode
+Version: 1
+Depends: libc, libuci, libpthread, librt, libubox, libubus, libopenssl, libcapi3, libjson-c
+Source: /home/dell/ctc_gateway_framework/bridge_report
+Section: base
+Vendor: Upointech
+Essential: yes
+Maintainer: Upointech
+Architecture: rtos510v2
+Installed-Size: 20297
+Description:  Gateway work as a bridge

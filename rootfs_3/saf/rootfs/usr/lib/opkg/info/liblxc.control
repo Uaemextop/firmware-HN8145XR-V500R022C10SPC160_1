@@ -1,0 +1,9 @@
+Package: liblxc
+Version: 2.0.9-1
+Depends: libc, lxc, libcap, libpthread
+Source: feeds/packages/utils/lxc
+License: LGPL-2.1+ BSD-2-Clause GPL-2.0
+Section: libs
+Architecture: rtos510v2
+Installed-Size: 211326
+Description:  LXC userspace library

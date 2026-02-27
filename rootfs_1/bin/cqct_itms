@@ -1,0 +1,15 @@
+#!/bin/sh
+
+iteminfo=$(cwmp getvalue InternetGatewayDevice.X_CT-COM_UserInfo.)
+username=`echo "$iteminfo" | sed -n '/UserName=/p'`
+usernameoutput=${username##*UserName=}
+userid=`echo "$iteminfo" | sed -n '/UserId=/p'`
+useridoutput=${userid##*UserId=}
+status=`echo "$iteminfo" | sed -n '/\.Status=/p'`
+statusoutput=${status##*Status=}
+result=`echo "$iteminfo" | sed -n '/Result=/p'`
+resultoutput=${result##*Result=}
+echo "UserName: $usernameoutput"
+echo "UserId: $useridoutput"
+echo "Status: $statusoutput"
+echo "Result: $resultoutput"

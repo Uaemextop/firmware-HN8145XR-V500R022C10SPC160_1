@@ -1,0 +1,74 @@
+# /etc/profile
+# init bash prompt and enviroment.
+
+alias ll="ls -l"
+alias ..="cd .."
+
+PATH="/bin:/usr/bin:/sbin:/usr/sbin"
+export LD_LIBRARY_PATH=/lib/omci_module:/lib/oam_module
+
+export DBUS_SESSION_BUS_ADDRESS=unix:path=/var/run/dbus/system_bus_socket
+
+export LANG=zh_CN.UTF-8
+export LC_ALL=zh_CN.UTF-8
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/glib-2.0
+
+if [ -f /usr/osgi/java ]; then
+	export PATH=$PATH:/usr/osgi/bin
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/osgi/lib:/usr/osgi/lib/aarch32:/usr/osgi/lib/aarch32/jli:/usr/osgi/lib/aarch32/server
+fi
+
+if [ -f /mnt/jffs2/Equip.sh ]; then
+	export PATH=$PATH:/mnt/jffs2/equipment/QCA
+fi
+
+PS1="WAP(Dopra Linux) # "
+
+aiscli_enble=`GetFeature HW_FT_AIS_APP_TELNET_ONT`
+var_xpon_mode=`getboardinfo 0x00000001`
+if [ -e /bin/aiscli ] && [ $aiscli_enble = 1 ] && [ ${var_xpon_mode} == "1" ];then
+	spec_ps1=`GetSpec SSMP_SPEC_CLI_SHELL_PROMPT_STR`
+	PS1=$spec_ps1
+fi
+
+ulimit -c 0
+echo "profile close core dump"
+
+umask 077
+
+LOGNAME=root
+
+HOSTNAME=`/bin/hostname`
+HISTSIZE=0
+
+TMOUT=300
+
+PAGER=more
+
+export PATH PS1 USER LOGNAME HOSTNAME HISTSIZE PAGER TMOUT
+
+ft_no_boot_wifi=`GetFeature FT_WLAN_NO_BOOT_WIFI`
+if [ -d /usr/lib/cl2400_host_pkg ]; then
+	if [ -f /etc/wap/DebugVersionFlag ] && [ -f /mnt/jffs2/replace_celeno_ko ]; then
+	export cl2400_root=/var/cl2400_host_pkg/cl2400
+	elif [ -f /etc/wap/DebugVersionFlag ] && [ $ft_no_boot_wifi -eq 1 ]; then
+	export cl2400_root=/mnt/jffs2/app/cl2400_host_pkg/cl2400
+	else
+	export cl2400_root=/usr/lib/cl2400_host_pkg/cl2400
+	fi
+	export clr_install_dir_cl2400=$cl2400_root
+	export PATH=$PATH:$cl2400_root/bin:$cl2400_root/scripts
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$cl2400_root/lib
+	export clr_cfg_dir_cl2400_24g=/var/cl2400_24g
+	export clr_cfg_dir_cl2400=/var/cl2400
+fi
+
+ft_support_ubus=`GetFeature FT_SMART_UBUS_SUPPORT`
+if [ $ft_support_ubus -eq 1 ]; then
+	export LD_LIBRARY_PATH=/mnt/jffs2/eos_framework/lib:$LD_LIBRARY_PATH
+fi
+
+if [ -f /bin/stty ]; then
+    stty -ixon
+fi

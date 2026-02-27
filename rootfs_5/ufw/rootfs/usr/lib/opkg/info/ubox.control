@@ -1,0 +1,12 @@
+Package: ubox
+Version: 2020-10-25-9ef88681-2
+Depends: libc, libubox20191228, ubusd, ubus, libubus20191227, libuci20130104
+Alternatives: 100:/sbin/rmmod:/sbin/kmodloader, 100:/sbin/insmod:/sbin/kmodloader, 100:/sbin/lsmod:/sbin/kmodloader, 100:/sbin/modinfo:/sbin/kmodloader, 100:/sbin/modprobe:/sbin/kmodloader
+Source: package/system/ubox
+SourceName: ubox
+License: GPL-2.0
+Section: base
+Maintainer: John Crispin <john@phrozen.org>
+Architecture: arm_huawei_V32081_F
+Installed-Size: 17085
+Description:  OpenWrt system helper toolbox

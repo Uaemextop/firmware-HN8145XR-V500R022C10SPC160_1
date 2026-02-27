@@ -1,0 +1,3 @@
+function() {
+  return <%HW_WEB_GetParaArryByDomain(InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPPPConnection.{i}.Stats,EthernetBytesSent|EthernetBytesReceived|EthernetPacketsSent|EthernetPacketsReceived|EthernetUnicastPacketsSent|EthernetUnicastPacketsReceived|EthernetMulticastPacketsSent|EthernetMulticastPacketsReceived|EthernetBroadcastPacketsSent|EthernetBroadcastPacketsReceived,WaninfoStats);%>;
+}

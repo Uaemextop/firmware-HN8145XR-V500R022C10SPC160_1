@@ -1,0 +1,11 @@
+Package: lxc-config
+Version: 4.0.3-3
+Depends: libc, lxc, lxc-common, libpthread, libcap, liblxc
+Source: feeds/packages/utils/lxc
+SourceName: lxc-config
+License: LGPL-2.1-or-later BSD-2-Clause GPL-2.0
+Section: utils
+Maintainer: Marko Ratkaj <marko.ratkaj@sartura.hr>
+Architecture: arm_huawei_V32081_F
+Installed-Size: 4937
+Description:  Utility lxc-config from the LXC userspace tools

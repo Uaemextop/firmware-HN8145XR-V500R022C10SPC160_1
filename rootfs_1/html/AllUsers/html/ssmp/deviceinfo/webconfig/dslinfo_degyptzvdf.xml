@@ -1,0 +1,21 @@
+<InternetGatewayDevice>
+  <WANDevice getconfig="0x00000003">
+    <WANDSLInterfaceConfig setconfig="0x00000003" getconfig="0x00000003">
+      <Enable setconfig="0x00000003" />
+      <DownstreamCurrRate getconfig="0x00000003" />
+      <UpstreamCurrRate getconfig="0x00000003" />
+      <X_SOS setconfig="0x00000003" />
+      <X_Sra setconfig="0x00000003" />
+      <X_AllowedProfiles setconfig="0x00000002" />
+      <X_ConfigMode setconfig="0x00000002" />
+      <ModulationType getconfig="0x00000003" />
+    </WANDSLInterfaceConfig>
+  </WANDevice>
+  <X_HW_DSLCONFIG getconfig="0x00000003">
+    <X_HW_WANDSLInterfaceConfig getconfig="0x00000003">
+      <DataPath getconfig="0x00000003" />
+      <X_UpInterleaveDepth getconfig="0x00000003" />
+      <InterleaveDepth getconfig="0x00000003" />
+    </X_HW_WANDSLInterfaceConfig>
+  </X_HW_DSLCONFIG>
+</InternetGatewayDevice>

@@ -1,0 +1,252 @@
+<dbus>
+<smp>
+<object name="com.ctc.igd1.DeviceInfo" objpath="/com/ctc/igd1/Info/Device" cmd="">
+<item attr="BusinessStatus" notify="1" notifypath="InternetGatewayDevice.X_HW_UserInfo.Result"/>
+<item attr="DevName" notify="1" notifypath="InternetGatewayDevice.X_HW_HOMENET_NAME.name"/>
+</object>
+<object name="com.ctc.igd1.FTPServer" objpath="/com/ctc/igd1/Storage/Ftpserver" cmd="">
+<item attr="Enable" notify="1" notifypath="InternetGatewayDevice.X_HW_ServiceManage.FtpEnable"/>
+<item attr="Enable" notify="1" notifypath="InternetGatewayDevice.X_HW_Security.AclServices.FTPLanEnable"/>
+<item attr="Enable" notify="1" notifypath="InternetGatewayDevice.X_HW_Security.AclServices.FTPWanEnable"/>
+<item attr="AllowAnonymous" notify="1" notifypath="InternetGatewayDevice.X_HW_ServiceManage.FtpService"/>
+</object>
+<object name="com.ctc.igd1.FTPAccount" objpath="/com/ctc/igd1/Storage/Ftpserver/Accounts/i" cmd="">
+<item attr="" notify="1" notifypath="InternetGatewayDevice.X_HW_AppSrvManage"/>
+<item attr="UserName" notify="1" notifypath="InternetGatewayDevice.X_HW_AppSrvManage.FtpUserName"/>
+<item attr="Password" notify="1" notifypath="InternetGatewayDevice.X_HW_AppSrvManage.FtpPassword"/>
+</object>
+<object name="com.ctc.igd1.SambaServer" objpath="/com/ctc/igd1/Storage/SambaServer" cmd="">
+<item attr="Enable" notify="1" notifypath="InternetGatewayDevice.X_HW_Security.AclServices.SamBaLanEnable"/>
+<item attr="Enable" notify="1" notifypath="InternetGatewayDevice.X_HW_Security.AclServices.SamBaWanEnable"/>
+<item attr="AllowAnonymous" notify="1" notifypath="InternetGatewayDevice.Services.StorageService.NetworkServer.NetworkProtocolAuthReq"/>
+</object>
+<object name="com.ctc.igd1.SambaAccount" objpath="/com/ctc/igd1/Storage/SambaServer/Accounts/i" cmd="">
+<item attr="" notify="1" notifypath="InternetGatewayDevice.Services.StorageService.UserAccount"/>
+<item attr="UserName" notify="1" notifypath="InternetGatewayDevice.Services.StorageService.UserAccount.Username"/>
+<item attr="Password" notify="1" notifypath="InternetGatewayDevice.Services.StorageService.UserAccount.Password"/>
+</object>
+<object name="com.ctc.igd1.HTTPServer" objpath="/com/ctc/igd1/Network/HTTPServer" cmd="">
+<item attr="AdminPassword" notify="1" notifypath="InternetGatewayDevice.UserInterface.X_HW_WebUserInfo.Password"/>
+</object>
+<object name="com.ctc.igd1.PlatformService" objpath="/com/ctc/igd1/Telecom/PlatformService" cmd="">
+<item attr="Appmodel" notify="1" notifypath="InternetGatewayDevice.X_HW_AppRemoteManage.Appmodel"/>
+<item attr="DistAddr" notify="1" notifypath="InternetGatewayDevice.X_HW_AppRemoteManage.MgtURL"/>
+<item attr="Port" notify="1" notifypath="InternetGatewayDevice.X_HW_AppRemoteManage.Port"/>
+<item attr="Ability" notify="1" notifypath="InternetGatewayDevice.X_HW_AppRemoteManage.Ability"/>
+<item attr="LocalPort" notify="1" notifypath="InternetGatewayDevice.X_HW_AppRemoteManage.LocatePort"/>
+<item attr="BSSAddr" notify="1" notifypath="InternetGatewayDevice.X_HW_AppRemoteManage.X_HW_BSSAddr"/>
+</object>
+<object name="com.ctc.igd1.SysCmd" objpath="/com/ctc/igd1/Telecom/System" cmd="">
+<item attr="UpgradeStatus" notify="1" notifypath="InternetGatewayDevice.CtcSysCmd.UpgradeStatus"/>
+<item attr="RestoreStatus" notify="1" notifypath="InternetGatewayDevice.CtcSysCmd.RestoreStatus"/>
+</object>
+</smp>
+<amp>
+<object name="com.ctc.igd1.WiFiInfo" objpath="/com/ctc/igd1/Info/WiFi" cmd="">
+<item attr="Enable2G" notify="1" notifypath="InternetGatewayDevice.LANDevice.WiFi.Radio.Enable"/>
+<item attr="MAPAgent" notify="1" notifypath="InternetGatewayDevice.EasyMesh.MAPAgent"/>
+<item attr="ChannelScanStatus" notify="1" notifypath="InternetGatewayDevice.LANDevice.WiFi.Radio.channelScanStatus"/>
+<item attr="SameSSIDStatus" notify="1" notifypath="InternetGatewayDevice.LANDevice.WiFi.Radio.X_HW_SameSSIDStatus"/>
+<item attr="RatePriority" notify="1" notifypath="InternetGatewayDevice.LANDevice.WiFi.Radio.X_HW_RatePriority"/>
+</object>
+<object name="com.ctc.igd1.WLANConfiguration" objpath="/com/ctc/igd1/Config/WLAN/Devices/i" cmd="">
+<item attr="" notify="1" notifypath="InternetGatewayDevice.LANDevice.WLANConfiguration"/>
+<item attr="SSID" notify="1" notifypath="InternetGatewayDevice.LANDevice.WLANConfiguration.SSID"/>
+<item attr="Enable" notify="1" notifypath="InternetGatewayDevice.LANDevice.WLANConfiguration.Enable"/>
+<item attr="Channel" notify="1" notifypath="InternetGatewayDevice.LANDevice.WLANConfiguration.Channel"/>
+<item attr="ChannelInUse" notify="1" notifypath="InternetGatewayDevice.LANDevice.WLANConfiguration.ChannelsInUse"/>
+<item attr="BeaconType" notify="1" notifypath="InternetGatewayDevice.LANDevice.WLANConfiguration.BeaconType"/>
+<item attr="WPAEncryptionModes" notify="1" notifypath="InternetGatewayDevice.LANDevice.WLANConfiguration.WPAEncryptionModes"/>
+<item attr="WPAEncryptionModes" notify="1" notifypath="InternetGatewayDevice.LANDevice.WLANConfiguration.IEEE11iEncryptionModes"/>
+<item attr="WPAEncryptionModes" notify="1" notifypath="InternetGatewayDevice.LANDevice.WLANConfiguration.X_HW_WPAand11iEncryptionModes"/>
+<item attr="SSIDHide" notify="1" notifypath="InternetGatewayDevice.LANDevice.WLANConfiguration.SSIDAdvertisementEnabled"/>
+<item attr="PWD" notify="1" notifypath="InternetGatewayDevice.LANDevice.WLANConfiguration.WEPKey.WEPKey"/>
+<item attr="PWD" notify="1" notifypath="InternetGatewayDevice.LANDevice.WLANConfiguration.PreSharedKey.PreSharedKey"/>
+<item attr="Owner" notify="1" notifypath="InternetGatewayDevice.LANDevice.WLANConfiguration.X_HW_WlanDbusAttr.Owner"/>
+<item attr="Service" notify="1" notifypath="InternetGatewayDevice.LANDevice.WLANConfiguration.X_HW_WlanDbusAttr.Service"/>
+<item attr="AccessRule" notify="1" notifypath="InternetGatewayDevice.LANDevice.WLANConfiguration.X_HW_WlanDbusAttr.AccessRule"/>
+<item attr="MACAccessMode" notify="1" notifypath="InternetGatewayDevice.LANDevice.WLANConfiguration.X_HW_WlanDbusAttr.MACAccessMode"/>
+</object>
+<object name="com.ctc.igd1.WiFiTimer" objpath="/com/ctc/igd1/Config/WLAN/Timer" cmd="">
+<item attr="StartTime" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_WLANSwitchTimer.StartTime"/>
+<item attr="EndTime" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_WLANSwitchTimer.EndTime"/>
+<item attr="Enable" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_WLANSwitchTimer.Enable"/>
+<item attr="SSIDMask" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_WLANSwitchTimer.SSIDMask"/>
+</object>
+<object name="com.ctc.igd1.WiFiTimer1" objpath="/com/ctc/igd1/Config/WLAN/ExTimers/i" cmd="">
+<item attr="" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_WLANSwitchTimerControl"/>
+<item attr="WeekDay" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_WLANSwitchTimerControl.Weekday"/>
+<item attr="Time" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_WLANSwitchTimerControl.Time"/>
+<item attr="Active" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_WLANSwitchTimerControl.Action"/>
+<item attr="Enable" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_WLANSwitchTimerControl.Enable"/>
+<item attr="SSIDMask" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_WLANSwitchTimerControl.SSIDMask"/>
+</object>
+<object name="com.ctc.igd1.SleepTimer" objpath="/com/ctc/igd1/Config/Power/SleepTimers/i" cmd="">
+<item attr="" notify="1" notifypath="InternetGatewayDevice.ExtDeviceInfo.X_HW_SleepTimerControl"/>
+<item attr="Day" notify="1" notifypath="InternetGatewayDevice.ExtDeviceInfo.X_HW_SleepTimerControl.Weekday"/>
+<item attr="Time" notify="1" notifypath="InternetGatewayDevice.ExtDeviceInfo.X_HW_SleepTimerControl.Time"/>
+<item attr="Active" notify="1" notifypath="InternetGatewayDevice.ExtDeviceInfo.X_HW_SleepTimerControl.Action"/>
+<item attr="Enable" notify="1" notifypath="InternetGatewayDevice.ExtDeviceInfo.X_HW_SleepTimerControl.Enable"/>
+</object>
+<object name="com.ctc.igd1.WPS" objpath="/com/ctc/igd1/Config/WLAN/Devices/i/WPS" cmd="">
+<item attr="Enable" notify="1" notifypath="InternetGatewayDevice.LANDevice.WLANConfiguration.WPS.Enable"/>
+<item attr="WPSStatus" notify="1" notifypath="InternetGatewayDevice.LANDevice.WLANConfiguration.WPS.X_HW_WPSStatus"/>
+</object>
+<object name="com.ctc.igd1.Mesh" objpath="/com/ctc/igd1/Config/WLAN/Mesh" cmd="">
+<item attr="wirelessctrl" notify="1" notifypath="InternetGatewayDevice.X_HW_SlaveAPConfig.WirelessCtrl"/>
+</object>
+<object name="com.ctc.igd1.LED" objpath="/com/ctc/igd1/Config/Peripheral/LED" cmd="">
+<item attr="Status" notify="1" notifypath="InternetGatewayDevice.ExtDeviceInfo.X_HW_LedSwitch" />
+<item attr="StartTime" notify="1" notifypath="InternetGatewayDevice.ExtDeviceInfo.X_HW_LED_SwitchTimer.StartTime"/>
+<item attr="EndTime" notify="1" notifypath="InternetGatewayDevice.ExtDeviceInfo.X_HW_LED_SwitchTimer.EndTime" />
+<item attr="Enable" notify="1" notifypath="InternetGatewayDevice.ExtDeviceInfo.X_HW_LED_SwitchTimer.Enable"/>
+</object>
+<object name="com.ctc.igd1.VSIE.BeaconTxVSIE" objpath="/com/ctc/igd1/VSIE/BeaconTxVSIE/i" cmd="">
+<item attr="" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_WLANBeaconTx"/>
+<item attr="Status" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_WLANBeaconTx.Status"/>
+</object>
+<object name="com.ctc.igd1.VSIE.ProbeRxVSIE" objpath="/com/ctc/igd1/VSIE/ProbeRxVSIE/i" cmd="">
+<item attr="" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_WLANProbeRx"/>
+</object>
+</amp>
+<bbsp>
+<object name="com.ctc.igd1.NetworkInfo" objpath="/com/ctc/igd1/Info/Network" cmd="">
+<item attr="WIFIModuleStatus" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_WlanEnable"/>
+<item attr="LAN1Status" notify="1" notifypath="InternetGatewayDevice.LANDevice.LANEthernetInterfaceConfig.Status"/>
+<item attr="WANIPV6Addr" notify="1" notifypath="InternetGatewayDevice.X_HW_DBUSDataSyn.WANIPV6Addr"/>
+</object>
+<object name="com.ctc.igd1.WANConnectionInfo" objpath="/com/ctc/igd1/Info/Network/WANConnectionDb/i" cmd="">
+<item attr="" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice"/>
+<item attr="" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection"/>
+<item attr="" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANPPPConnection"/>
+<item attr="ConnectionStatus" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.ConnectionStatus"/>
+<item attr="ConnectionStatus" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANPPPConnection.ConnectionStatus"/>
+<item attr="ServiceList" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.X_HW_SERVICELIST"/>
+<item attr="ServiceList" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANPPPConnection.X_HW_SERVICELIST"/>
+<item attr="ServiceList" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.X_HW_ExServiceList"/>
+<item attr="ServiceList" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANPPPConnection.X_HW_ExServiceList"/>
+<item attr="IPAddress" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.ExternalIPAddress"/>
+<item attr="IPAddress" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANPPPConnection.ExternalIPAddress"/>
+<item attr="SubnetMask" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.SubnetMask"/>
+<item attr="Gateway" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.DefaultGateway"/>
+<item attr="Gateway" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANPPPConnection.DefaultGateway"/>
+<item attr="DNS1" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.DNSServers"/>
+<item attr="DNS1" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANPPPConnection.DNSServers"/>
+<item attr="IPv6_ConnectionStatus" notify="1" notifypath="InternetGatewayDevice.WANDevice.X_HW_ShowInterface.ConnectionStatus"/>
+<item attr="IPv6_IPAddress" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.X_HW_IPv6.IPv6Address.IPAddress"/>
+<item attr="IPv6_IPAddress" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANPPPConnection.X_HW_IPv6.IPv6Address.IPAddress"/>
+<item attr="IPv6_Gateway" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.X_HW_IPv6.IPv6Address.DefaultGateway"/>
+<item attr="IPv6_Gateway" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANPPPConnection.X_HW_IPv6.IPv6Address.DefaultGateway"/>
+<item attr="IPv6_DNS1" notify="1" notifypath="InternetGatewayDevice.WANDevice.X_HW_ShowInterface.IPv6DNS"/>
+<item attr="IPv6_Prefix" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.X_HW_IPv6.IPv6Prefix.Prefix"/>
+<item attr="IPv6_Prefix" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANPPPConnection.X_HW_IPv6.IPv6Prefix.Prefix"/>
+</object>
+<object name="com.ctc.igd1.LANHostManager" objpath="/com/ctc/igd1/Config/LANHosts" cmd="">
+<item attr="LANHostMaxNumber" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_LANHostManager.LANHostMaxNumber"/>
+<item attr="ControlListMaxNumber" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_LANHostManager.ControlListMaxNumber"/>
+<item attr="LANHostNumber" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_LANHostManager.LANHostNumber"/>
+<item attr="ControlListNumber" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_LANHostManager.ControlListNumber"/>
+</object>
+<object name="com.ctc.igd1.LANHost" objpath="/com/ctc/igd1/Config/LANHosts/i" cmd="">
+<item attr="" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_UserDev"/>
+<item attr="ControlStatus" notify="1" notifypath="InternetGatewayDevice.X_HW_Security.AttachControl.ControlStatus"/>
+<item attr="InternetAccess" notify="1" notifypath="InternetGatewayDevice.X_HW_Security.AttachControl.InternetPolicy"/>
+<item attr="StorageAccess" notify="1" notifypath="InternetGatewayDevice.X_HW_Security.AttachControl.StorageAccessRight"/>
+<item attr="MaxUSBandwidth" notify="1" notifypath="InternetGatewayDevice.X_HW_Security.AttachControl.UsBandwidth"/>
+<item attr="MaxDSBandwidth" notify="1" notifypath="InternetGatewayDevice.X_HW_Security.AttachControl.DsBandwidth"/>
+<item attr="Active" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_UserDev.DevStatus"/>
+<item attr="LatestActiveTime" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_UserDev.LatestActiveTime"/>
+<item attr="LatestInactiveTime" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_UserDev.LatestInactiveTime"/>
+</object>
+<object name="com.ctc.igd1.PPPoE" objpath="/com/ctc/igd1/Telecom/PPPoE" cmd="">
+<item attr="PPPoEUserName" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANPPPConnection.Username"/>
+</object>
+<object name="com.ctc.igd1.DHCPServer" objpath="/com/ctc/igd1/Config/DHCPServer" cmd="">
+<item attr="Enable" notify="1" notifypath="InternetGatewayDevice.LANDevice.LANHostConfigManagement.DHCPServerEnable"/>
+<item attr="MinAddress" notify="1" notifypath="InternetGatewayDevice.LANDevice.LANHostConfigManagement.MinAddress"/>
+<item attr="MaxAddress" notify="1" notifypath="InternetGatewayDevice.LANDevice.LANHostConfigManagement.MaxAddress"/>
+<item attr="IPAddr" notify="1" notifypath="InternetGatewayDevice.LANDevice.LANHostConfigManagement.IPInterface.IPInterfaceIPAddress"/>
+<item attr="SubnetMask" notify="1" notifypath="InternetGatewayDevice.LANDevice.LANHostConfigManagement.SubnetMask"/>
+<item attr="LeaseTime" notify="1" notifypath="InternetGatewayDevice.LANDevice.LANHostConfigManagement.DHCPLeaseTime"/>
+</object>
+<object name="com.ctc.igd1.DHCPv6Server" objpath="/com/ctc/igd1/Config/IPV6/DHCPV6S" cmd="">
+<item attr="Enable" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_DHCPv6.Server.Enable"/>
+<item attr="MinAddress" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_DHCPv6.Server.Pool.MinAddress"/>
+<item attr="MaxAddress" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_DHCPv6.Server.Pool.MaxAddress"/>
+<item attr="PreferredLifeTime" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_DHCPv6.X_HW_E8C_PreferredLifeTime"/>
+<item attr="ValidLifeTime" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_DHCPv6.X_HW_E8C_ValidLifeTime"/>
+<item attr="Option16Enable" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_DHCPv6.Server.OPTION16Enable"/>
+<item attr="Option17Enable" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_DHCPv6.Server.OPTION17Enable"/>
+</object>
+<object name="com.ctc.igd1.IPv6LANConfig" objpath="/com/ctc/igd1/Config/IPV6/LAN" cmd="">
+<item attr="LocalAddress" notify="1" notifypath="InternetGatewayDevice.LANDevice.LANHostConfigManagement.X_HW_IPv6Interface.IPv6Address.IPv6Address"/>
+<item attr="ConfigType" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_IPv6Config.IPv6DNSConfigType"/>
+<item attr="DNSWAN" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_IPv6Config.IPv6DNSWANConnection"/>
+<item attr="Servers" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_IPv6Config.IPv6DNSServers"/>
+<item attr="PrefixMode" notify="1" notifypath="InternetGatewayDevice.LANDevice.LANHostConfigManagement.X_HW_IPv6Interface.IPv6Prefix.Mode"/>
+<item attr="DelegatedWAN" notify="1" notifypath="InternetGatewayDevice.LANDevice.LANHostConfigManagement.X_HW_IPv6Interface.IPv6Prefix.ParentPrefix"/>
+<item attr="Prefix" notify="1" notifypath="InternetGatewayDevice.LANDevice.LANHostConfigManagement.X_HW_IPv6Interface.IPv6Prefix.Prefix"/>
+<item attr="PreferredLifeTime" notify="1" notifypath="InternetGatewayDevice.LANDevice.LANHostConfigManagement.X_HW_IPv6Interface.IPv6Prefix.PreferredLifeTime"/>
+<item attr="ValidLifeTime" notify="1" notifypath="InternetGatewayDevice.LANDevice.LANHostConfigManagement.X_HW_IPv6Interface.IPv6Prefix.ValidLifeTime"/>
+</object>
+<object name="com.ctc.igd1.RouterAdvertisement" objpath="/com/ctc/igd1/Config/IPV6/RA" cmd="">
+<item attr="Enable" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_RouterAdvertisement.Enable"/>
+<item attr="MaxRtrAdvInterval" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_RouterAdvertisement.MaxRtrAdvInterval"/>
+<item attr="MinRtrAdvInterval" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_RouterAdvertisement.MinRtrAdvInterval"/>
+<item attr="AdvManagedFlag" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_RouterAdvertisement.ManagedFlag"/>
+<item attr="AdvOtherConfigFlag" notify="1" notifypath="InternetGatewayDevice.LANDevice.X_HW_RouterAdvertisement.OtherConfigFlag"/>
+</object>
+<object name="com.ctc.igd1.DNSSpeedLimit" objpath="/com/ctc/igd1/Network/DNSSpeedLimit" cmd="">
+<item attr="DeviceInfo" notify="1" notifypath="InternetGatewayDevice.X_HW_DNS.SpeedLimit.DeviceInfo"/>
+</object>
+<object name="com.ctc.igd1.DNSFilter" objpath="/com/ctc/igd1/Network/DNSFilter/i" cmd="">
+<item attr="" notify="1" notifypath="InternetGatewayDevice.X_HW_DNS.DNSFilter"/>
+</object>
+<object name="com.ctc.igd1.PortMapping" objpath="/com/ctc/igd1/Config/PortMapping/i" cmd="">
+<item attr="" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.PortMapping"/>
+<item attr="" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANPPPConnection.PortMapping"/>
+<item attr="Enable" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.PortMapping.PortMappingEnabled"/>
+<item attr="Enable" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANPPPConnection.PortMapping.PortMappingEnabled"/>
+<item attr="LeaseDuration" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.PortMapping.PortMappingLeaseDuration"/>
+<item attr="LeaseDuration" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANPPPConnection.PortMapping.PortMappingLeaseDuration"/>
+<item attr="RemoteHost" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.PortMapping.RemoteHost"/>
+<item attr="RemoteHost" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANPPPConnection.PortMapping.RemoteHost"/>
+<item attr="ExternalPort" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.PortMapping.ExternalPort"/>
+<item attr="ExternalPort" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANPPPConnection.PortMapping.ExternalPort"/>
+<item attr="InternalPort" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.PortMapping.InternalPort"/>
+<item attr="InternalPort" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANPPPConnection.PortMapping.InternalPort"/>
+<item attr="PortMappingProtocol" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.PortMapping.PortMappingProtocol"/>
+<item attr="PortMappingProtocol" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANPPPConnection.PortMapping.PortMappingProtocol"/>
+<item attr="InternalClient" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.PortMapping.InternalClient"/>
+<item attr="InternalClient" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANPPPConnection.PortMapping.InternalClient"/>
+<item attr="Description" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.PortMapping.PortMappingDescription"/>
+<item attr="Description" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANPPPConnection.PortMapping.PortMappingDescription"/>
+</object>
+<object name="com.ctc.igd1.DDNSServerConfig" objpath="/com/ctc/igd1/Network/ddns/i" cmd="">
+<item attr="" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANIPConnection.X_HW_DDNSConfiguration"/>
+<item attr="" notify="1" notifypath="InternetGatewayDevice.WANDevice.WANConnectionDevice.WANPPPConnection.X_HW_DDNSConfiguration"/>
+</object>
+<object name="com.ctc.igd1.QoSApp" objpath="/com/ctc/igd1/Network/QoS/App/i" cmd="">
+<item attr="" notify="1" notifypath="InternetGatewayDevice.X_HW_UplinkQos.App"/>
+</object>
+<object name="com.ctc.igd1.QoSClassification" objpath="/com/ctc/igd1/Network/QoS/Classification/i" cmd="">
+<item attr="" notify="1" notifypath="InternetGatewayDevice.X_HW_UplinkQos.Classification"/>
+</object>
+<object name="com.ctc.igd1.QoSClassificationType" objpath="/com/ctc/igd1/Network/QoS/Classification/i/Type/i" cmd="">
+<item attr="" notify="1" notifypath="InternetGatewayDevice.X_HW_UplinkQos.Classification.type"/>
+</object>
+<object name="com.ctc.igd1.QoSPriorityQueue" objpath="/com/ctc/igd1/Network/QoS/PriorityQueue/i" cmd="">
+<item attr="" notify="1" notifypath="InternetGatewayDevice.X_HW_UplinkQos.PriorityQueue"/>
+</object>
+</bbsp>
+<ldsp>
+</ldsp>
+<voice>
+<object name="com.ctc.igd1.VoIPInfo" objpath="/com/ctc/igd1/Info/VoIP" cmd="">
+<item attr="VoIPName1" notify="1" notifypath="InternetGatewayDevice.Services.VoiceService.VoiceProfile.Line.SIP.URI" />
+<item attr="VoIPName1" notify="1" notifypath="InternetGatewayDevice.Services.VoiceService.VoiceProfile.Line.SIP.AuthUserName"/>
+<item attr="VoIPName1" notify="1" notifypath="InternetGatewayDevice.Services.VoiceService.VoiceProfile.Line.X_HW_H248.LineName"/>
+<item attr="Line1Status" notify="1" notifypath="InternetGatewayDevice.Services.VoiceService.VoiceProfile.Line.X_HW_CtLastRegisterError.Reason"  />
+</object>
+</voice>
+</dbus>

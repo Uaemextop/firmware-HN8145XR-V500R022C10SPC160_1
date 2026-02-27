@@ -1,0 +1,11 @@
+Package: curl
+Version: 7.67.0-1
+Depends: libc, libcurl
+Source: package/network/utils/curl
+License: MIT
+LicenseFiles: COPYING
+Section: net
+Maintainer: Imre Kaloz <kaloz@openwrt.org>
+Architecture: rtos510v2
+Installed-Size: 59912
+Description:  A client-side URL transfer utility

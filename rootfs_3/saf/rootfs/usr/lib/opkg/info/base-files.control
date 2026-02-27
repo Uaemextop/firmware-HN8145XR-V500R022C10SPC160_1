@@ -1,0 +1,9 @@
+Package: base-files
+Version: 157-R5038
+Depends: libc, procd, jsonfilter, usign
+Source: package/base-files
+License: GPL-2.0
+Section: base
+Architecture: rtos510v2
+Installed-Size: 29516
+Description:  This package contains a base filesystem and system scripts for OpenWrt.

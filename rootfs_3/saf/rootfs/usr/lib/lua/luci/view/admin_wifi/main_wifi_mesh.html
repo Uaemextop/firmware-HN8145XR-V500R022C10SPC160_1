@@ -1,0 +1,765 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<title>中国电信智能网关</title>
+		<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta HTTP-EQUIV='Pragma' CONTENT='no-cache'>
+		<link href='<%=resource%>/css/main_style.css?version=<%=version%>' rel='stylesheet' type='text/css'/>
+		<link href='<%=resource%>/css/wifi.css?version=<%=version%>' rel="stylesheet" type='text/css'/>
+		<script language="javascript" src="<%=resource%>/xhr.js?version=<%=version%>"></script>
+		<script language="javascript" src="<%=resource%>/js/util.js?version=<%=version%>"></script>
+		<script language="javascript" src="<%=resource%>/js/jquery.js?version=<%=version%>"></script> 
+		<script language="javascript" src="<%=resource%>/js/mesh.js?version=<%=version%>"></script>
+		<script language="javascript" src="<%=resource%>/js/main.js?version=<%=version%>"></script>
+		<script language='javascript'>
+		var activeTimeout = setTimeout("Timeout()", 300000);    
+		  
+		var inputVal;
+		var devMac = "";
+
+		function Timeout() {
+			(new XHR()).post('<%=luci.dispatcher.build_url('admin/logout')%>',
+				{ token: '<%=token%>' }, 
+				function(x){
+				parent.location = "/cgi-bin/luci";
+				});	
+		}		
+
+			
+		function initVal()
+		{
+			if (inputVal.appStatus == 2)
+			{
+				$(".main_item").css("display", "none");
+				$(".save_error").text("组网插件未安装，无法获取同步来源，请自定义配置");
+				$("#error_hint").show();
+			}
+			else if (inputVal.appStatus == 1)
+			{
+		
+			}
+			else
+			{
+				$(".save_error").text("组网插件未运行，请先启动");
+				$("#error_hint").show();				
+			}
+			//if (parseInt($("#mesh_sync_switch_value").val()) == 1)
+			{
+			var htmlObj = "";
+			$(".wifi_devs").children().remove();
+
+					htmlObj += "<div class=\"wifi_item_name\"><label for=\"mesh_dev_list\">同步来源</label></div>";
+					htmlObj += "<div class=\"wifi_item_content\">";
+					htmlObj += "<div tabindex=\"2\" hidefocus=\"true\"  class=\"dropdown-select dropdown-select-wifi\" id=\"wifi_dev\">";
+					htmlObj += 		"<label class=\"select-value\"> 自定义 </label>";
+					htmlObj += 		"<input type=\"hidden\" id=\"wifi_dev_list_value\" name=\"wifi_dev_list\" value=\"custom\" />";
+					htmlObj += 		"<div class=\"select-arrow\"></div>";
+					htmlObj += 		"<ul class=\"dropdown-menu-select\" id=\"mesh_dev_list\">";
+
+					for (var i = 0; i < inputVal.devcnt; i++){
+						eval("dev = inputVal.ap" + (i + 1));
+						htmlObj += "<li livalue=\"" + dev.mac.toUpperCase() + "\">" + dev.vendor + " (" + dev.mac.toUpperCase() + ")</li>";
+					}				
+
+					htmlObj += "<li livalue=\"custom\">自定义</li>";
+					htmlObj += 		"</ul>";
+					htmlObj += 	"</div>";
+					htmlObj += "</div>";
+					$(".wifi_devs").append(htmlObj);
+					$(".dev_info").css("display", "");
+			
+					customSelectInit();
+					$(".dropdown-menu-select li").click(function(){
+						for (var i = 0; i < inputVal.devcnt ; i++){
+							$("#error_hint").hide();
+							eval("dev = inputVal.ap" + (i + 1));
+							if ($(this).parent().siblings("label").first().text() == (dev.vendor + " (" + dev.mac.toUpperCase() + ")"))
+							{
+								$(".select-value").text(dev.vendor + " (" + dev.mac.toUpperCase() + ")");
+								$("#mesh_dev_list_value").val(dev.mac.toUpperCase());
+
+								devMac = dev.mac.toUpperCase();							
+								if (dev.flg == 1)
+								{
+									if (dev.enbl2g != ($("#wifi_2G_switch_value").val()))
+									{
+										if (dev.enbl2g)
+										{
+											$("#wifi_2G_switch").removeClass("switch_content_off");
+											$("#wifi_2G_switch").addClass("switch_content_on");
+											$("#wifi_2G_switch").children("span").html("&nbsp;ON");
+
+										}
+										else
+										{
+											$("#wifi_2G_switch").removeClass("switch_content_on");
+											$("#wifi_2G_switch").addClass("switch_content_off");
+											$("#wifi_2G_switch").children("span").html("OFF&nbsp;");										
+										}
+									}
+									$("#wifi_2G_switch_value").val(Number(dev.enbl2g));								
+									
+									$("#mesh_2G_SSID").val(dev.ssid2g);
+									$("#mesh_2G_password").val(dev.pwd2g);
+
+									if (dev.auth2g != "")
+									{
+										$("#2G_mesh_security_list_value").val(dev.auth2g);
+										$("#mesh_2G_password").parent().parent().parent().show();
+
+										if (dev.auth2g == "None")
+											$("#2G_mesh_security_list_value").parent().find("label.select-value").text("Open");
+										else if (dev.auth2g == "WPA/WPA2")
+											$("#2G_mesh_security_list_value").parent().find("label.select-value").text("WPA/WPA2混合模式");
+										else
+											$("#2G_mesh_security_list_value").parent().find("label.select-value").text(dev.auth2g);
+										
+									}
+									else
+									{
+										$("#2G_mesh_security_list_value").val("WPA/WPA2");
+										$("#mesh_2G_password").parent().parent().parent().show();	
+										$("#2G_mesh_security_list_value").parent().find("label.select-value").text("WPA/WPA2混合模式");
+									}																
+								}
+								else if (dev.flg == 2)
+								{
+									if (dev.enbl5g != ($("#wifi_5G_switch_value").val()))
+									{
+										if (dev.enbl5g)
+										{
+											$("#wifi_5G_switch").removeClass("switch_content_off");
+											$("#wifi_5G_switch").addClass("switch_content_on");
+											$("#wifi_5G_switch").children("span").html("&nbsp;ON");
+										}
+										else
+										{
+											$("#wifi_5G_switch").removeClass("switch_content_on");
+											$("#wifi_5G_switch").addClass("switch_content_off");
+											$("#wifi_5G_switch").children("span").html("OFF&nbsp;");										
+										}
+									}
+									$("#wifi_5G_switch_value").val(Number(dev.enbl5g));
+									
+									$("#mesh_5G_SSID").val(dev.ssid5g);
+									$("#mesh_5G_password").val(dev.pwd5g);	
+
+									if (dev.auth5g != "")
+									{
+										$("#5G_mesh_security_list_value").val(dev.auth5g);
+										$("#mesh_5G_password").parent().parent().parent().show();
+
+										if (dev.auth5g == "None")
+											$("#5G_mesh_security_list_value").parent().find("label.select-value").text("Open");
+										else if (dev.auth5g == "WPA/WPA2")
+											$("#5G_mesh_security_list_value").parent().find("label.select-value").text("WPA/WPA2混合模式");
+										else
+											$("#5G_mesh_security_list_value").parent().find("label.select-value").text(dev.auth5g);
+									}
+									else
+									{
+										$("#5G_mesh_security_list_value").val("WPA/WPA2");
+										$("#mesh_5G_password").parent().parent().parent().show();	
+										$("#5G_mesh_security_list_value").parent().find("label.select-value").text("WPA/WPA2混合模式");
+									}																		
+								}
+								else
+								{
+									if (dev.enbl2g != ($("#wifi_2G_switch_value").val()))
+									{
+										if (dev.enbl2g)
+										{
+											$("#wifi_2G_switch").removeClass("switch_content_off");
+											$("#wifi_2G_switch").addClass("switch_content_on");
+											$("#wifi_2G_switch").children("span").html("&nbsp;ON");
+
+										}
+										else
+										{
+											$("#wifi_2G_switch").removeClass("switch_content_on");
+											$("#wifi_2G_switch").addClass("switch_content_off");
+											$("#wifi_2G_switch").children("span").html("OFF&nbsp;");										
+										}
+									}
+
+									if (dev.enbl5g != ($("#wifi_5G_switch_value").val()))
+									{
+										if (dev.enbl5g)
+										{
+											$("#wifi_5G_switch").removeClass("switch_content_off");
+											$("#wifi_5G_switch").addClass("switch_content_on");
+											$("#wifi_5G_switch").children("span").html("&nbsp;ON");
+
+										}
+										else
+										{
+											$("#wifi_5G_switch").removeClass("switch_content_on");
+											$("#wifi_5G_switch").addClass("switch_content_off");
+											$("#wifi_5G_switch").children("span").html("OFF&nbsp;");										
+										}
+									}
+									$("#wifi_2G_switch_value").val(Number(dev.enbl2g));	
+									$("#wifi_5G_switch_value").val(Number(dev.enbl5g));
+									
+									$("#mesh_2G_SSID").val(dev.ssid2g);
+									$("#mesh_2G_password").val(dev.pwd2g);	
+									$("#mesh_5G_SSID").val(dev.ssid5g);
+									$("#mesh_5G_password").val(dev.pwd5g);	
+
+									if (dev.auth2g != "")
+									{
+										$("#2G_mesh_security_list_value").val(dev.auth2g);
+										$("#mesh_2G_password").parent().parent().parent().show();
+
+										if (dev.auth2g == "None")
+											$("#2G_mesh_security_list_value").parent().find("label.select-value").text("Open");
+										else if (dev.auth2g == "WPA/WPA2")
+											$("#2G_mesh_security_list_value").parent().find("label.select-value").text("WPA/WPA2混合模式");
+										else
+											$("#2G_mesh_security_list_value").parent().find("label.select-value").text(dev.auth2g);
+										
+									}
+									else
+									{
+										$("#2G_mesh_security_list_value").val("WPA/WPA2");
+										$("#mesh_2G_password").parent().parent().parent().show();	
+										$("#2G_mesh_security_list_value").parent().find("label.select-value").text("WPA/WPA2混合模式");
+									}
+
+									if (dev.auth5g != "")
+									{
+										$("#5G_mesh_security_list_value").val(dev.auth5g);
+										$("#mesh_5G_password").parent().parent().parent().show();
+
+										if (dev.auth5g == "None")
+											$("#5G_mesh_security_list_value").parent().find("label.select-value").text("Open");
+										else if (dev.auth5g == "WPA/WPA2")
+											$("#5G_mesh_security_list_value").parent().find("label.select-value").text("WPA/WPA2混合模式");
+										else
+											$("#5G_mesh_security_list_value").parent().find("label.select-value").text(dev.auth5g);
+									}
+									else
+									{
+										$("#5G_mesh_security_list_value").val("WPA/WPA2");
+										$("#mesh_5G_password").parent().parent().parent().show();	
+										$("#5G_mesh_security_list_value").parent().find("label.select-value").text("WPA/WPA2混合模式");
+									}									
+								}
+
+								if (dev.flg != 2)
+								{
+									if (dev.enbl2g)
+										enable_disable_radio("2", true);
+									else
+										enable_disable_radio("2", false);
+								}
+
+								if (dev.flg != 1)
+								{
+									if (dev.enbl5g)
+										enable_disable_radio("5", true);
+									else
+										enable_disable_radio("5", false);
+								}								
+				
+								break;
+							}
+						}
+
+						if ($(this).attr("livalue") == "custom")
+						{
+							if (inputVal.enbl1)
+							{
+								$("#wifi_2G_switch").removeClass("switch_content_off");
+								$("#wifi_2G_switch").addClass("switch_content_on");
+								$("#wifi_2G_switch").children("span").html("&nbsp;ON");
+
+							}
+							else
+							{
+								$("#wifi_2G_switch").removeClass("switch_content_on");
+								$("#wifi_2G_switch").addClass("switch_content_off");
+								$("#wifi_2G_switch").children("span").html("OFF&nbsp;");										
+							}
+							
+							if (inputVal.enbl2)
+							{
+								$("#wifi_5G_switch").removeClass("switch_content_off");
+								$("#wifi_5G_switch").addClass("switch_content_on");
+								$("#wifi_5G_switch").children("span").html("&nbsp;ON");
+
+							}
+							else
+							{
+								$("#wifi_5G_switch").removeClass("switch_content_on");
+								$("#wifi_5G_switch").addClass("switch_content_off");
+								$("#wifi_5G_switch").children("span").html("OFF&nbsp;");										
+							}
+
+							$("#wifi_2G_switch_value").val(Number(inputVal.enbl1));	
+							$("#wifi_5G_switch_value").val(Number(inputVal.enbl2));								
+					
+							$("#mesh_2G_SSID").val(inputVal.ssid1);
+							$("#2G_mesh_security_list_value").val(inputVal.auth1);
+							if (inputVal.auth1 == "None")
+							{
+							    $("#2G_mesh_security_list_value").parent().find("label.select-value").text("Open");
+							}
+							else if (inputVal.auth1 == "WPA2")
+							{
+							    $("#2G_mesh_security_list_value").parent().find("label.select-value").text("WPA2");
+							}
+							else if (inputVal.auth1 == "WPA3")
+							{
+							    $("#2G_mesh_security_list_value").parent().find("label.select-value").text("WPA3");
+							}
+							else if (inputVal.auth1 == "WPA2/WPA3")
+							{
+							    $("#2G_mesh_security_list_value").parent().find("label.select-value").text("WPA2/WPA3混合模式");
+							}
+							else
+							{
+							    $("#2G_mesh_security_list_value").parent().find("label.select-value").text("WPA/WPA2混合模式"); 
+							    $("#2G_mesh_security_list_value").val("WPA/WPA2");
+							}
+							$("#mesh_2G_password").val(inputVal.key1);
+
+							$("#mesh_5G_SSID").val(inputVal.ssid2);
+							    $("#5G_mesh_security_list_value").val(inputVal.auth2);
+							if (inputVal.auth2 == "None")
+							{
+
+							    $("#5G_mesh_security_list_value").parent().find("label.select-value").text("Open");
+							}
+							else if (inputVal.auth2 == "WPA2")
+							{
+							    $("#5G_mesh_security_list_value").parent().find("label.select-value").text("WPA2");
+							}
+							else if (inputVal.auth2 == "WPA3")
+							{
+							    $("#5G_mesh_security_list_value").parent().find("label.select-value").text("WPA3");
+							}
+							else if (inputVal.auth2 == "WPA2/WPA3")
+							{
+							    $("#5G_mesh_security_list_value").parent().find("label.select-value").text("WPA2/WPA3混合模式");
+							}
+							else
+							{
+							    $("#5G_mesh_security_list_value").parent().find("label.select-value").text("WPA/WPA2混合模式"); 
+							    $("#5G_mesh_security_list_value").val("WPA/WPA2");
+							}
+
+							$("#mesh_5G_password").val(inputVal.key2);  
+
+							if (inputVal.enbl1)
+								enable_disable_radio("2", true);
+							else
+								enable_disable_radio("2", false);
+
+							if (inputVal.enbl2)
+								enable_disable_radio("5", true);
+							else
+								enable_disable_radio("5", false);
+
+							if (inputVal.auth1 == "None")
+							    $("#mesh_2G_password").parent().parent().parent().hide();
+
+							if (inputVal.auth2 == "None")
+							    $("#mesh_5G_password").parent().parent().parent().hide(); 							
+					
+						}
+					});	
+			}
+		}
+		
+		function frmLoad()
+		{		
+			(new XHR()).get('<%=luci.dispatcher.build_url('admin/wifi/easymeshInfo')%>',null,
+				function(x, json){
+					if (json.enblMesh != ($("#mesh_sync_switch_value").val()))
+					{
+						if (json.enblMesh)
+						{
+							$("#mesh_sync_switch").removeClass("switch_content_off");
+							$("#mesh_sync_switch").addClass("switch_content_on");
+							$("#mesh_sync_switch").children("span").html("&nbsp;ON");
+
+						}
+						else
+						{
+							$("#mesh_sync_switch").removeClass("switch_content_on");
+							$("#mesh_sync_switch").addClass("switch_content_off");
+							$("#mesh_sync_switch").children("span").html("OFF&nbsp;");
+						
+						}
+					}
+
+					if (json.enbl1)
+					{
+						$("#wifi_2G_switch").removeClass("switch_content_off");
+						$("#wifi_2G_switch").addClass("switch_content_on");
+						$("#wifi_2G_switch").children("span").html("&nbsp;ON");
+
+					}
+					else
+					{
+						$("#wifi_2G_switch").removeClass("switch_content_on");
+						$("#wifi_2G_switch").addClass("switch_content_off");
+						$("#wifi_2G_switch").children("span").html("OFF&nbsp;");										
+					}
+					
+					if (json.enbl2)
+					{
+						$("#wifi_5G_switch").removeClass("switch_content_off");
+						$("#wifi_5G_switch").addClass("switch_content_on");
+						$("#wifi_5G_switch").children("span").html("&nbsp;ON");
+
+					}
+					else
+					{
+						$("#wifi_5G_switch").removeClass("switch_content_on");
+						$("#wifi_5G_switch").addClass("switch_content_off");
+						$("#wifi_5G_switch").children("span").html("OFF&nbsp;");										
+					}
+										
+					$("#mesh_sync_switch_value").val(Number(json.enblMesh));
+					$("#wifi_2G_switch_value").val(Number(json.enbl1));	
+					$("#wifi_5G_switch_value").val(Number(json.enbl2));					
+					$("#mesh_2G_SSID").val(json.ssid1);
+					$("#2G_mesh_security_list_value").val(json.auth1);
+					if (json.auth1 == "None")
+					{
+						$("#2G_mesh_security_list_value").parent().find("label.select-value").text("Open");
+					}
+					else if (json.auth1 == "WPA2")
+					{
+						$("#2G_mesh_security_list_value").parent().find("label.select-value").text("WPA2");
+					}
+					else if (json.auth1 == "WPA3")
+					{
+						$("#2G_mesh_security_list_value").parent().find("label.select-value").text("WPA3");
+					}
+					else if (json.auth1 == "WPA2/WPA3")
+					{
+						$("#2G_mesh_security_list_value").parent().find("label.select-value").text("WPA2/WPA3混合模式");
+					}
+					else
+					{
+						$("#2G_mesh_security_list_value").parent().find("label.select-value").text("WPA/WPA2混合模式");	
+						$("#2G_mesh_security_list_value").val("WPA/WPA2");
+					}
+					$("#mesh_2G_password").val(json.key1);
+
+					$("#mesh_5G_SSID").val(json.ssid2);
+						$("#5G_mesh_security_list_value").val(json.auth2);
+					if (json.auth2 == "None")
+					{
+						$("#5G_mesh_security_list_value").parent().find("label.select-value").text("Open");
+					}
+					else if (json.auth2 == "WPA2")
+					{
+						$("#5G_mesh_security_list_value").parent().find("label.select-value").text("WPA2");
+					}
+					else if (json.auth2 == "WPA3")
+					{
+						$("#5G_mesh_security_list_value").parent().find("label.select-value").text("WPA3");
+					}
+					else if (json.auth2 == "WPA2/WPA3")
+					{
+						$("#5G_mesh_security_list_value").parent().find("label.select-value").text("WPA2/WPA3混合模式");
+					}
+					else
+					{
+						$("#5G_mesh_security_list_value").parent().find("label.select-value").text("WPA/WPA2混合模式");	
+						$("#5G_mesh_security_list_value").val("WPA/WPA2");
+					}
+					
+			    	$("#mesh_5G_password").val(json.key2);	
+
+
+					inputVal = json;
+					initVal();
+					enable_disable_mesh(json.enblMesh);
+			
+					if (json.enblMesh)
+					{
+						$(".wifi_save").css("display", "");
+
+						if (json.enbl1)
+							enable_disable_radio("2", true);
+						else
+							enable_disable_radio("2", false);
+
+						if (json.enbl2)
+							enable_disable_radio("5", true);
+						else
+							enable_disable_radio("5", false);
+					}
+					else
+					{
+						$(".wifi_2G").css("display", "none");
+						$(".wifi_5G").css("display", "none");						
+					}
+
+					if (json.auth1 == "None")
+						$("#mesh_2G_password").parent().parent().parent().hide();
+
+					if (json.auth2 == "None")
+						$("#mesh_5G_password").parent().parent().parent().hide();						
+
+					$(".mesh_config").show();
+				});		
+				
+		}
+
+		function checkWifiSettings()
+		{
+			var ch = "";
+
+			$("#error_hint").hide();
+
+			if (parseInt($("#mesh_sync_switch_value").val()) == 1)
+			{
+				if (($("#mesh_2G_SSID").val().length == 0) || ($("#mesh_2G_SSID").val().length > 32))
+				{
+					$(".error").text("2.4G WiFi名称长度须在1到32个字符之间");
+					$("#error_hint").show();
+					return false;
+				}				
+				
+				for(var i = 0; i < $("#mesh_2G_SSID").val().length; i++)
+				{
+					ch = $("#mesh_2G_SSID").val().charAt(i);
+					if (!((ch == '.') ||  (ch == '-') || ((ch >= 0) && (ch <= 9)) || ((ch >= 'a') && (ch <= 'z')) || (ch == '_') || ((ch >= 'A')&&(ch <= 'Z')) || (ch=='@') || ((ch.charCodeAt(0) >= 0x4e00) && (ch.charCodeAt(0) <= 0x9fa5)) )) /* 0-9,a-z,A-Z,-,_,@ */
+					{
+						$(".error").text("2.4G WiFi名称格式错误，请输入0-9, a-z, A-Z, '-', '_', '@'或中文");
+						$("#error_hint").show();
+						return false;
+					}
+				}
+
+				if (($("#2G_mesh_security_list_value").val() == "WPA3") || ($("#5G_mesh_security_list_value").val() == "WPA3"))
+				{
+					$(".error").text("为了兼容老设备，同步加密方式不能设置为WPA3，请修改为其它方式。");
+					$("#error_hint").show();
+					return false;					
+				}
+				
+				var len = $("#mesh_2G_password").val().length;
+				if (($("#2G_mesh_security_list_value").val() != "None")  && ((len < 8) || (len > 32) || !isValidWPAKey($("#mesh_2G_password").val())))
+				{
+					$(".error").text("2.4G WiFi密码长度应在8到32个字符之间且只能为数字或者a~zA~Z之间字符");
+					$("#error_hint").show();
+					return false;
+				}
+				
+				$("#mesh_2_SSID").val($("#mesh_2G_SSID").val());
+
+				if (($("#mesh_5G_SSID").val().length == 0) || ($("#mesh_5G_SSID").val().length > 32))
+				{
+					$(".error").text("5G WiFi名称长度须在1到32个字符之间");
+					$("#error_hint").show();
+					return false;
+				}					
+				
+				for(var i = 0; i < $("#mesh_5G_SSID").val().length; i++)
+				{
+					ch = $("#mesh_5G_SSID").val().charAt(i);
+					if (!((ch == '.') ||  (ch == '-') || ((ch >= 0) && (ch <= 9)) || ((ch >= 'a') && (ch <= 'z')) || (ch == '_') || ((ch >= 'A')&&(ch <= 'Z')) || (ch=='@') || ((ch.charCodeAt(0) >= 0x4e00) && (ch.charCodeAt(0) <= 0x9fa5)) )) /* 0-9,a-z,A-Z,-,_,@ */
+					{
+						$(".error").text("5G WiFi名称格式错误，请输入0-9, a-z, A-Z, '-', '_', '@'或中文");
+						$("#error_hint").show();
+						return false;
+					}
+				}				
+				
+				var len = $("#mesh_5G_password").val().length;
+				if (($("#5G_mesh_security_list_value").val() != "None") && ((len < 8) || (len > 32) || !isValidWPAKey($("#mesh_5G_password").val())))
+				{
+					$(".error").text("5G WiFi密码长度应在8到32个字符之间且只能为数字或者a~zA~Z之间字符");
+					$("#error_hint").show();
+					return false;
+				}
+				
+				$("#mesh_5_SSID").val($("#mesh_5G_SSID").val());	
+			}
+
+			return true;
+		}	
+		
+		function confirmSave()
+		{
+			cleanPopWindowContentFromIframe();
+			
+			//填充内容
+			$("#pop_window_title", window.parent.document).html("保存确认");
+			$("#pop_window_icon", window.parent.document).html('<div class="pop_window_icon_alert"></div>');
+			$("#pop_window_message", window.parent.document).html("请确认保存当前设置内容");
+			
+			//更改确认操作函数
+			var eid = parent.document.getElementById("confirm");
+			if ( isIE7 )
+			{
+				eid.onclick = function() { realSave() };
+			}
+			else
+			{
+				if (!noWiFi)
+					eid.setAttribute("onclick","document.getElementById('wifi_iframe').contentWindow.realSave()");
+				else
+					eid.setAttribute("onclick","document.getElementById('nowifi_iframe').contentWindow.realSave()");
+			}
+			showOrHidePopWindowFromIframe("show");
+		}	
+		
+		function realSave()
+		{
+			showOrHidePopWindowFromIframe("hide");
+			$("#saveBtn").attr("disabled","disabled");
+			$("#saveBtn").removeClass("input_button");
+			$("#saveBtn").addClass("grey_button");				
+			$("#mesh_basic_form").submit();
+		}		
+		
+		function saveCheck()
+		{
+			if (!checkWifiSettings())
+				return false;
+			
+			confirmSave();
+		}			
+		</script>
+	</head>
+	<body onLoad='frmLoad()' onkeydown='parent.kFlg;parent.keycheck(event)' class='main_config_body' onkeydown='keyCapscheck(event, 2)' style="padding: 0px 100px;">
+	  <form id="mesh_basic_form" method="post" action="<%=url("admin/wifi/easymeshSettings")%>">
+		<input type="hidden" name="token" value="<%=token%>" />
+		<input type="hidden" name="mesh_2G_SSID" id="mesh_2_SSID" value="" />
+		<input type="hidden" name="mesh_5G_SSID" id="mesh_5_SSID" value="" />	
+
+		<div class="mesh_config" style="display:none">
+		<div class="wifi_item">
+			<div class="wifi_item_name"><label for="mesh_sync_switch">MESH 同步</label></div>
+			<div class="wifi_item_content">
+				<div class="switch_content wifi_switch switch_content_on" id="mesh_sync_switch">
+					<input type="hidden" id="mesh_sync_switch_value" name="mesh_sync_switch" value="1" />
+					<span>&nbsp;ON</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="wifi_item wifi_dev dev_info wifi_devs" style="margin-top:15px;">
+		</div>
+
+		<div class="wifi_item wifi_2G" style="margin-top:15px;">
+			<div class="wifi_item_name"><label for="wifi_2G_switch">2.4G 网络开关</label></div>
+			<div class="wifi_item_content">
+				<div class="switch_content wifi_switch switch_content_on" id="wifi_2G_switch" style="float:left;">
+					<input type="hidden" id="wifi_2G_switch_value" name="wifi_2G_switch" value="1" />
+					<span>&nbsp;ON</span>
+				</div>
+				<span id="onoff_2G_hint" style="float:left;margin:8px 0 0 10px;font-size:10px;font-style:italic;color:#999999">该选项将关闭MESH组网中2.4G网络</span>
+			</div>
+		</div>		
+		
+		<div class="wifi_item wifi_2G_item"  style="margin-top:15px;">
+			<div class="wifi_item_name"><label for="mesh_2G_SSID">2.4G 同步WiFi名称</label></div>
+			<div class="wifi_item_content">
+				<input type="text" class="input_text input_text_wifi" id="mesh_2G_SSID" placeholder="Ssid">
+			</div>			
+		</div>	
+		
+		<div class="wifi_item wifi_2G_item"  style="margin-top:15px;">
+			<div class="wifi_item_name"><label for="mesh_2G_security">2.4G 同步加密方式</label></div>
+			<div class="wifi_item_content">
+				<div tabindex="2" hidefocus="true"  class="dropdown-select dropdown-select-wifi" id="2G_security">
+					<label class="select-value">Open</label>
+					<input type="hidden" id="2G_mesh_security_list_value" name="mesh_2G_auth" value="None" />
+					<div class="select-arrow"></div>
+					<ul id="2G_mesh_security_list" class="dropdown-menu-select">
+						<li livalue="None">Open</li>
+						<li livalue="WPA/WPA2">WPA/WPA2混合模式</li>
+						<li livalue="WPA2">WPA2</li>
+						<li livalue="WPA2/WPA3">WPA2/WPA3混合模式</li>
+						<li livalue="WPA3">WPA3</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<div class="wifi_item wifi_2G_item" style="margin-top:15px;">
+			<div class="wifi_item_name"><label for="mesh_2G_password">2.4G 同步WiFi密码</label></div>
+			<div class="wifi_item_content">
+				<div class="password_content password_content_wifi">
+					<input type="password" id="mesh_2G_password" name="mesh_2G_password" placeholder="Password" maxlength="32" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" AutoCompleteType="Disabled" onkeypress ="detectCapsLock(event, 1, 'wifi')">
+					<div class="password_switch password_switch_unfocus"></div>
+				</div>
+				<div class="wifi_error_hint"></div>
+			</div>
+			<div id='promptText1' class="wifi_item_name" style=" width:220px;display:none;">大写锁定键已开启，请注意大小写</div>
+		</div>
+
+		<div class="wifi_item wifi_5G" style="margin-top:15px;">
+			<div class="wifi_item_name"><label for="wifi_5G_switch">5G 网络开关</label></div>
+			<div class="wifi_item_content">
+				<div class="switch_content wifi_switch switch_content_on" id="wifi_5G_switch" style="float:left;">
+					<input type="hidden" id="wifi_5G_switch_value" name="wifi_5G_switch" value="1" />
+					<span>&nbsp;ON</span>
+				</div>
+				<span id="onoff_5G_hint" style="float:left;margin:8px 0 0 10px;font-size:10px;font-style:italic;color:#999999">该选项将关闭MESH组网中5G网络</span>
+			</div>
+		</div>		
+		
+		<div class="wifi_item wifi_5G_item" style="margin-top:15px;">
+			<div class="wifi_item_name"><label for="mesh_5G_SSID">5G 同步WiFi名称</label></div>
+			<div class="wifi_item_content">
+				<input type="text" class="input_text input_text_wifi" id="mesh_5G_SSID" placeholder="Ssid">
+			</div>
+		</div>
+		
+		<div class="wifi_item wifi_5G_item" style="margin-top:15px;">
+			<div class="wifi_item_name"><label for="mesh_5G_security">5G 同步加密方式</label></div>
+			<div class="wifi_item_content">
+				
+				<div tabindex="2" hidefocus="true"  class="dropdown-select dropdown-select-wifi" id="5G_security">
+					<label class="select-value">Open</label>
+					<input type="hidden" id="5G_mesh_security_list_value" name="mesh_5G_auth" value="None" />
+					<div class="select-arrow"></div>
+					<ul id="5G_mesh_security_list" class="dropdown-menu-select" style="padding-top:0px;">
+						<li livalue="None">Open</li>
+						<li livalue="WPA/WPA2">WPA/WPA2混合模式</li>
+						<li livalue="WPA2">WPA2</li>
+						<li livalue="WPA2/WPA3">WPA2/WPA3混合模式</li>
+						<li livalue="WPA3">WPA3</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<div class="wifi_item wifi_5G_item" style="margin-top:15px;">
+			<div class="wifi_item_name"><label for="mesh_5G_password">5G 同步WiFi密码</label></div>
+			<div class="wifi_item_content">
+				<div class="password_content password_content_wifi">
+					<input type="password" id="mesh_5G_password" name="mesh_5G_password" placeholder="Password" maxlength="32" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" AutoCompleteType="Disabled" onkeypress ="detectCapsLock(event, 2, 'wifi')">
+					<div class="password_switch password_switch_unfocus"></div>
+				</div>
+				<div class="wifi_error_hint"></div>
+			</div>
+			<div id='promptText2' class="wifi_item_name" style="width:220px;display:none;">大写锁定键已开启，请注意大小写</div>
+		</div>
+		
+		<div id="error_hint" style="height: 10px; margin-top:15px;margin-left: 160px; display:none">
+			<div class="error" style="margin-top:8px;font-size:10px;font-style:italic;color:#999999"></div>
+		</div>
+		
+		<div class="wifi_save" style="margin-top:15px;display:none">
+			<input type="button" id="meshsaveBtn" class="input_button" value="保存设置" onclick="saveCheck()"/>
+		</div>
+
+		</div>
+		
+	  </form>
+	</body>
+</html>
+
+

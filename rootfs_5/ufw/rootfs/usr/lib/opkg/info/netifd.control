@@ -1,0 +1,11 @@
+Package: netifd
+Version: 2021-01-09-753c351b-1
+Depends: libc, libuci20130104, libnl-tiny, libubus20191227, ubus, ubusd, jshn, libubox20191228
+Source: package/network/config/netifd
+SourceName: netifd
+License: GPL-2.0
+Section: base
+Maintainer: Felix Fietkau <nbd@nbd.name>
+Architecture: arm_huawei_V32081_F
+Installed-Size: 77574
+Description:  OpenWrt Network Interface Configuration Daemon

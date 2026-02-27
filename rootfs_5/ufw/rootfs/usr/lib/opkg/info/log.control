@@ -1,0 +1,11 @@
+Package: log
+Version: V02.01.0200
+Depends: libc, libubox20191228, glib2, libuci20130104, jansson, libhguapi
+Source: /data/buildbot/buildbot/wk_huawei_arm_huawei_V32081_F/builder_huawei_arm_huawei_V32081_F/build/module_hgu_fttr/ufw/log
+SourceName: log
+Section: ufw
+Essential: yes
+Maintainer: chinaunicom
+Architecture: arm_huawei_V32081_F
+Installed-Size: 6524
+Description:  log is a log record server for china unicom smart gateway.

@@ -1,0 +1,10 @@
+Package: appmgr
+Version: R5052
+Depends: libc, liblxc, libuci, libcurl, libjson-c, libexpat, libcapi3, libpcap
+Source: package/upointech/appmgr
+Section: base
+Essential: yes
+Maintainer: Upointech
+Architecture: rtos510v2
+Installed-Size: 93597
+Description:  Application manager for smart gateway device

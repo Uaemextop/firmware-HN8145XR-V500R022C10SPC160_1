@@ -1,0 +1,173 @@
+<CliRoot>
+<!-- NOT_SUPPORT_XD_START--> 
+<StartPeriodStats CmdStr="btv start period-stats" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpStartPeriodStats" OpType="0" Help="btv start period-stats ip ipaddr [ vlan vlan ] { port port | mac mac | userip userip } interval interval duration duration" OutPut="" CmdGroup="0x00004010">
+<para ParaName="ip" AttName="ip" ParaAtt="0"/>
+<para ParaName="vlan" AttName="vlan" ParaAtt="0"/>
+<para ParaName="port" AttName="Port" ParaAtt="0"/>
+<para ParaName="mac" AttName="MAC" ParaAtt="0"/>
+<para ParaName="userip" AttName="UserIP" ParaAtt="0"/>
+<para ParaName="interval" AttName="Interval" ParaAtt="0"/>
+<para ParaName="duration" AttName="Duration" ParaAtt="0"/>
+</StartPeriodStats>
+<StopPeriodStats CmdStr="btv stop period-stats" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpStopPeriodStats" OpType="0" Help="btv stop period-stats" OutPut="" CmdGroup="0x00004010">
+</StopPeriodStats>
+<AddPolicyStats CmdStr="bbsp add policy-stats btv" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpAddPolicyStats" OpType="0" Help="bbsp add policy-stats btv ip { ipaddr [ vlan [int] ] [ port [int] | mac [string] | userip [string] ] }" OutPut="" CmdGroup="0x00004010">
+<para ParaName="ip" AttName="ip" ParaAtt="0"/>
+<para ParaName="vlan" AttName="vlan" ParaAtt="0"/>
+<para ParaName="port" AttName="Port" ParaAtt="0"/>
+<para ParaName="mac" AttName="MAC" ParaAtt="0"/>
+<para ParaName="userip" AttName="UserIP" ParaAtt="0"/>
+</AddPolicyStats>
+<!-- NOT_SUPPORT_XD_START-->
+<ClearPolicyStatsAll CmdStr="bbsp clear policy-stats btv all" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpClearPolicyStatsAll" OpType="0" Help="bbsp clear policy-stats btv all" OutPut="" CmdGroup="0x00004010"/>
+<!-- NOT_SUPPORT_XD_END-->
+<DelPolicyStats CmdStr="bbsp del policy-stats btv" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpDelPolicyStats" OpType="0" Help="bbsp del policy-stats btv ip { ipaddr [ vlan [int] ] [ port [int] ] }" OutPut="" CmdGroup="0x00004010">
+<para ParaName="ip" AttName="ip" ParaAtt="0"/>
+<para ParaName="vlan" AttName="vlan" ParaAtt="0"/>
+<para ParaName="port" AttName="Port" ParaAtt="0"/>
+</DelPolicyStats>
+<!-- NOT_SUPPORT_CM_START-->
+<DisPolicyStats CmdStr="display bbsp stats btv" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpDisPolicyStats" OpType="5" Help="display bbsp stats btv ip { ipaddr [ port [int] ] | all }" OutPut="" CmdGroup="0x00004010">
+<para ParaName="ip" AttName="ip" ParaAtt="0"/>
+<para ParaName="port" AttName="Port" ParaAtt="0"/>
+</DisPolicyStats>
+<!-- NOT_SUPPORT_CM_END-->
+<IgmpAddMirrorIp CmdStr="igmp add mirror filter" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpAddMirrorIp" OpType="0" Help="igmp add mirror filter ip ipaddr" OutPut="" CmdGroup="0x00004010">
+<para ParaName="IP" AttName="IP" ParaAtt="0"/>
+</IgmpAddMirrorIp>
+<ClearIgmpStatis CmdStr="igmp clear statistics" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpStatis" OpType="0" Help="igmp clear statistics" OutPut="" CmdGroup="0x00004010"/>
+<IgmpSet CmdStr="igmp config" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpSet" OpType="0" Help="igmp config { proxy [switch] | version [value] }" OutPut="" CmdGroup="0x80000000">
+<para ParaName="version" AttName="version" ParaAtt="0"/>
+<para ParaName="proxy" AttName="proxy" ParaAtt="0"/>
+</IgmpSet>
+<IgmpGet CmdStr="display igmp config" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpGet" OpType="5" Help="display igmp config" OutPut="" CmdGroup="0x00004010"/>
+<SetIgmpDisable CmdStr="igmp disable" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.SetIgmpDisable" OpType="0" Help="igmp disable" OutPut="" CmdGroup="0x00004001" />
+<SetIgmpEnable CmdStr="igmp enable" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.SetIgmpEnable" OpType="0" Help="igmp enable [ proxy switch | snooping switch | version igmpversion | robustness robustness | query-interval interval | query-response-interval interval | last-member-interval interval | last-member-count count | last-member-response-interval interval | startup-query-interval interval | startup-query-count count | unsolicited-report-interval interval ]*" OutPut="" CmdGroup="0x00004001">
+<para ParaName="version" AttName="version" ParaAtt="0"/>
+<para ParaName="proxy" AttName="proxy" ParaAtt="0"/>
+<para ParaName="snooping" AttName="snooping" ParaAtt="0"/>
+<para ParaName="robustness" AttName="robustness" ParaAtt="0"/>
+<para ParaName="query-interval" AttName="query-interval" ParaAtt="0"/>
+<para ParaName="query-response-interval" AttName="query-response-interval" ParaAtt="0"/>
+<para ParaName="last-member-interval" AttName="last-member-interval" ParaAtt="0"/>
+<para ParaName="last-member-count" AttName="last-member-count" ParaAtt="0"/>
+<para ParaName="last-member-response-interval" AttName="last-member-response-interval" ParaAtt="0"/>
+<para ParaName="startup-query-interval" AttName="startup-query-interval" ParaAtt="0"/>
+<para ParaName="startup-query-count" AttName="startup-query-count" ParaAtt="0"/>
+<para ParaName="unsolicited-report-interval" AttName="unsolicited-report-interval" ParaAtt="0"/>
+</SetIgmpEnable>
+<GetIgmpDbg CmdStr="igmp get debug switch" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpDebugSwitch" OpType="1" Help="igmp get debug switch [ para1 [int] | para1 [int] para2 [int] ]" OutPut="%Null%" CmdGroup="0x00004010">
+<para ParaName="para1" AttName="switch" ParaAtt="0"/>
+<para ParaName="para2" AttName="ParaLevel" ParaAtt="0"/>
+</GetIgmpDbg>
+<!-- NOT_SUPPORT_XD_START-->
+<GetFlowInfo CmdStr="igmp get flow info" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpFlowInfo" OpType="1" Help="igmp get flow info" OutPut="%Enable%" CmdGroup="0x00004010"/>
+<!-- NOT_SUPPORT_XD_END-->
+<GetIgmpGlobalCfg CmdStr="igmp get global cfg" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpGlobalCfg" OpType="1" Help="igmp get global cfg" OutPut="%IgmpMode%" CmdGroup="0x00004010"/>
+<GetIptvParams CmdStr="igmp get iptv" ObjPath="InternetGatewayDevice.Services.X_HW_IPTV" OpType="1" Help="igmp get iptv" OutPut="IPTV global info:
+    IGMPEnable      =  %IGMPEnable% 
+    ProxyEnable     =  %ProxyEnable%
+    SnoopingEnable  =  %SnoopingEnable%
+    PPPoEWanSnoopingMode = %PPPoEWanSnoopingMode%
+    BridgeWanProxyEnable = %BridgeWanProxyEnable%
+    PPPoEWanProxyMode = %PPPoEWanProxyMode%
+    Robustness      =  %Robustness%
+    GenQueryInterval=  %GenQueryInterval%   
+    GenResponseTime =  %GenResponseTime%
+    SpQueryNumber   =  %SpQueryNumber%      
+    SpQueryInterval =  %SpQueryInterval%
+    SpResponseTime  =  %SpResponseTime%
+    RemarkIPPrecedence =  %RemarkIPPrecedence%
+    RemarkPri          =  %RemarkPri%
+    IGMPVersion        =  %IGMPVersion%
+    MLDVersion         = %MLDVersion%
+    MLDProxyEnable     = %MLDProxyEnable%
+    MLDSnoopingEnable  = %MLDSnoopingEnable%
+    ActiveProgramNum   =  %ActiveProgramNum%
+    STBNumber          =  %STBNumber%
+    STBMAC             =  %STBMAC%" CmdGroup="0x00004010"/>
+<!-- NOT_SUPPORT_BBSP_START-->
+<SetIptvParams CmdStr="igmp set iptv" ObjPath="InternetGatewayDevice.Services.X_HW_IPTV" OpType="0" Help="igmp set iptv { igmpenable [int] | proxyenable [int] | 
+snoopingenable [int] | robustness [int] | genqueryinterval [int] | genresponsetime [int] | spquerynumber [int] | spqueryinterval [int] | 
+spresponsetime [int] | tosmark [int] | primark [int] | igmpversion [int] | mldproxyenable [int] | mldsnoopingenable [int] | mldversion [int]}" OutPut="" CmdGroup="0x00000010">
+<para ParaName="igmpenable" AttName="IGMPEnable" ParaAtt="0"/>
+<para ParaName="proxyenable" AttName="ProxyEnable" ParaAtt="0"/>
+<para ParaName="snoopingenable" AttName="SnoopingEnable" ParaAtt="0"/>
+<para ParaName="robustness" AttName="Robustness" ParaAtt="0"/>
+<para ParaName="genqueryinterval" AttName="GenQueryInterval" ParaAtt="0"/>
+<para ParaName="genresponsetime" AttName="GenResponseTime" ParaAtt="0"/>
+<para ParaName="spquerynumber" AttName="SpQueryNumber" ParaAtt="0"/>
+<para ParaName="spqueryinterval" AttName="SpQueryInterval" ParaAtt="0"/>
+<para ParaName="spresponsetime" AttName="SpResponseTime" ParaAtt="0"/>
+<para ParaName="tosmark" AttName="RemarkIPPrecedence" ParaAtt="0"/>
+<para ParaName="primark" AttName="RemarkPri" ParaAtt="0"/>
+<para ParaName="igmpversion" AttName="IGMPVersion" ParaAtt="0"/>
+<para ParaName="mldversion" AttName="MLDVersion" ParaAtt="0"/>
+<para ParaName="mldproxyenable" AttName="MLDProxyEnable" ParaAtt="0"/>
+<para ParaName="mldsnoopingenable" AttName="MLDSnoopingEnable" ParaAtt="0"/>
+</SetIptvParams>
+<!-- NOT_SUPPORT_BBSP_END-->
+<IgmpGetMirrorIp CmdStr="igmp get mirror filter ip" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpGetMirrorIp" OpType="1" Help="igmp get mirror filter ip" OutPut="%Action%" CmdGroup="0x00004010">
+</IgmpGetMirrorIp>
+<GetIgmpMultiMac CmdStr="igmp get multilmac" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpMultiMac" OpType="1" Help="igmp get multilmac" OutPut="%Action%" CmdGroup="0x00004010"/>
+<GetIgmpPortMulticastCfg CmdStr="igmp get port multicast config" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpPortMulticastCfg" OpType="1" Help="igmp get port multicast config" OutPut="%Enable%" CmdGroup="0x00004010"/>
+<GetIgmpStatis CmdStr="igmp get statistics" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpStatis" OpType="1" Help="igmp get statistics" OutPut="%Enable%" CmdGroup="0x00004010"/>
+<IgmpMember CmdStr="igmp member" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpMember" OpType="0" Help="igmp member channel {channel} multicast-vlan {vlan} userport {port} lan-host {host}" OutPut="" CmdGroup="0x80000000">
+<para ParaName="channel" AttName="channel" ParaAtt="0"/>
+<para ParaName="multicast-vlan" AttName="multicast-vlan" ParaAtt="0"/>
+<para ParaName="userport " AttName="userport" ParaAtt="0"/>
+<para ParaName="lan-host" AttName="lan-host" ParaAtt="0"/>
+</IgmpMember>
+<UndoIgmpMember CmdStr="undo igmp member" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.UndoIgmpMember" OpType="0" Help="undo igmp member channel {channel} multicast-vlan {vlan} userport {port} lan-host {host}" OutPut="" CmdGroup="0x80000000">
+<para ParaName="channel" AttName="channel" ParaAtt="0"/>
+<para ParaName="multicast-vlan" AttName="multicast-vlan" ParaAtt="0"/>
+<para ParaName="userport " AttName="userport" ParaAtt="0"/>
+<para ParaName="lan-host" AttName="lan-host" ParaAtt="0"/>
+</UndoIgmpMember>
+<IgmpProxyQuery CmdStr="igmp proxy query" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpProxyQuery" OpType="0" Help="igmp proxy query sourceIP {ip}" OutPut="" CmdGroup="0x80000000">
+<para ParaName="sourceIP" AttName="sourceIP" ParaAtt="0"/>
+</IgmpProxyQuery>
+<UndoIgmpProxyQuery CmdStr="undo igmp proxy query" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.UndoIgmpProxyQuery" OpType="0" Help="undo igmp proxy query" OutPut="" CmdGroup="0x80000000">
+</UndoIgmpProxyQuery>
+<SetIgmpDbg CmdStr="igmp set debug switch" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpDebugSwitch" OpType="0" Help="igmp set debug switch enable [0,1] para [int]" OutPut="" CmdGroup="0x00004010">
+<para ParaName="enable" AttName="switch" ParaAtt="0"/>
+<para ParaName="para" AttName="ParaLevel" ParaAtt="0"/>
+</SetIgmpDbg>
+<DebuggingIgmp CmdStr="debugging igmp" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.DebuggingIgmp" OpType="0" Help="USAGE: 
+     debugging igmp {port [para] | host [ip-list] | known-address enable}*
+OPTIONS:
+     para:pon|all|lan-all|lanx,example:lan1,lan2"  OutPut="" CmdGroup="0x80002000">
+<para ParaName="port" AttName="port" ParaAtt="0"/>
+<para ParaName="host" AttName="host" ParaAtt="0"/>
+<para ParaName="known-address" AttName="knownaddr" ParaAtt="0"/>
+</DebuggingIgmp>
+<UndoDebuggingIgmp CmdStr="undo debugging igmp" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.UndoDebuggingIgmp" OpType="0" Help="USAGE:
+     undo debugging igmp port [para]
+OPTIONS:
+     para:pon|all|lan-all|lanx,example:lan1,lan2" OutPut="" CmdGroup="0x80002000">
+<para ParaName="port" AttName="port" ParaAtt="0"/>
+</UndoDebuggingIgmp>
+<UndoDebuggingIgmpHost CmdStr="undo debugging igmp host" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.UndoDebuggingIgmpHost" OpType="0" Help="undo debugging igmp host" OutPut="" CmdGroup="0x80002000">
+</UndoDebuggingIgmpHost>
+<FlushIgmp CmdStr="flush igmp" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.FlushIgmp" OpType="0" Help="flush igmp" OutPut="" CmdGroup="0x80000000">
+</FlushIgmp>
+<DisplayIgmpSmac CmdStr="igmp get smac uflow" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.DisplayIgmpSmac" OpType="1" Help="igmp get smac uflow" OutPut="%enable%" CmdGroup="">
+</DisplayIgmpSmac>
+<IgmpMflowInfo CmdStr="igmp get mflow info" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpMflowInfo" OpType="1" Help="igmp get mflow info" OutPut="%enable%" CmdGroup="">
+</IgmpMflowInfo>
+<UndoDebuggingIgmpKnownAddrEnable CmdStr="undo debugging igmp known-address enable" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.UndoDebuggingIgmpKnownAddrEnable" OpType="0" Help="undo debugging igmp known-address enable" OutPut="" CmdGroup="0x80002000">
+</UndoDebuggingIgmpKnownAddrEnable>
+<DisplayDebuggingIgmp CmdStr="display debugging igmp" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.DisplayDebuggingIgmp" OpType="1" Help="display debugging igmp" OutPut="%Enable%" CmdGroup="0x80002000">
+</DisplayDebuggingIgmp>
+<DisplayIgmpProgram CmdStr="display igmp" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.DisplayIgmpProgram" OpType="7" Help="display igmp program {program-id | all}" OutPut="" CmdGroup="0x00004010">
+<para ParaName="program" AttName="program" ParaAtt="0"/>
+</DisplayIgmpProgram>
+<IgmpFlowGet CmdStr="get igmp flow" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpFlowGet" OpType="0" Help="get igmp flow portid [int]" OutPut="" CmdGroup="">
+<para ParaName="portid" AttName="portid" ParaAtt="0"/>
+</IgmpFlowGet>
+<!-- NOT_SUPPORT_XD_START-->
+<IgmpDelMirrorIp CmdStr="igmp del mirror filter" ObjPath="InternetGatewayDevice.X_HW_DEBUG.BBSP.IgmpDelMirrorIp" OpType="0" Help="igmp del mirror filter ip ipaddr" OutPut="" CmdGroup="0x00004010">
+<para ParaName="IP" AttName="IP" ParaAtt="0"/>
+</IgmpDelMirrorIp>
+<!-- NOT_SUPPORT_XD_END--> 
+</CliRoot>

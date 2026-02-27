@@ -1,0 +1,9 @@
+Package: dnsproxy
+Version: R5038
+Depends: libc
+Source: package/upointech/dnsproxy
+Section: base
+Maintainer: Upointech
+Architecture: rtos510v2
+Installed-Size: 12687
+Description:  dnsproxy

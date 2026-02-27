@@ -1,0 +1,10 @@
+Package: dsmonitor
+Version: R4845
+Depends: libc, ubox, libcapi3
+Source: package/upointech/dsmonitor
+Section: base
+Vendor: upointech
+Maintainer: Upointech
+Architecture: rtos510v2
+Installed-Size: 8523
+Description:  dbus service monitor for smart gateway device

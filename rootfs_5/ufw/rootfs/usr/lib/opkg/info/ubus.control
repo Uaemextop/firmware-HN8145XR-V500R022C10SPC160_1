@@ -1,0 +1,11 @@
+Package: ubus
+Version: 1
+Depends: libc, libubus20191227, libblobmsg-json, ubusd
+Source: package/system/ubus
+SourceName: ubus
+License: LGPL-2.1
+Section: base
+Maintainer: Felix Fietkau <nbd@nbd.name>
+Architecture: arm_huawei_V32081_F
+Installed-Size: 6230
+Description:  OpenWrt RPC client utility

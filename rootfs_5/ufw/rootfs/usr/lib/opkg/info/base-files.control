@@ -1,0 +1,10 @@
+Package: base-files
+Version: 204.2-V02.01.0200_arm_huawei_V32081_F
+Depends: libc, netifd, procd, jsonfilter, usign, openwrt-keyring, fstools, fwtool
+Source: package/base-files
+SourceName: base-files
+License: GPL-2.0
+Section: base
+Architecture: arm_huawei_V32081_F
+Installed-Size: 37055
+Description:  This package contains a base filesystem and system scripts for OpenWrt.

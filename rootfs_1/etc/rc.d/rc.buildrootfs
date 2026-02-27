@@ -1,0 +1,31 @@
+#! /bin/sh
+echo "enter rc.buildrootfs................"
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+mount -t proc -o nodev,nosuid,noexec proc /proc 
+mount -t sysfs -o nodev,nosuid,noexec sysfs /sys
+mount -t tmpfs -o nodev,nosuid,size=100m,mode=1777 none /var
+
+# 依赖的loop KO
+[ -f /lib/modules/linux/kernel/drivers/block/loop.ko ] && insmod /lib/modules/linux/kernel/drivers/block/loop.ko
+mkdir /var/new_rootfs
+chmod 500 /var/new_rootfs
+mkdir /var/old_rootfs/
+chmod 500 /var/old_rootfs/
+mkdir /var/old_rootfs/old_rootfs
+chmod 500 /var/old_rootfs/old_rootfs
+mkdir /var/tmp_dir
+
+#解析子rootfs
+mkdir /var/sub_rootfs
+sub_rootfs /var/sub_rootfs
+
+#加载依赖的overlayloopfs
+insmod /lib/modules/linux/kernel/fs/exportfs/exportfs.ko
+insmod /lib/modules/linux/kernel/fs/overlayfs/overlay.ko
+insmod /lib/modules/linux/kernel/kernel/configs.ko
+mount -t overlay overlay -o lowerdir=/:/var/sub_rootfs:/var/old_rootfs/,workdir=/var/tmp_dir /var/new_rootfs
+
+#dev需要额外绑定,否则内部会不可见
+mount --bind /dev /var/new_rootfs/dev
+#切换文件系统目录
+pivot_root /var/new_rootfs /var/new_rootfs/old_rootfs

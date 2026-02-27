@@ -1,0 +1,11 @@
+Package: proxy
+Version: V02.01.0200
+Depends: libc, libubus20191227, libuci20130104, libubox20191228, libblobmsg-json, libpthread, libhguapi, glib2, libcurl4, libopenssl1.1
+Source: /data/buildbot/buildbot/wk_huawei_arm_huawei_V32081_F/builder_huawei_arm_huawei_V32081_F/build/module_hgu_fttr/ufw/proxy
+SourceName: proxy
+Section: ufw
+Essential: yes
+Maintainer: yysd
+Architecture: arm_huawei_V32081_F
+Installed-Size: 16661
+Description:  proxy is a message forward server for china unicom smart gateway.

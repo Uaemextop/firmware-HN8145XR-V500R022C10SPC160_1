@@ -1,0 +1,9 @@
+Package: libcapi-lua
+Version: R5005
+Depends: libc, jansson, glib2, libcapi3, libubox, liblua
+Source: package/upointech/sgwconfig
+Section: libs
+Maintainer: Upointech
+Architecture: rtos510v2
+Installed-Size: 30335
+Description:  http configuration for smart gateway device

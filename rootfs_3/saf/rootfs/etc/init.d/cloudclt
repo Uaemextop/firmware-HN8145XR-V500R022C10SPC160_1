@@ -1,0 +1,42 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2013-2014 OpenWrt.org
+
+START=16
+USE_PROCD=1
+CCPROG=/sbin/cloudclient
+LSPROG=/sbin/cloudclocal
+
+validate_cc()
+{
+	uci_validate_section "${1}" global global \
+		'debug_mode:uinteger:0'
+}
+
+start_cloudclient()
+{
+	local debug_mode
+
+	validate_cc "cloudclient"
+
+	procd_open_instance
+	procd_set_param command "$CCPROG"
+	[ $debug_mode -gt 0 ] && procd_append_param command debug
+	procd_set_param respawn 3600 5 0
+	procd_close_instance
+}
+
+start_cloudclocal()
+{
+	procd_open_instance
+	procd_set_param command "$LSPROG"
+	procd_set_param respawn 3600 5 0
+	procd_close_instance
+}
+
+start_service(){
+
+	config_load cloudclient
+	
+	start_cloudclient
+	start_cloudclocal
+}

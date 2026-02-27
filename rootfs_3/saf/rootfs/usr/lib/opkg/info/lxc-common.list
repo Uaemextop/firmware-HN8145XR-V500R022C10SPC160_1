@@ -1,0 +1,4 @@
+/etc/lxc/lxc.conf
+/var/lib/lxc/rootfs/README
+/etc/lxc/default.conf
+/usr/share/lxc/lxc.functions

@@ -1,0 +1,1 @@
+Bbspcmd vbridge uplink-binding | sleep 0.1

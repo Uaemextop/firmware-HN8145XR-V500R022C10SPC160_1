@@ -1,0 +1,9 @@
+Package: dbus
+Version: 1.12.16-1
+Depends: libc, libexpat, libdbus
+Source: feeds/packages/utils/dbus
+License: AFL-2.1
+Section: utils
+Architecture: rtos510v2
+Installed-Size: 106710
+Description:  Simple interprocess messaging system (daemon)

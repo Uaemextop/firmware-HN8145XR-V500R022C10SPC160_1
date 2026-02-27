@@ -1,0 +1,12 @@
+Package: libarchive
+Version: 3.4.2-1
+Depends: libc, zlib, liblzma, libbz2-1.0, libexpat, libopenssl1.1
+Source: feeds/packages/libs/libarchive
+SourceName: libarchive
+License: BSD-2-Clause
+LicenseFiles: COPYING
+Section: libs
+Maintainer: Johannes Morgenroth <morgenroth@ibr.cs.tu-bs.de>
+Architecture: arm_huawei_V32081_F
+Installed-Size: 278376
+Description:  Multi-format archive and compression library

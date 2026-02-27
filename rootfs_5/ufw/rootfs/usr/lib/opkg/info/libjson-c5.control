@@ -1,0 +1,13 @@
+Package: libjson-c5
+Version: 0.15-2
+Depends: libc
+Provides: libjson-c
+Source: package/libs/libjson-c
+SourceName: libjson-c
+License: MIT
+LicenseFiles: COPYING
+Section: libs
+Maintainer: Felix Fietkau <nbd@nbd.name>
+Architecture: arm_huawei_V32081_F
+Installed-Size: 26906
+Description:  This package contains a library for javascript object notation backends.

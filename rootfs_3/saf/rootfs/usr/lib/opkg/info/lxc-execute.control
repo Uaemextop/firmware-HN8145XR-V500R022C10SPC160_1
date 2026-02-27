@@ -1,0 +1,9 @@
+Package: lxc-execute
+Version: 2.0.9-1
+Depends: libc, lxc, lxc-common, libpthread, libcap, liblxc
+Source: feeds/packages/utils/lxc
+License: LGPL-2.1+ BSD-2-Clause GPL-2.0
+Section: utils
+Architecture: rtos510v2
+Installed-Size: 3591
+Description:  Utility lxc-execute from the LXC userspace tools

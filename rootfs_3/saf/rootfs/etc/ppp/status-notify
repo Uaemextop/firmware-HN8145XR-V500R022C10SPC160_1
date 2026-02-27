@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# When the ppp link comes up, this script is called with the following
+# parameters
+#       $1      the interface name used by pppd (e.g. ppp3)
+#       $2      the reason
+
+jstr="{\"method\":\"set\",\"status\":\"$2\",\"ifname\":\"$1\"}"
+dbus-send --system --print-reply --dest=com.upointech.vpnclient1 /com/upointech/vpnclient1 com.upointech.vpnclient1.management.PostMsg string:$jstr

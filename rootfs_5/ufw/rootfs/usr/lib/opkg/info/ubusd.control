@@ -1,0 +1,11 @@
+Package: ubusd
+Version: 1
+Depends: libc, libubox20191228, libblobmsg-json
+Source: package/system/ubus
+SourceName: ubusd
+License: LGPL-2.1
+Section: base
+Maintainer: Felix Fietkau <nbd@nbd.name>
+Architecture: arm_huawei_V32081_F
+Installed-Size: 11998
+Description:  OpenWrt RPC daemon

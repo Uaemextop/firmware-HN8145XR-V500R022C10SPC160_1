@@ -1,0 +1,8 @@
+Package: luci-lib-ip
+Version: R1887
+Depends: libc, liblua, libnl-tiny
+Source: feeds/luci/libs/luci-lib-ip
+Section: luci
+Architecture: rtos510v2
+Installed-Size: 9241
+Description:  Lua library for IP calculation and routing information

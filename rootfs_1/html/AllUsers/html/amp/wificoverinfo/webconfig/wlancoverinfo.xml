@@ -1,0 +1,15 @@
+<InternetGatewayDevice>
+    <X_HW_HOMENET_NAME setconfig = "0x00000003" getconfig = "0x00000003">
+        <hosts setconfig = "0x00000003" getconfig = "0x00000003">
+            <Name setconfig = "0x00000003" getconfig = "0x00000003"/>
+        </hosts>
+    </X_HW_HOMENET_NAME>
+    <X_HW_WIFIInfo setconfig = "0x00000003">
+        <WiFiQOEPara setconfig = "0x00000003">
+            <QOEEnable setconfig = "0x00000003"/>
+        </WiFiQOEPara>
+        <WiFiFaultRecoverPara setconfig = "0x00000003">
+            <RecoverEnable setconfig = "0x00000003"/>
+        </WiFiFaultRecoverPara>
+    </X_HW_WIFIInfo>
+</InternetGatewayDevice> 

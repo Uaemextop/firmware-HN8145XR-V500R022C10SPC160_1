@@ -1,0 +1,11 @@
+Package: uappd
+Version: V02.01.0200
+Depends: libc, libubus20191227, libubox20191228, glib2, libuci20130104, libcurl4, libopenssl1.1, jansson, libhguapi
+Source: /data/buildbot/buildbot/wk_huawei_arm_huawei_V32081_F/builder_huawei_arm_huawei_V32081_F/build/module_hgu_fttr/ufw/uappd
+SourceName: uappd
+Section: ufw
+Essential: yes
+Maintainer: yysd
+Architecture: arm_huawei_V32081_F
+Installed-Size: 133554
+Description:  uappd is a plug-in manager server for china unicom smart gateway.

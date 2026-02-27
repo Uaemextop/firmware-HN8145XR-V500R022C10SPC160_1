@@ -1,0 +1,11 @@
+Package: lxc-checkconfig
+Version: 4.0.3-3
+Depends: libc, lxc, lxc-common
+Source: feeds/packages/utils/lxc
+SourceName: lxc-checkconfig
+License: LGPL-2.1-or-later BSD-2-Clause GPL-2.0
+Section: utils
+Maintainer: Marko Ratkaj <marko.ratkaj@sartura.hr>
+Architecture: arm_huawei_V32081_F
+Installed-Size: 2823
+Description:  Utility lxc-checkconfig from the LXC userspace tools

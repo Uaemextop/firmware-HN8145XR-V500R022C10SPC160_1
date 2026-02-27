@@ -1,0 +1,7 @@
+<InternetGatewayDevice>
+  <X_HW_WIFIInfo setconfig = "0x00000002">
+    <X_HW_PskMassiveDetect setconfig = "0x00000002">
+      <Enable setconfig = "0x00000002" getconfig = "0x00000002"/>
+    </X_HW_PskMassiveDetect>
+  </X_HW_WIFIInfo>
+</InternetGatewayDevice>

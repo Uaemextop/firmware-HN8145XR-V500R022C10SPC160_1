@@ -1,0 +1,11 @@
+Package: libubus-lua
+Version: 1
+Depends: libc, libubus20191227, liblua5.1.5
+Source: package/system/ubus
+SourceName: libubus-lua
+License: LGPL-2.1
+Section: libs
+Maintainer: Felix Fietkau <nbd@nbd.name>
+Architecture: arm_huawei_V32081_F
+Installed-Size: 8174
+Description:  Lua binding for the OpenWrt RPC client

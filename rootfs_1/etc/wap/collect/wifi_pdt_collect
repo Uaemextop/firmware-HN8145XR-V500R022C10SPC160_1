@@ -1,0 +1,62 @@
+SHELL:chipdebug wifi speed_dfx get_record
+SHELL:sleep 0.5
+SHELL:cat /var/wifipmlog
+SHELL:sleep 0.5
+SHELL:cat /var/hilink/topodebug*
+SHELL:sleep 1
+SHELL:if [ -d /var/easymesh/ ]; then cat /var/easymesh/controller*; cat /var/easymesh/agent*; sleep 0.5; fi;
+SHELL:touch /var/cli_mask_file
+WAP:display wifi information
+SHELL:sleep 0.5
+WAP:display wifi associate
+SHELL:sleep 0.5
+WAP:display wifi neighbor
+SHELL:sleep 2
+SHELL:rm -rf /var/cli_mask_file
+SHELL:head -n 10 /mnt/jffs2/fem_init_par.bin
+SHELL:cat /var/board_cfg.txt
+SHELL:cat /proc/bus/pci/devices
+WAP:get wlan enable laninst 1
+WAP:get wlan basic laninst 1 wlaninst 1
+WAP:get wlan basic laninst 1 wlaninst 5
+WAP:get wlan stats laninst 1 wlaninst 1
+WAP:get wlan stats laninst 1 wlaninst 5
+WAP:get wlan advance laninst 1 wlaninst 1
+WAP:get wlan advance laninst 1 wlaninst 5
+SHELL:wlancmd show log
+SHELL:sleep 0.5
+SHELL:wlancmd show xlinkerrlog
+SHELL:sleep 0.5
+SHELL:wlancmd debug ap log
+SHELL:wlancmd debug scn show sta
+SHELL:wlancmd debug scn show ap
+SHELL:wlancmd debug scn show friend_sta
+SHELL:wlancmd debug scn show friend_rule
+SHELL:wlancmd debug scn show log
+SHELL:wlancmd master show controled_ap
+SHELL:wlancmd master show sta_access_blklist
+SHELL:sleep 0.5
+WAP:display wifi ap
+WAP:udm show log
+WAP:display wifi ratio type free
+WAP:display wifi ratio type interference
+SHELL:cat /proc/wap_proc/keyinfoget_log
+SHELL:cat /proc/wifilog/debug/All
+SHELL:getcustomize.sh
+SHELL:wifi_collect.sh
+WAP:wrrm debug cmd dump_log para1 0
+SHELL:sleep 0.5
+WAP:wrrm debug cmd dump_log para1 1
+SHELL:sleep 0.5
+WAP:wrrm debug cmd dump_log para1 2
+SHELL:sleep 1
+WAP:wrrm debug cmd dump_log para1 3
+SHELL:sleep 0.5
+WAP:wrrm debug cmd dump_log para1 4
+SHELL:sleep 0.5
+WAP:wrrm debug cmd dump_log para1 5
+SHELL:sleep 0.5
+WAP:wrrm debug cmd show_all_steer_history
+SHELL:sleep 0.5
+WAP:wificmd speed_dfx get_record
+SHELL:sleep 0.5

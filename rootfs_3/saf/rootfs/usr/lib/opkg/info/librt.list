@@ -1,0 +1,3 @@
+/lib/librtos_musl_extend.so
+/lib/librt.so.1
+/lib/librt.so
